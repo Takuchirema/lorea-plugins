@@ -22,7 +22,7 @@
 	function microthemes_pagesetup() {
 		global $CONFIG;
 		$page_owner = page_owner_entity();
-		if ($page_owner instanceof ElggGroup && get_context() == "groups") {
+		if ($page_owner instanceof ElggGroup && get_context() == "groups" && $page_owner->canEdit()) {
 			add_submenu_item(elgg_echo("microthemes:groupthemes"), 
 					$CONFIG->wwwroot . "pg/microthemes/groupview/".$page_owner->getGUID());
 		}
