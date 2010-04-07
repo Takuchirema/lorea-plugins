@@ -14,14 +14,12 @@
 	$object_guid = get_input('object_guid');
 	$mode = get_input('mode');
 	$myObject = get_entity($object_guid);
-	error_log($object_guid);
 	
 	$size = strtolower(get_input('size'));
 	if (!in_array($size,array('large','medium','small','tiny','master','topbar')))
 		$size = "medium";
 	
 	$success = false;
-	error_log($size);
 	$filehandler = new ElggFile();
 	$filehandler->owner_guid = $myObject->owner_guid;
 	$filehandler->setFilename("microthemes/".$mode."_".$myObject->guid.'_'.$size.'.jpg');

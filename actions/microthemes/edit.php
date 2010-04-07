@@ -30,7 +30,6 @@
 		$newObject->access_id = ACCESS_PUBLIC;
 	}
 	if ($newObject->save()) {
-		error_log("created ok");
 		$newObject->bg_alignment = $alignment;
 		if ($options && in_array('hidesitename', $options))
 			$newObject->hidesitename = 1;
