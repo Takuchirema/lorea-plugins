@@ -36,6 +36,10 @@
 			$newObject->hidesitename = 1;
 		else
 			$newObject->hidesitename = 0;
+		if ($options && in_array('translucid_page', $options))
+			$newObject->translucid_page = 1;
+		else
+			$newObject->translucid_page = 0;
 		if ($repeat && in_array('repeatx', $repeat))
 			$newObject->repeatx = 1;
 		else

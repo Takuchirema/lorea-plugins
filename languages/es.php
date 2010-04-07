@@ -16,6 +16,7 @@
                     "microthemes:edit" => 'Editar',
 		    "microthemes:choose" => 'Seleccionar',
                     "microthemes:title" => 'Titulo',
+		    "microthemes:translucid_page" => 'Hacer el fondo de las paginas translucido.',
                     "microthemes:themeinstructions" => 'Aqui ves los temas disponibles y puedes seleccionar alguno que te guste',
                     "microthemes:color" => 'Color de fondo',
                     "microthemes:topbar_color" => 'Color para la barra',

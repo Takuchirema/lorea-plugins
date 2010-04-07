@@ -16,6 +16,7 @@
                     "microthemes:create" => 'Create a theme',
                     "microthemes:edit" => 'Edit theme',
                     "microthemes:choose" => 'Choose',
+                    "microthemes:translucid_page" => 'Make the page background translucid. Note it could be like this by default, if so this option has no effect.',
                     "microthemes:title" => 'Title',
                     "microthemes:themeinstructions" => 'Here you can see available themes and select one',
                     "microthemes:color" => 'Background color',

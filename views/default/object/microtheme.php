@@ -33,9 +33,9 @@ if ($vars['full']) {
 			'text' => elgg_echo('delete')
 		));
 		$controls .= " ($delete)";
-		$action_ref = "{$vars['url']}pg/microthemes/edit?guid={$vars['entity']->guid}";
+		$action_ref = "{$vars['url']}pg/microthemes/edit/{$vars['entity']->guid}";
 		if ($assign_to)
-			$action_ref .= '&assign_to='.$assign_to;
+			$action_ref .= '?assign_to='.$assign_to;
 		$edit = elgg_view('output/url', array(
 			'href' => $action_ref,
 			'text' => elgg_echo('edit')

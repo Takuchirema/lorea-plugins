@@ -1,4 +1,5 @@
 <?php
+	global $CONFIG;
 	header("Content-type: text/css");
 	$guid = get_input('guid');
 	$owner = get_entity($guid);
@@ -27,6 +28,9 @@
 	$hide_sitename = false;
 	if ($microtheme->hidesitename)
 		$hide_sitename = true;
+	$translucid_page = false;
+	if ($microtheme->translucid_page)
+		$translucid_page = true;
 ?>
 body, #page_container {
 	background-color: <?php echo $microtheme->bg_color; ?>;
@@ -34,33 +38,56 @@ body, #page_container {
 
 }
 
-#two_column_left_sidebar {
-background-color: #dedede;
-background-image: url(https://n-1.artelibredigital.net/mod/theme_loreahub/graphics/contentbg.png);
+<?php
+	if ($translucid_page) {
+?>
+#layout_canvas {
+	background: transparent;
+	background-image: url(<?php echo $CONFIG->wwwroot; ?>mod/microthemes/graphics/contentbg.png);
+	border-color: #cccccc;
+	border-width-rtl-source: physical;
+	border-width: 1px;
+	border-style: solid;
 }
 
+<?php
+	}
+?>
 #layout_header {
 	height: <?php echo $height; ?>px;
 	background: transparent;
 }
 
+a:link.mainmenu_img:link, a.mainmenu_img:visited {
+	background-color: <?php echo $microtheme->topbar_color; ?> ! important;
+	background: <?php echo $microtheme->topbar_color; ?> ! important;
+}
+
 <?php
 	if ($hide_sitename) {
 ?>
+/* Hide sitename */
 #wrapper_header h1 {
+	display: none;
+}
+#wrapper_header h1 a {
 	display: none;
 }
 <?php
 	}
 ?>
 
+/* Hide header image */
 #wrapper_header img {
 	display: none;
 }
 
+/* Change the topbar color */
 #elgg_topbar {
 
 	background: <?php echo $microtheme->topbar_color; ?> repeat-x top left;
+        border-bottom-color: <?php echo $microtheme->bg_color; ?>;
+
 }
 /*#page_container {
 	background-color: <?php echo $microtheme->bg_color; ?>;

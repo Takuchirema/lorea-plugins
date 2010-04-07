@@ -2,6 +2,7 @@
 	$entity = $vars['entity'];
 	$form_body = '<label>'.elgg_echo('microthemes:title').'<label>';
 	$values = array();
+	$assign_to = get_input('assign_to');
 	$opt_values = array();
 	if ($entity) {
 		$form_body .= elgg_view("input/hidden", array(
@@ -12,6 +13,8 @@
 		$title = $entity->title;
 		if ($entity->hidesitename === 1)
 			array_push($opt_values, 'hidesitename');
+		if ($entity->translucid_page === 1)
+			array_push($opt_values, 'translucid_page');
 		if ($entity->repeatx === 1)
 			array_push($values, 'repeatx');
 		if ($entity->repeaty === 1)
@@ -34,6 +37,8 @@
 		$align = 'left';
 	}
 
+	$form_body .= elgg_view("input/hidden", array(
+			'internalname' => 'assign_to', 'value'=>$assign_to));
 	$form_body .= elgg_view("input/text", array(
 			'internalname' => 'title', 'value'=>$title));
 
@@ -74,7 +79,9 @@
 	$form_body .= '<p>';
 	$form_body .= '<p><label>'.elgg_echo('microthemes:options').' <label><br />';
 	$form_body .= elgg_view("input/checkboxes", array(
-			'options' => array(elgg_echo('microthemes:hidesitename')=>'hidesitename'),
+			'options' => array(
+			elgg_echo('microthemes:hidesitename')=>'hidesitename',
+			elgg_echo('microthemes:translucid_page')=>'translucid_page'),
 			'internalname'=>'options',
 			'value' => $opt_values));
 	$form_body .= '</p>';
