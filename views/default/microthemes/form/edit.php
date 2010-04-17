@@ -97,5 +97,6 @@
 	echo elgg_view('input/form', array(
 			'body' => $form_body,
 			'method' => 'post',
+			'enctype' => 'multipart/form-data',
 			'action'=>$vars['url'].'action/microthemes/edit'));
 ?>
