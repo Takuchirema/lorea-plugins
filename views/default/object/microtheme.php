@@ -60,15 +60,17 @@ if ($vars['full']) {
 	}
 	if (isadminloggedin()) {
 		$site = get_site_by_url($vars['url']);
-		$action_ref = "{$vars['url']}action/microthemes/choose?guid={$vars['entity']->guid}";
-		$action_ref .= '&assign_to='.$site->getGUID();
-		$pars =  array(
-                        'href' => $action_ref,
-                        'text' => elgg_echo('microthemes:choosesite')
-                );
-			
-		$choose = elgg_view('output/confirmlink', $pars);
-		$controls .= " ($choose)";
+		if ($site->microtheme != $vars['entity']->guid) {
+			$action_ref = "{$vars['url']}action/microthemes/choose?guid={$vars['entity']->guid}";
+			$action_ref .= '&assign_to='.$site->getGUID();
+			$pars =  array(
+				'href' => $action_ref,
+				'text' => elgg_echo('microthemes:choosesite')
+			);
+				
+			$choose = elgg_view('output/confirmlink', $pars);
+			$controls .= " ($choose)";
+		}
 
 	}
 

@@ -56,6 +56,7 @@
  	function microthemes_init(){
 			global $CONFIG;
 			register_action("microthemes/delete",false, $CONFIG->pluginspath . "microthemes/actions/microthemes/delete.php");
+			register_action("microthemes/clear",false, $CONFIG->pluginspath . "microthemes/actions/microthemes/clear.php");
 			register_action("microthemes/edit",false, $CONFIG->pluginspath . "microthemes/actions/microthemes/edit.php");
 			register_action("microthemes/choose",false, $CONFIG->pluginspath . "microthemes/actions/microthemes/choose.php");
 			register_plugin_hook('entity:icon:url', 'object', 'microthemes_tasksicon_hook');
