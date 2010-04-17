@@ -44,16 +44,18 @@ if ($vars['full']) {
 
 	}
 	if ($vars['entity']->canEdit() || isadminloggedin() || $assign_to) {
-		$action_ref = "{$vars['url']}action/microthemes/choose?guid={$vars['entity']->guid}";
-		if ($assign_to)
-			$action_ref .= '&assign_to='.$assign_to;
-		$pars =  array(
-                        'href' => $action_ref,
-                        'text' => elgg_echo('microthemes:choose')
-                );
-			
-		$choose = elgg_view('output/confirmlink', $pars);
-		$controls .= " ($choose)";
+		if ($vars['entity']->getGUID() != get_entity($assign_to)->microtheme) {
+			$action_ref = "{$vars['url']}action/microthemes/choose?guid={$vars['entity']->guid}";
+			if ($assign_to)
+				$action_ref .= '&assign_to='.$assign_to;
+			$pars =  array(
+				'href' => $action_ref,
+				'text' => elgg_echo('microthemes:choose')
+			);
+				
+			$choose = elgg_view('output/confirmlink', $pars);
+			$controls .= " ($choose)";
+		}
 
 	}
 	if (isadminloggedin()) {
