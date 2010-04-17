@@ -1,6 +1,6 @@
 <?php
 	$entity = $vars['entity'];
-	$form_body = '<label>'.elgg_echo('microthemes:title').'<label>';
+	$form_body = '<label>'.elgg_echo('microthemes:title').'</label>';
 	$values = array();
 	$assign_to = get_input('assign_to');
 	$opt_values = array();
@@ -43,32 +43,32 @@
 			'internalname' => 'title', 'value'=>$title));
 
 	// backgroud color
-	$form_body .= '<label>'.elgg_echo('microthemes:color').'<label>';
+	$form_body .= '<label>'.elgg_echo('microthemes:color').'</label>';
 	$form_body .= elgg_view("input/text", array(
 			'internalname' => 'bg_color', 'value'=>$bgcolor));
 
 	// topbar color
-	$form_body .= '<label>'.elgg_echo('microthemes:topbar_color').' <label>';
+	$form_body .= '<label>'.elgg_echo('microthemes:topbar_color').' </label>';
 	$form_body .= elgg_view("input/text", array(
 			'internalname' => 'topbar_color',
 			'value'=>$topbar_color));
 
 	// banner
-	$form_body .= '<p><label>'.elgg_echo('microthemes:banner').' <label>';
+	$form_body .= '<p><label>'.elgg_echo('microthemes:banner').' </label>';
 	$form_body .= elgg_view("input/file", array(
 			'internalname' => 'banner_file')).'</p>';
-	$form_body .= '<label>'.elgg_echo('microthemes:headerheight').'<label>';
+	$form_body .= '<label>'.elgg_echo('microthemes:headerheight').'</label>';
 	$form_body .= elgg_view("input/text", array(
 			'internalname' => 'height', 'value'=>$height));
 	$form_body .= '<p>';
-	$form_body .= '<p><label>'.elgg_echo('microthemes:bgrepetition').' <label><br />';
+	$form_body .= '<p><label>'.elgg_echo('microthemes:bgrepetition').' </label><br />';
 	$form_body .= elgg_view("input/checkboxes", array(
 			'options' => array(elgg_echo('microthemes:repeatx')=>'repeatx',
 			elgg_echo('microthemes:repeaty')=>'repeaty'),
 			'internalname'=>'repeat',
 			'value' => $values));
 	$form_body .= '</p>';
-	$form_body .= '<p><label>'.elgg_echo('microthemes:alignment').' <label><br />';
+	$form_body .= '<p><label>'.elgg_echo('microthemes:alignment').' </label><br />';
 	$form_body .= elgg_view("input/radio", array('value'=>$align,
 				'internalname' => 'alignment',
 				'options'=>array(
@@ -77,7 +77,7 @@
 				elgg_echo('microthemes:right')=>'right')));
 	$form_body .= '</p>';
 	$form_body .= '<p>';
-	$form_body .= '<p><label>'.elgg_echo('microthemes:options').' <label><br />';
+	$form_body .= '<p><label>'.elgg_echo('microthemes:options').' </label><br />';
 	$form_body .= elgg_view("input/checkboxes", array(
 			'options' => array(
 			elgg_echo('microthemes:hidesitename')=>'hidesitename',
@@ -87,7 +87,7 @@
 	$form_body .= '</p>';
 
 	// footer
-	//$form_body .= '<label>'.elgg_echo('microthemes:footer').'<label>';
+	//$form_body .= '<label>'.elgg_echo('microthemes:footer').'</label>';
 	//$form_body .= elgg_view("input/file", array(
 	//		'internalname' => 'footer_file'));
 
