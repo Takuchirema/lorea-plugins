@@ -1,0 +1,5 @@
+1.1: fixes following problems:
+  - unable to clear themes from site/groups/people
+  - uploading backgrounds doesnt work
+  - doesnt show choose button for already selected theme
+1.0: initial revision
