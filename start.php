@@ -67,7 +67,7 @@
 			register_elgg_event_handler('pagesetup','system','microthemes_pagesetup');
 
                         elgg_extend_view("metatags", "microthemes/metatags");
-			elgg_extend_view('profile/menu/linksownpage','microthemes/profilemenu');
+			//elgg_extend_view('profile/menu/linksownpage','microthemes/profilemenu');
 	}
 
 register_elgg_event_handler('init','system','microthemes_init');
