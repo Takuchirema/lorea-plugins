@@ -26,6 +26,9 @@
 			add_submenu_item(elgg_echo("microthemes:groupthemes"), 
 					$CONFIG->wwwroot . "pg/microthemes/groupview/".$page_owner->getGUID());
 		}
+		if (get_context() == 'settings') {
+			add_submenu_item(elgg_echo('microthemes:userthemes'), $CONFIG->wwwroot . "pg/microthemes/view");
+		}
 	}
 
 	function microthemes_page_handler($page) {
