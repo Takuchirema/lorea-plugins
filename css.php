@@ -31,12 +31,33 @@
 	$translucid_page = false;
 	if ($microtheme->translucid_page)
 		$translucid_page = true;
+
+
 ?>
+
+.colorSelector {
+	position: relative;
+	width: 36px;
+	height: 36px;
+	background: url(<?php echo $CONFIG->wwwroot; ?>mod/microthemes/vendors/images/select.png);
+}
+.colorSelector div {
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 30px;
+	height: 30px;
+	background: url(<?php echo $CONFIG->wwwroot; ?>mod/microthemes/vendors/images/select.png) center;
+}
+
 body, #page_container {
 	background-color: <?php echo $microtheme->bg_color; ?>;
 	background: <?php echo $microtheme->bg_color; ?> url(<?php echo $microtheme->bgurl; ?>) <?php echo $bgopts; ?>;
 
 }
+
+
+
 
 <?php
 	if ($translucid_page) {

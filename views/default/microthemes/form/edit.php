@@ -42,23 +42,65 @@
 	$form_body .= elgg_view("input/text", array(
 			'internalname' => 'title', 'value'=>$title));
 
+
+        // include the color picker from jQuery
+         $form_body .="<link rel='stylesheet' type='text/css' href='".$CONFIG->wwwroot."mod/microthemes/vendors/css/colorpicker.css' />
+        <script type='text/javascript' src='".$CONFIG->wwwroot."mod/microthemes/vendors/js/jquery.js'></script>
+        <script type='text/javascript' src='".$CONFIG->wwwroot."mod/microthemes/vendors/js/colorpicker.js'></script>";
 	// backgroud color
-	$form_body .= '<label>'.elgg_echo('microthemes:color').'</label>';
-	$form_body .= elgg_view("input/text", array(
-			'internalname' => 'bg_color', 'value'=>$bgcolor));
+	$form_body .= '<label>'.elgg_echo('microthemes:color').'</label><div id="BGcolorSelector" class="colorSelector"><div style="background-color: '.$bgcolor.'"></div></div>';
+	$form_body .= elgg_view("input/hidden", array(
+			'internalname' => 'bg_color', 'value'=>$bgcolor, 'js'=>'id="bgcolor"'));
+        $form_body .='<script type="text/javascript">
+        $(document).ready(function() {
+
+                $("#BGcolorSelector").ColorPicker({
+	color: "'.$bgcolor.'",
+	onShow: function (colpkr) {
+		$(colpkr).fadeIn(500);
+		return false;
+	},
+	onHide: function (colpkr) {
+		$(colpkr).fadeOut(500);
+		return false;
+	},
+	onChange: function (hsb, hex, rgb) {
+		$("#BGcolorSelector div").css("backgroundColor", "#" + hex);
+                document.getElementById("bgcolor").value = "#" + hex;
+	}
+        });
+        });</script>';
 
 	// topbar color
-	$form_body .= '<label>'.elgg_echo('microthemes:topbar_color').' </label>';
-	$form_body .= elgg_view("input/text", array(
-			'internalname' => 'topbar_color',
-			'value'=>$topbar_color));
+	$form_body .= '<label>'.elgg_echo('microthemes:topbar_color').' </label><div id="TBcolorSelector" class="colorSelector"><div style="background-color: '.$topbar_color.'"></div></div>';
+	$form_body .= elgg_view("input/hidden", array(	'internalname' => 'topbar_color', 'value'=>$topbar_color, 'js'=>'id="topbar_color" '));
+        $form_body .='<script type="text/javascript">
+        $(document).ready(function() {
+
+                $("#TBcolorSelector").ColorPicker({
+	color: "'.$topbar_color.'",
+	onShow: function (colpkr) {
+		$(colpkr).fadeIn(500);
+		return false;
+	},
+	onHide: function (colpkr) {
+		$(colpkr).fadeOut(500);
+		return false;
+	},
+	onChange: function (hsb, hex, rgb) {
+		$("#TBcolorSelector div").css("backgroundColor", "#" + hex);
+                document.getElementById("topbar_color").value = "#" + hex;
+	}
+        });
+        });</script>';
 
 	// banner
-	$background = $CONFIG->wwwroot.'mod/microthemes/graphics/icon.php?size=medium&mode=banner&object_guid='.$vars['entity']->guid;
+        $background = $CONFIG->wwwroot.'mod/microthemes/graphics/icon.php?size=medium&mode=banner&object_guid='.$vars['entity']->guid;
         $form_body .= "<p><br><img src='".$background."' style='float:right; margin: 0 40px 15px 15px; padding: 5px; border: 1px solid #aaa;' ><br>";
-        $form_body .= '<label>'.elgg_echo('microthemes:banner').' </label>';
-        $form_body .= elgg_view("input/file", array(
-                        'internalname' => 'banner_file')).'</p><br>';
+	$form_body .= '<label>'.elgg_echo('microthemes:banner').' </label>';
+	$form_body .= elgg_view("input/file", array(
+			'internalname' => 'banner_file')).'</p><br>';
+        
 
 	$form_body .= '<label>'.elgg_echo('microthemes:headerheight').'</label>';
 	$form_body .= elgg_view("input/text", array(
@@ -102,4 +144,5 @@
 			'method' => 'post',
 			'enctype' => 'multipart/form-data',
 			'action'=>$vars['url'].'action/microthemes/edit'));
+
 ?>

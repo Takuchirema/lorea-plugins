@@ -14,5 +14,7 @@ Tickets and source repository:
 
 License: See COPYING (GPLv2)
 
+Includes the colorpicker from http://www.eyecon.ro/colorpicker/#download under the vendors directory which is not covered by our license.
+
 --
 devel@lorea.cc
