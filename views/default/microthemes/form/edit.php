@@ -54,9 +54,12 @@
 			'value'=>$topbar_color));
 
 	// banner
-	$form_body .= '<p><label>'.elgg_echo('microthemes:banner').' </label>';
-	$form_body .= elgg_view("input/file", array(
-			'internalname' => 'banner_file')).'</p>';
+	$background = $CONFIG->wwwroot.'mod/microthemes/graphics/icon.php?size=medium&mode=banner&object_guid='.$vars['entity']->guid;
+        $form_body .= "<p><br><img src='".$background."' style='float:right; margin: 0 40px 15px 15px; padding: 5px; border: 1px solid #aaa;' ><br>";
+        $form_body .= '<label>'.elgg_echo('microthemes:banner').' </label>';
+        $form_body .= elgg_view("input/file", array(
+                        'internalname' => 'banner_file')).'</p><br>';
+
 	$form_body .= '<label>'.elgg_echo('microthemes:headerheight').'</label>';
 	$form_body .= elgg_view("input/text", array(
 			'internalname' => 'height', 'value'=>$height));
