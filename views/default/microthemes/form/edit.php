@@ -138,6 +138,9 @@
 
 	// submit
 	$form_body .= elgg_view('input/submit', array('internalname' => 'submit', 'value' => elgg_echo('microthemes:publish')));
+	// cancel
+	$onclick_link = "'".$CONFIG->wwwroot."pg/microthemes/view/?assign_to=".$assign_to."','_top'";
+        $form_body .= '<input type="button" value="'.elgg_echo('cancel').'" class="cancel_button" onclick="window.open('.$onclick_link.');" />';
 
 	echo elgg_view('input/form', array(
 			'body' => $form_body,
