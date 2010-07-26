@@ -13,6 +13,6 @@
 	$body .= elgg_echo('microthemes:themeinstructions');
 	$body .= '<br/>'.elgg_view('microthemes/clearbuttons', array('assign_to'=> $assignto));
         $body .= '</div><div class="contentWrapper">';
-        $body .= elgg_list_entities(array('types'=>'object', 'subtypes'=>'microtheme', 'full_view'=>false, 'assign_to'=>666, 'pagination' => FALSE, 'limit' => 10))."</div></div>";
+        $body .= elgg_list_entities(array('types'=>'object', 'subtypes'=>'microtheme', 'full_view'=>false, 'assign_to'=>666, 'pagination' =>true, 'limit' => 999))."</div></div>";
         echo page_draw('microthemes:manage' ,$body);
 ?>

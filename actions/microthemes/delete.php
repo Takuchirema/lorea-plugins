@@ -1,5 +1,4 @@
 <?php
-        admin_gatekeeper();
 		$assign_to = get_input($assign_to);
 		$guid = get_input('guid');
 		if ($entity = get_entity($guid)) {

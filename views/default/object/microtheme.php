@@ -50,10 +50,11 @@ if ($vars['full']) {
 				$action_ref .= '&assign_to='.$assign_to;
 			$pars =  array(
 				'href' => $action_ref,
+				'is_action' => true,
 				'text' => elgg_echo('microthemes:choose')
 			);
 				
-			$choose = elgg_view('output/confirmlink', $pars);
+			$choose = elgg_view('output/url', $pars);
 			$controls .= " ($choose)";
 		}
 
@@ -74,7 +75,7 @@ if ($vars['full']) {
 
 	}
 
-	$info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . $title . "</a></b> $controls </p></div>";
+	$info = "<div><p><b>" . $title . "</b> $controls </p></div>";
 	$info .= '<b>topbar:</b> ' ."<div style='width:10px; height:10px; display:inline-block; background-color:".$vars['entity']->topbar_color.";'></div>    ";
 	$info .= '<b>background:</b> ' ."<div style='width:10px; height:10px; display:inline-block; background-color:".$vars['entity']->bg_color.";'></div>";;
 

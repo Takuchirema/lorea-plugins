@@ -69,6 +69,7 @@ body, #page_container {
 	border-width-rtl-source: physical;
 	border-width: 1px;
 	border-style: solid;
+	padding: 15px;
 }
 
 <?php
