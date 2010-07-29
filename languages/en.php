@@ -39,6 +39,7 @@
                     "microthemes:options" => 'Extra Options',
                     "microthemes:hidesitename" => 'Hide site name on the page head',
                     "microthemes:publish" => 'Save',
+                    "item:object:microtheme" => 'Themes',
 
 	);
 	

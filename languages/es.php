@@ -37,6 +37,7 @@
                     "microthemes:right" => 'derecha',
                     "microthemes:options" => 'Opciones extra',
                     "microthemes:hidesitename" => 'Ocultar el nombre del sitio en la parte superior de la pagina',
+		    "item:object:microtheme" => 'Temas',
 
                     "microthemes:publish" => 'Guardar',
 
