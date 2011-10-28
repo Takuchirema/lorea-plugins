@@ -1,31 +1,41 @@
 <?php
 /**
-         * Elgg powered plugin
-         * 
-         * @package
-         * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-         * @author psy (lorea)
-         * @copyright lorea
-         * @link http://lorea.cc
-         */
+ * Elgg footer
+ * The standard HTML footer that displays across the site
+ *
+ * @package ElggPowered
+ *
+ */
+
+echo elgg_view_menu('footer', array('sort_by' => 'priority', 'class' => 'elgg-menu-hz'));
+
+$powered = array(
+	//'tls',
+	'rss',
+	'openid',
+	'atom',
+	'pubsub',
+	'foaf',
+	'gpg',
+	//'rdf',
+	//'oauth',
+	//'omb',
+	//'listserv',
+	//'xmpp',
+	'activitystreams',
+);
+
+echo '<div class="mts clearfloat right">';
+foreach($powered as $tool){
+	$url = elgg_get_site_url() . "mod/powered/graphics/$tool-powered.png";
+	echo elgg_view('output/url', array(
+		'href' => '',
+		'text' => "<img src=\"$url\" alt=\"Powered by $tool\" />",
+		'class' => '',
+	));
+}
+echo '</div>';
+	
+
 ?>
-       <br />
-        <div id="iconsfooter">
-                 <img src="<?php echo $vars['url']; ?>mod/powered/graphics/tsl-powered.png" border="0" />
-		 <img src="<?php echo $vars['url']; ?>mod/powered/graphics/rss-powered.png" border="0" />
-		 <img src="<?php echo $vars['url']; ?>mod/powered/graphics/openid-powered.png" border="0" />
-		 <img src="<?php echo $vars['url']; ?>mod/powered/graphics/atom-powered.png" border="0" />
-		 <img src="<?php echo $vars['url']; ?>mod/powered/graphics/pubsub-powered.png" border="0" />
-		 <img src="<?php echo $vars['url']; ?>mod/powered/graphics/foaf-powered.png" border="0" />
-	         <img src="<?php echo $vars['url']; ?>mod/powered/graphics/gpg-powered.png" border="0" />
-		<!-- <img src="<?php echo $vars['url']; ?>mod/powered/graphics/rdf-powered.png" border="0" />-->
-  		<!-- <img src="<?php echo $vars['url']; ?>mod/powered/graphics/oauth-powered.png" border="0" />-->
-		<!-- <img src="<?php echo $vars['url']; ?>mod/powered/graphics/omb-powered.png" border="0" />-->
-		<!-- <img src="<?php echo $vars['url']; ?>mod/powered/graphics/listserv-powered.png" border="0" />-->
-  		 <img src="<?php echo $vars['url']; ?>mod/powered/graphics/xmmp-powered.png" border="0" />
-		 <img src="<?php echo $vars['url']; ?>mod/powered/graphics/activitystreams-powered.png" border="0" />
-        </div>
-       <!--<br />
-        <center>
-                 <img src="<?php echo $vars['url']; ?>mod/powered/graphics/bigbro.gif" border="0" />
-        </center>-->
+      
