@@ -11,7 +11,7 @@ elgg_register_event_handler('init', 'system', 'powered_init');
  * Initialise the powered tool
  */
 function powered_init(){
-	elgg_extend_view('css/elgg','powered/css');
+	
 }
 
 
