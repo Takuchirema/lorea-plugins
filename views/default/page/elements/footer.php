@@ -25,7 +25,7 @@ $powered = array(
 	'activitystreams',
 );
 
-echo '<div class="mts clearfloat right">';
+echo '<div class="mts clearfloat float-alt">';
 foreach($powered as $tool){
 	$url = elgg_get_site_url() . "mod/powered/graphics/$tool-powered.png";
 	echo elgg_view('output/url', array(
