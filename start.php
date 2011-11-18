@@ -11,6 +11,8 @@ elgg_register_event_handler('init', 'system', 'powered_init');
  * Initialise the powered tool
  */
 function powered_init(){
+	// Extend CSS
+	elgg_extend_view('css/elgg', 'powered/css');
 	
 	// Register some powered tools to display in footer menu
 	elgg_register_plugin_hook_handler('register', 'menu:powered', 'powered_menu');
