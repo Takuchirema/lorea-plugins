@@ -63,9 +63,11 @@ function group_alias_page_handler($page) {
 	$group = get_group_from_group_alias($page[0]);
 	
 	if($group && !isset($page[1])){
-			groups_page_handler(array('profile', $group->guid));
+		groups_page_handler(array('profile', $group->guid));
+		
 	} elseif($group && isset($page[1])) {
-			//TODO: tool handler
+		forward("$page[1]/group/$group->guid");
+		
 	} else {
 		groups_page_handler($page);
 	}
