@@ -1,0 +1,81 @@
+<?php
+/**
+ * Elgg Group Alias
+ *
+ * @package ElggGroupAlias
+ */
+
+elgg_register_event_handler('init', 'system', 'group_alias_init');
+
+/**
+ * Initialize the group alias plugin.
+ *
+ */
+function group_alias_init() {
+
+	// Register a page handler, so we can have nice URLs
+	elgg_register_page_handler('g', 'group_alias_page_handler');
+	
+	// Override URL handlers for groups
+	elgg_register_entity_url_handler('group', 'all', 'group_alias_url');
+
+	// Override some actions
+	$action_base = elgg_get_plugins_path() . 'groups/actions/groups';
+	//elgg_register_action("groups/edit", "$action_base/edit.php");
+
+	// Extend the main css view
+	elgg_extend_view('css/elgg', 'group_alias/css');
+	
+}
+
+function get_group_from_group_alias($alias){
+	$g = elgg_get_entities_from_metadata(array(
+		'type' => 'group',
+		'metadata_name' => 'alias',
+		'metadata_value' => $alias,
+		'limit' => 1,
+	));
+	return $g[0];
+}
+
+/**
+ * Dispatcher for group alias.
+ * URLs take the form of
+ *  All groups:       g/
+ *  Group profile:    g/<alias>
+ *  Group Tools:      g/<alias>/<handler> => <handler>/group/<guid>
+ *
+ * @param array $page
+ * @return bool
+ */
+function group_alias_page_handler($page) {
+	
+	elgg_set_context('groups');
+
+	if (!isset($page[0])) {
+		groups_page_handler(array('all'), 'groups');
+		return true;
+	}
+	
+	$group = get_group_from_group_alias($page[0]);
+	
+	if($group && !isset($page[1])){
+			groups_page_handler(array('profile', $group->guid));
+	} elseif($group && isset($page[1])) {
+			//TODO: tool handler
+	} else {
+		groups_page_handler($page);
+	}
+	
+	return true;
+}
+
+/**
+ * Override the group url
+ * 
+ * @param ElggObject $group Group object
+ * @return string
+ */
+function group_alias_url($group) {
+	return "g/$group->alias";
+}
