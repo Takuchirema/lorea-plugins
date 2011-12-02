@@ -18,6 +18,9 @@ function group_alias_init() {
 	
 	// Override URL handlers for groups
 	elgg_register_entity_url_handler('group', 'all', 'group_alias_url');
+	
+	// Add alias field
+	elgg_register_plugin_hook_handler('profile:fields', 'group', 'group_alias_field_setup');
 
 	// Override some actions
 	$action_base = elgg_get_plugins_path() . 'groups/actions/groups';
@@ -70,6 +73,10 @@ function group_alias_page_handler($page) {
 	return true;
 }
 
+function group_alias_field_setup($hook, $type, $return, $params) {
+	return array_merge(array('alias' => 'text'), $return);
+}
+
 /**
  * Override the group url
  * 
@@ -77,5 +84,8 @@ function group_alias_page_handler($page) {
  * @return string
  */
 function group_alias_url($group) {
+	if(!$group->alias){
+		return groups_url($group);
+	}
 	return "g/$group->alias";
 }
