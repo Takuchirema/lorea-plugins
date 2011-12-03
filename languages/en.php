@@ -11,6 +11,8 @@ $english = array(
 	 * Menu items and titles
 	 */
 	'groups:alias' => "Group alias",
+	'groups:alias:invalid' => "There are invalid chars",
+	'groups:alias:already_token' => "This group alias is already token",
 
 );
 
