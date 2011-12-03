@@ -23,11 +23,12 @@ function group_alias_init() {
 	elgg_register_plugin_hook_handler('profile:fields', 'group', 'group_alias_field_setup');
 
 	// Override some actions
-	$action_base = elgg_get_plugins_path() . 'groups/actions/groups';
-	//elgg_register_action("groups/edit", "$action_base/edit.php");
+	$action_base = elgg_get_plugins_path() . 'group_alias/actions/groups';
+	elgg_register_action("groups/edit", "$action_base/edit.php");
 
 	// Extend the main css view
 	elgg_extend_view('css/elgg', 'group_alias/css');
+	elgg_extend_view('js/elgg', 'group_alias/js');
 	
 }
 
