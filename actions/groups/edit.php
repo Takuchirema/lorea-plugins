@@ -31,16 +31,18 @@ foreach ($CONFIG->group as $shortname => $valuetype) {
 	}
 	
 	if ($shortname == 'alias') {
-		try {
-			validate_username($input[$shortname]);
-			if(!get_input('group_guid') && get_group_from_group_alias($input[$shortname])) {
-				throw new Exception(elgg_echo('groups:alias:already_token'));
-			} elseif(get_input('group_guid')) {
-				unset($input[$shortname]);
+		if(!get_input('group_guid')) {
+			try {
+				validate_username($input[$shortname]);
+				if(!get_input('group_guid') && get_group_from_group_alias($input[$shortname])) {
+					throw new Exception(elgg_echo('groups:alias:already_token'));
+				}
+			} catch(Exception $e) {
+				register_error($e->getMessage());
+				forward(REFERER);
 			}
-		} catch(Exception $e) {
-			register_error($e->getMessage());
-			forward(REFERER);
+		} else {
+			unset($input[$shortname]);
 		}
 	}
 }
