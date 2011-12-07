@@ -10,6 +10,9 @@ elgg_register_event_handler('init','system','suicide_init');
  * Initialize suicide plugin
  */
 function suicide_init() {
+	
+	elgg_register_library('elgg:suicide', elgg_get_plugins_path().'suicide/lib/suicide.php');
+	
 	// add in CSS for suicide
 	elgg_extend_view('css/elgg', 'suicide/css');
 

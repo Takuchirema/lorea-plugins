@@ -27,6 +27,6 @@ if ($annotation_id != 2010) {
 	
 	echo elgg_view('river/elements/layout', array(
 		'item' => $vars['item'],
-		'message' => elgg_echo($excerpt, array($text[0])),
+		'message' => elgg_echo($excerpt, array($name)),
 	));
 }
