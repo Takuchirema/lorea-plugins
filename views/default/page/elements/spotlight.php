@@ -7,16 +7,16 @@ echo '<div class="spotlight-column">';
 echo elgg_view('page/elements/spotlight/module', array(
 	'title' => 'Notícies',
 	'items' => array(
-		0 => 'Noves eines',
+		'https://n-1.cc/pg/pages/view/9385/' => 'Noves eines',
 	),
 ));
 
 echo elgg_view('page/elements/spotlight/module', array(
 	'title' => 'Lorea',
 	'items' => array(
-		0 => 'Pàgina d\'inici',
-		1 => 'Grup de treball',
-		2 => 'Donacions',
+		'https://lorea.org/' => 'Pàgina d\'inici',
+		'https://n-1.cc/pg/groups/7826/lorea/' => 'Grup de treball',
+		'https://n-1.cc/pg/pages/view/14884/' => 'Donacions',
 	),
 ));
 
@@ -25,16 +25,16 @@ echo '</div><div class="spotlight-column">';
 echo elgg_view('page/elements/spotlight/module', array(
 	'title' => 'Contacte',
 	'items' => array(
-		0 => 'Llista de correu',
+		'https://lists.rhizomatik.net/listinfo/mycelia-community' => 'Llista de correu',
 	),
 ));
 
 echo elgg_view('page/elements/spotlight/module', array(
 	'title' => 'Ajuda',
 	'items' => array(
-		0 => 'FAQ/Contacte',
-		1 => 'Com fer',
-		2 => 'Grup d\'ajuda',
+		'https://n-1.cc/pg/faq/' => 'FAQ/Contacte',
+		'https://n-1.cc/pg/dokuwiki/9394' => 'Com fer',
+		'https://n-1.cc/pg/groups/9394/help/' => 'Grup d\'ajuda',
 	),
 ));
 
@@ -43,10 +43,10 @@ echo '</div><div class="spotlight-column">';
 echo elgg_view('page/elements/spotlight/module', array(
 	'title' => 'Desenvolupament',
 	'items' => array(
-		0 => 'Caçadors de bugs',
-		1 => 'Tastaolletes',
-		2 => 'Xarxa de desenvolupament',
-		3 => 'Repositori',
+		'https://n-1.cc/pg/groups/6217/bughunting/' => 'Caçadors de bugs',
+		'https://n-1.cc/pg/groups/5241/testers-de-la-red-social/' => 'Tastaolletes',
+		'https://dev.lorea.org/' => 'Xarxa de desenvolupament',
+		'https://github.com/lorea/'=> 'Repositori',
 		
 	),
 ));
@@ -56,13 +56,13 @@ echo '</div><div class="spotlight-column">';
 echo elgg_view('page/elements/spotlight/module', array(
 	'title' => 'Estadístiques',
 	'items' => array(
-		0 => 'membres',
-		1 => 'membres actius',
-		2 => 'grups',
-		3 => 'pàgines',
-		4 => 'blocs',
-		5 => 'fitxers',
-		6 => 'fotos',
+		'members' => 'membres',
+		'members/online' => 'membres actius',
+		'groups/all' => 'grups',
+		'pages/all' => 'pàgines',
+		'blog/all' => 'blocs',
+		'file/all' => 'fitxers',
+		'tidypics/all' => 'fotos',
 	),
 ));
 

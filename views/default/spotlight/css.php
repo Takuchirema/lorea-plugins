@@ -13,3 +13,7 @@
 	margin-bottom: 2em;
 	padding-right: 8em;
 }
+
+.spotlight li {
+	list-style: square inside none;
+}
