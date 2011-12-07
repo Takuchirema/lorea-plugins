@@ -12,7 +12,8 @@ $english = array(
 	"suicide:normal" => '%s has commited digital suicide. Rest In Bits.',
 	"suicide:popular" => '%s has commited digital suicide, she will be missed.',
 	"suicide:respected" => '%s has commited digital suicide, she was a leader.',
-	"suicide:godlike" => '%s has commited digital suicide. Why you let us?.'
+	"suicide:godlike" => '%s has commited digital suicide. Why you let us?.',
+	"river:suicide:site:default" => 'Necrology',
 );
 
 add_translation("en", $english);

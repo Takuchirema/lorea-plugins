@@ -15,4 +15,6 @@ function suicide_init() {
 
 	// extend view for edit profile suicide button
 	elgg_extend_view('forms/profile/edit/foot', 'forms/suicide/button');
+	
+	elgg_register_action('suicide/suicide', elgg_get_plugins_path().'suicide/actions/suicide/suicide.php');
 }
