@@ -2,8 +2,6 @@
 
 function suicide_find_inherator($object) {
 	
-	elgg_load_library('elgg:group_operators');
-	
 	$owner_guid     = $object->getOwnerGUID();
 	$container_guid = $object->getContainerGUID();
 	$container      = get_entity($container_guid);
@@ -21,9 +19,11 @@ function suicide_find_inherator($object) {
 	// If the owner is also the owner of the container
 	if($owner_guid == $container->owner_guid){
 		// We'll find an operator
-		$operators = get_group_operators($container);
-		unset($operators[$owner_guid]);
-		
+		if(elgg_is_active_plugin('group_operators')) {
+			elgg_load_library('elgg:group_operators');
+			$operators = get_group_operators($container);
+			unset($operators[$owner_guid]);
+		}
 		if(!empty($operators)) {
 			return $operators[0]->guid;
 		} else {

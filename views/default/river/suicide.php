@@ -24,9 +24,18 @@ if ($annotation_id != 2010) {
 	}else{
 		$excerpt = "suicide:godlike";
 	}
+
+	$summary = elgg_echo('suicide:suicide', array($name)) . elgg_echo($excerpt);
+	$timestamp = elgg_get_friendly_time($annotation->time_created);
 	
-	echo elgg_view('river/elements/layout', array(
-		'item' => $vars['item'],
-		'message' => elgg_echo($excerpt, array($name)),
+	$icon = elgg_get_site_url()."mod/suicide/graphics/suicide.png";
+	$icon = "<img src=\"$icon\" width=\"40\" />";
+	$body = "<div class=\"elgg-river-summary\">$summary <span class=\"elgg-river-timestamp\">$timestamp</span></div>";
+	
+	echo elgg_view('page/components/image_block', array(
+		'image' => $icon,
+		'body' => $body,
+		'class' => 'elgg-river-item',
 	));
+
 }

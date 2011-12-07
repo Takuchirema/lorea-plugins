@@ -34,7 +34,7 @@ $friends = elgg_get_entities_from_relationship(array(
 $annotation_id = create_annotation(elgg_get_config('site_guid'), 'suicide', $me->name.",".$friends, 'text', elgg_get_config('site_guid'), get_default_access($me));
 add_to_river('river/suicide', 'suicide', elgg_get_config('site_guid'), elgg_get_config('site_guid'), ACCESS_LOGGED_IN, 0, $annotation_id);
 
-if (true/*$me->delete()*/) {
+if ($me->delete()) {
 	system_message(elgg_echo('suicide:success'));
 } else {
 	register_error(elgg_echo('suicide:fail'));
