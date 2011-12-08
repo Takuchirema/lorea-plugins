@@ -2,7 +2,7 @@
 	SPOTLIGHT
 *************************************** */
 .spotlight {
-	
+	margin-top: 6em;
 }
 
 .spotlight-column {
