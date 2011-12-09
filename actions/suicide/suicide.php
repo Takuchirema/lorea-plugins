@@ -7,7 +7,12 @@
 
 elgg_load_library('elgg:suicide');
 
-$me = elgg_get_logged_in_user_entity();
+$me = get_entity(sanitize_int(get_input('guid')));
+
+if(!$me) {
+	register_error(elgg_echo('suicide:fail'));
+	forward(REFERER);
+}
 
 $belongings = elgg_get_entities(array(
 	'owner_guid' => $me->guid,
