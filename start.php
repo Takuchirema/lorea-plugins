@@ -49,12 +49,19 @@ function microthemes_page_handler($page) {
 		case 'css':
 			include("$base_dir/css.php");
 			break;
+		case 'add':
+			include("$base_dir/add.php");
+			break;
 		case 'edit':
 			set_input('guid', $page[1]);
 			include("$base_dir/edit.php");
 			break;
-		case 'view':
-			set_input('assign_to', $page[1]);
+		case 'owner':
+			elgg_set_page_owner_entity(get_user_by_username($page[1]));
+			include("$base_dir/view.php");
+			break;
+		case 'group':
+			elgg_set_page_owner_guid($page[1]);
 			include("$base_dir/view.php");
 			break;
 		default:
@@ -68,15 +75,15 @@ function microthemes_pagesetup() {
 	if ((elgg_instanceof($owner, 'user') || elgg_instanceof($owner, 'group'))
 														&& $owner->canEdit()) {
 		elgg_register_menu_item('page', array(
-			'name' => 'choose_profile_microtheme',
-			'href' => "microthemes/view/" . $owner->username,
+			'name' => 'profile_microtheme',
+			'href' => "microthemes/owner/" . $owner->username,
 			'text' => elgg_echo('microthemes:profile:edit'),
 			'contexts' => array('profile_edit'),
 		));
 		elgg_register_menu_item('page', array(
-			'name' => 'microthemes',
+			'name' => 'group_microtheme',
 			'text' => elgg_echo('microthemes:group:edit'),
-			'href' => "microthemes/view/" . $owner->guid,
+			'href' => "microthemes/group/" . $owner->guid,
 			'context' => array('groups'),
 		));
 	}
@@ -85,7 +92,7 @@ function microthemes_pagesetup() {
 function microthemes_user_hover_menu($hook, $type, $return, $params) {
 	$user = $params['entity'];
 	if (elgg_is_logged_in() && elgg_get_logged_in_user_guid() == $user->guid) {
-		$url = "microthemes/$user->username/edit";
+		$url = "microthemes/owner/$user->username";
 		$item = new ElggMenuItem('microthemes:profile:edit', elgg_echo('microthemes:profile:edit'), $url);
 		$item->setSection('action');
 		$return[] = $item;
