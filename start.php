@@ -78,3 +78,7 @@ function gifts_unregister_gift($name) {
 	global $CONFIG;
 	unset($CONFIG->gifts[$name]);
 }
+
+function gifts_get_registered_gifts() {
+	return elgg_get_config('gifts');
+}
