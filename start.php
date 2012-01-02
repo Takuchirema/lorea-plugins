@@ -44,7 +44,8 @@ function gifts_init() {
 /**
  * Dispatches gifts pages.
  * URLs take the form of
- *  User's gifts:    gifts/<username>
+ *  User's gifts:    gifts/view/<username>
+ *  Send a gift:     gifts/send/<username>
  *
  * @param array $page
  * @return bool
@@ -54,14 +55,51 @@ function gifts_page_handler($page) {
 	if (!isset($page[0])) {
 		return false;
 	}
-
-	if($user = get_user_by_username($page[0])) {
-		set_input('user', $user);
-		// TODO page display
-		return true;
-	} else {
+	
+	$user = get_user_by_username($page[1]);
+	
+	if(!$user) {
 		return false;
 	}
+
+	if($page[0] == 'view') {
+		$params = array(
+			'title' => elgg_echo('gifts:view'),
+			'content' => elgg_view('gifts/view', array('owner' => $user)),
+			'filter' => '',
+		);
+	} else {
+		$params = array(
+			'title' => elgg_echo('gifts:send'),
+			'content' => elgg_view_form('gifts/send', array('receiver' => $user)),
+			'filter' => '',
+		);
+	}
+	
+	$body = elgg_view_layout('content', $params);
+	echo elgg_view_page($params['title'], $body);
+	return true;
+}
+
+/**
+ * Add a menu item to an ownerblock
+ */
+function gifts_owner_block_menu($hook, $type, $return, $params) {
+	if (elgg_instanceof($params['entity'], 'user')) {
+		if($params['entity']->canEdit()) {			
+			$url = "gifts/view/{$params['entity']->username}";
+			$item = new ElggMenuItem('gifts', elgg_echo('gifts'), $url);
+			$return[] = $item;
+		}
+		if(elgg_is_logged_in() && $params['entity']->isFriendsWith(elgg_get_logged_in_user_guid())) {
+			$url = "gifts/send/{$params['entity']->username}";
+			$item = new ElggMenuItem('gifts:send', elgg_echo('gifts:send'), $url);
+			$item->setSection('action');
+			$return[] = $item;
+		}
+	}
+
+	return $return;
 }
 
 function gifts_register_gift($name, $img) {
