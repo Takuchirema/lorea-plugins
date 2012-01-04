@@ -18,9 +18,11 @@ function gifts_init() {
 	$url_base = elgg_get_site_url() . 'mod/gifts/graphics';
 	gifts_register_gift('banana', "$url_base/banana.png");
 	gifts_register_gift('flower', "$url_base/flower.png");
-	gifts_register_gift('crystal_ball', "$url_base/crystal_ball.png");
+	gifts_register_gift('coal_lorry', "$url_base/coal_lorry.png");
 	gifts_register_gift('badge', "$url_base/badge.png");
-	gifts_register_gift('organic_lettuce', "$url_base/organic_lettuce.png");
+	gifts_register_gift('seed', "$url_base/seed.png");
+	gifts_register_gift('heart', "$url_base/heart.png");
+	gifts_register_gift('organic_carrot', "$url_base/organic_carrot.png");
 	gifts_register_gift('molotov_cocktail', "$url_base/molotov_cocktail.png");
 
 	// Extend CSS
