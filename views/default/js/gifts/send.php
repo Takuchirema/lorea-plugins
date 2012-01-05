@@ -8,21 +8,21 @@
 elgg.provide('elgg.gifts');
 
 elgg.gifts.init = function() {
-	$('img.gift').mouseover(function(){
+	$('a.gift').mouseover(function(){
 		// If no a gift clicked, highlight gift
 		if($('#gifts_note input[name=gift]').val() == ""){
-			$('img.gift').stop().fadeTo(1000, 0.3);
+			$('a.gift').stop().fadeTo(1000, 0.3);
 			$(this).stop().fadeTo(1000, 1);
 		}
 	}).mouseout(function(){
 		// If no a gift clicked, unhighlight all gifts
 		if($('#gifts_note input[name=gift]').val() == ""){
-			$('img.gift').stop().fadeTo(1000, 1);
+			$('a.gift').stop().fadeTo(1000, 1);
 		}
 	}).click(function(){
 		
 		// Highlight clicked gift
-		$('img.gift').stop().fadeTo(1000, 0.3);
+		$('a.gift').stop().fadeTo(1000, 0.3);
 		$(this).stop().fadeTo(1000, 1);
 		
 		// Get gift and name

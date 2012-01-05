@@ -7,18 +7,31 @@
 
 $gifts = gifts_get_registered_gifts();
 $owner = elgg_get_page_owner_entity();
+$user  = elgg_get_logged_in_user_entity();
 
 elgg_load_js('elgg.gifts');
 
 echo '<ul class="elgg-gallery">';
 foreach ($gifts as $gift => $gift_img) {
 	$gift_name = elgg_echo("gifts:gift:$gift");
+	$give = elgg_echo("gifts:give", array(strtolower($gift_name), $owner->name));
+	$url = 'action/gifts/send/?'.http_build_query(array('owner' => $owner->guid, 'gift' => $gift));
+	$img = '<img src="'.$gift_img.'" alt="'.$gift_name.'" />';
+	
 	echo '<li class="elgg-item">';
-	echo elgg_view('output/url', array(
-		'title' => elgg_echo("gifts:give", array(strtolower($gift_name), $owner->name)),
-		'href' => false,
-		'text' => '<img id="gift-'.$gift.'" class="gift" src="'.$gift_img.'" alt="'.$gift_name.'" />',
-	));
+	if($owner->isFriendsWith($user->guid)) {
+		echo elgg_view('output/url', array(
+			'href' => $url,
+			'text' => $img,
+			'title' => $give,
+			'id' => "gift-$gift",
+			'class' => 'gift',
+			'is_trusted' => true,
+			'is_action' => true,
+		));
+	} else {
+		echo $img;
+	}
 	echo '</li>';
 }
 echo '</ul>';

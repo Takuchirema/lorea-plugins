@@ -20,6 +20,7 @@ $english = array(
 	'gifts:sent' => "You sent a gift to %s",
 	'gifts:sendfailed' => "Sorry, your gift was lost in the journey",
 	'gifts:yourself' => "Send a gift to yourself is not the attitude!",
+	'gifts:nofriends' => "You only can send gifts to your friends",
 	
 	/**
 	 * River
@@ -34,7 +35,7 @@ $english = array(
 	'gifts:gift:coal_lorry' => 'a coal lorry',
 	'gifts:gift:badge' => 'a badge',
 	'gifts:gift:seed' => 'a seed',
-	'gifts:gift:heart' => 'a heart',
+	'gifts:gift:heart' => 'your heart',
 	'gifts:gift:organic_carrot' => 'an organic carrot',
 	'gifts:gift:molotov_cocktail' => 'a Molotov cocktail',
 );
