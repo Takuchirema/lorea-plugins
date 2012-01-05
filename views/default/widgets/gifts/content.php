@@ -8,27 +8,21 @@
 $gifts = gifts_get_registered_gifts();
 $owner = elgg_get_page_owner_entity();
 
+elgg_load_js('elgg.gifts');
+
 echo '<ul class="elgg-gallery">';
-foreach ($gifts as $gift_name => $gift_img) {
-	$gift_name = elgg_echo("gifts:gift:$gift_name");
-	$give = elgg_echo("gifts:give", array($gift_name, $owner->name));
+foreach ($gifts as $gift => $gift_img) {
+	$gift_name = elgg_echo("gifts:gift:$gift");
 	echo '<li class="elgg-item">';
-	echo '<a title="'.$give.'" href=""><img class="gift" src="'.$gift_img.'" alt="'.$gift_name.'" /></a>';
-	echo '</li>';	
+	echo elgg_view('output/url', array(
+		'title' => elgg_echo("gifts:give", array(strtolower($gift_name), $owner->name)),
+		'href' => false,
+		'text' => '<img id="gift-'.$gift.'" class="gift" src="'.$gift_img.'" alt="'.$gift_name.'" />',
+	));
+	echo '</li>';
 }
 echo '</ul>';
-
-?>
-
-<script type ="text/javascript">
-
-$(function(){
-	$('img.gift').mouseover(function(){
-		$('img.gift').stop().fadeTo(1000, 0.3);
-		$(this).stop().fadeTo(1000, 1);
-	}).mouseout(function(){
-		$('img.gift').stop().fadeTo(1000, 1);
-	});
-});
-
-</script>
+echo elgg_view_form('gifts/send', array(
+	'id' => 'gifts_note',
+	'class' => 'mtm hidden',
+), array());

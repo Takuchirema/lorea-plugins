@@ -27,6 +27,11 @@ function gifts_init() {
 
 	// Extend CSS
 	elgg_extend_view('css/elgg', 'gifts/css');
+	
+	// register the gifts's JavaScript
+	$gifts_js = elgg_get_simplecache_url('js', 'gifts/send');
+	elgg_register_simplecache_view('js/gifts/send');
+	elgg_register_js('elgg.gifts', $gifts_js);
 
 	// Register a page handler, so we can have nice URLs
 	elgg_register_page_handler('gifts', 'gifts_page_handler');

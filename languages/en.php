@@ -12,6 +12,7 @@ $english = array(
 	 */
 	'gifts' => "Gifts",
 	'gifts:give' => "Give a %s to %s",
+	'gifts:enclose' => "Enclose a note with the %s",
 	
 	/**
 	 * Gift names
@@ -23,7 +24,7 @@ $english = array(
 	'gifts:gift:seed' => 'Seed',
 	'gifts:gift:heart' => 'Heart',
 	'gifts:gift:organic_carrot' => 'Organic carrot',
-	'gifts:gift:cocktail_molotov' => 'Cocktail Molotov',
+	'gifts:gift:molotov_cocktail' => 'Molotov cocktail',
 );
 
 add_translation("en", $english);
