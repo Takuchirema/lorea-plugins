@@ -32,6 +32,18 @@ foreach ($gifts as $gift => $gift_img) {
 	} else {
 		echo $img;
 	}
+	
+	$num = elgg_get_entities_from_metadata(array(
+		'type' => 'object',
+		'subtype' => 'gift',
+		'owner_guid' => $owner->guid,
+		'metadata_name' => 'gift_type',
+		'metadata_value' => $gift,
+		'count' => true,
+	));
+	
+	echo '<div style="font-size:1.5em">'.($num > 0 ? $num : '-').'</div>';
+	
 	echo '</li>';
 }
 echo '</ul>';
