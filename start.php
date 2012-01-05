@@ -4,6 +4,11 @@
  * 
  * This is a rewrite of the Gifts plugin written by Christian Heckelmann
  * for Elgg 1.5.
+ * 
+ * TODO:
+ *    * A page to view your gifts
+ *    * Abailability to upload own gifts
+ *    * Abailability to set the access for gifts
  *
  * @package ElggGifts
  */
@@ -34,13 +39,10 @@ function gifts_init() {
 	elgg_register_js('elgg.gifts', $gifts_js);
 
 	// Register a page handler, so we can have nice URLs
-	elgg_register_page_handler('gifts', 'gifts_page_handler');
+	//elgg_register_page_handler('gifts', 'gifts_page_handler');
 
 	// Add a new gifts widget
 	elgg_register_widget_type('gifts', elgg_echo("gifts"), elgg_echo("gifts:widget:description"));
-
-	// add a gifts link to owner blocks
-	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'gifts_owner_block_menu');
 
 	// Register actions
 	$action_path = elgg_get_plugins_path() . 'gifts/actions/gifts';
@@ -51,8 +53,7 @@ function gifts_init() {
 /**
  * Dispatches gifts pages.
  * URLs take the form of
- *  User's gifts:    gifts/view/<username>
- *  Send a gift:     gifts/send/<username>
+ *  User's gifts:    gifts/owner/<username>
  *
  * @param array $page
  * @return bool
@@ -68,45 +69,16 @@ function gifts_page_handler($page) {
 	if(!$user) {
 		return false;
 	}
-
-	if($page[0] == 'view') {
-		$params = array(
-			'title' => elgg_echo('gifts:view'),
-			'content' => elgg_view('gifts/view', array('owner' => $user)),
-			'filter' => '',
-		);
-	} else {
-		$params = array(
-			'title' => elgg_echo('gifts:send'),
-			'content' => elgg_view_form('gifts/send', array('receiver' => $user)),
-			'filter' => '',
-		);
-	}
+	
+	$params = array(
+		'title' => elgg_echo('gifts:view'),
+		'content' => elgg_view('gifts/view', array('owner' => $user)),
+		'filter' => '',
+	);
 	
 	$body = elgg_view_layout('content', $params);
 	echo elgg_view_page($params['title'], $body);
 	return true;
-}
-
-/**
- * Add a menu item to an ownerblock
- */
-function gifts_owner_block_menu($hook, $type, $return, $params) {
-	if (elgg_instanceof($params['entity'], 'user')) {
-		if($params['entity']->canEdit()) {			
-			$url = "gifts/view/{$params['entity']->username}";
-			$item = new ElggMenuItem('gifts', elgg_echo('gifts'), $url);
-			$return[] = $item;
-		}
-		if(elgg_is_logged_in() && $params['entity']->isFriendsWith(elgg_get_logged_in_user_guid())) {
-			$url = "gifts/send/{$params['entity']->username}";
-			$item = new ElggMenuItem('gifts:send', elgg_echo('gifts:send'), $url);
-			$item->setSection('action');
-			$return[] = $item;
-		}
-	}
-
-	return $return;
 }
 
 function gifts_register_gift($name, $img) {

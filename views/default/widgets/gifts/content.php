@@ -42,7 +42,7 @@ foreach ($gifts as $gift => $gift_img) {
 		'count' => true,
 	));
 	
-	echo '<div style="font-size:1.5em">'.($num > 0 ? $num : '-').'</div>';
+	echo '<div class="gift-count">'.($num > 0 ? $num : '-').'</div>';
 	
 	echo '</li>';
 }
