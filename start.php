@@ -44,7 +44,7 @@ function gifts_init() {
 
 	// Register actions
 	$action_path = elgg_get_plugins_path() . 'gifts/actions/gifts';
-	elgg_register_action("gift/send", "$action_path/send.php");
+	elgg_register_action("gifts/send", "$action_path/send.php");
 
 }
 

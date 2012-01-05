@@ -12,6 +12,10 @@ echo elgg_view('input/text', array(
 echo elgg_view('input/hidden', array(
 	'name' => 'gift',
 ));
+echo elgg_view('input/hidden', array(
+	'name' => 'owner',
+	'value' => elgg_get_page_owner_guid(),
+));
 echo elgg_view('input/submit', array(
 	'value' => elgg_echo('send'),
 	'class' => 'mts',
