@@ -74,19 +74,35 @@ function elggman_page_handler($page) {
 function elggman_notifications($event, $object_type, $object) {
 	if (elgg_instanceof($object, 'object', 'groupforumtopic')) {
 		$user  = $object->getOwnerEntity();
-		$group = $object->getContainerGUID();
+		$group = $object->getContainerEntity();
 		
 		$from = elggman_get_user_email($user, $group);
+		$mailing_list_email = elggman_get_group_mailinglist($group);
+		if(!$mailing_list_email) {
+			return;
+		}
+		
 		$subject = $object->title;
 		
 		elgg_set_viewtype("email");
-		$message = elgg_view('output/longtext', array(
+		$message = elgg_view('page/elements/body', array(
 			'value' => $object->description,
-			'mailing_list' => $group,
 			'post_url' => $object->getURL(),
+			'mailing_list' => $group,
+			));
+			
+		$headers = elgg_view('page/elements/header', array(
+			'From' => $from,
+			'Sender' => $mailing_list_email,
+			'Reply-To' => $mailing_list_email,
+			'List-Id' => $mailing_list_email,
+			'List-Post' => "<mailto:{$mailing_list_email}>",
+			'Precedence' => "list",
+			'Message-Id' => "{$object->guid}.{$mailing_list_email}",
+			'In-Reply-To' => $object->parent_guid ? "{$object->parent_guid}.{$mailing_list_email}" : false,
 			));
 		
-		var_dump($message);exit();
+		var_dump($headers);exit();
 		foreach (elggman_get_subscriptors($group->guid) as $subscriptor) {
 			$to = $subscriptor->email;
 			elgg_send_email($from, $to, $subject, $message);
