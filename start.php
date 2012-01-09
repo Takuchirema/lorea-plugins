@@ -78,8 +78,15 @@ function elggman_notifications($event, $object_type, $object) {
 		
 		$from = elggman_get_user_email($user, $group);
 		$subject = $object->title;
-		$message = elgg_view('output/plaintext', array('value' => $object->description));
 		
+		elgg_set_viewtype("email");
+		$message = elgg_view('output/longtext', array(
+			'value' => $object->description,
+			'mailing_list' => $group,
+			'post_url' => $object->getURL(),
+			));
+		
+		var_dump($message);exit();
 		foreach (elggman_get_subscriptors($group->guid) as $subscriptor) {
 			$to = $subscriptor->email;
 			elgg_send_email($from, $to, $subject, $message);
@@ -97,6 +104,7 @@ function elggman_get_subscriptors($group_guid) {
 				'relationship' => 'notifymailshot',
 				'relationship_guid' => $group_guid,
 				'inverse_relationship' => true,
+				'limit' => 0,
 				));
 }
 
