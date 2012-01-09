@@ -72,7 +72,9 @@ function elggman_page_handler($page) {
 }
 
 function elggman_notifications($event, $object_type, $object) {
-	if (elgg_instanceof($object, 'object', 'groupforumtopic')) {
+	if (elgg_instanceof($object, 'object', 'groupforumtopic')
+			|| elgg_instanceof($object, 'object', 'topicreply')) {
+		
 		$user  = $object->getOwnerEntity();
 		$group = $object->getContainerEntity();
 		
@@ -82,7 +84,15 @@ function elggman_notifications($event, $object_type, $object) {
 			return;
 		}
 		
-		$subject = $object->title;
+		elgg_load_library("elgg:threads");
+		$parent = threads_parent($object->guid);
+		$top = threads_top($object->guid);
+		
+		$subject = "[$group->name] $top->title";
+		
+		if ($parent) {
+			$subject = "Re: $subject";
+		}
 		
 		elgg_set_viewtype("email");
 		$message = elgg_view('page/elements/body', array(
@@ -99,7 +109,7 @@ function elggman_notifications($event, $object_type, $object) {
 			'List-Post' => "<mailto:{$mailing_list_email}>",
 			'Precedence' => "list",
 			'Message-Id' => "{$object->guid}.{$mailing_list_email}",
-			'In-Reply-To' => $object->parent_guid ? "{$object->parent_guid}.{$mailing_list_email}" : false,
+			'In-Reply-To' => $parent ? "{$parent->guid}.{$mailing_list_email}" : false,
 			));
 		
 		var_dump($headers);exit();
