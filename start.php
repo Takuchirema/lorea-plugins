@@ -20,7 +20,7 @@ function online_init() {
 function online_find_active_friends($hook, $type, $return, $params) {
 	
 	if (elgg_is_admin_logged_in()) {
-		//return $return;
+		return $return;
 	}
 	
 	// Else, show only online friends
