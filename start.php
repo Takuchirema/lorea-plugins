@@ -12,4 +12,5 @@ elgg_register_event_handler('init', 'system', 'online_init');
 function online_init() {
 
 	elgg_extend_view('css/elgg', 'online/css');
+	elgg_extend_view('css/admin', 'online/css');
 }
