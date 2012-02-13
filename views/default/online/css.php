@@ -18,3 +18,7 @@
 	margin: 0;
 	position: absolute;
 }
+
+.elgg-icon-hover-menu {
+	z-index: 1;
+}
