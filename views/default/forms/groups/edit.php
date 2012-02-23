@@ -5,8 +5,10 @@
  * @package ElggGroups
  */
 
+// If something went wrong, we take all values except alias
 if (elgg_is_sticky_form('groups')) {
 	$sticky_values = elgg_get_sticky_values('groups');
+	unset($sticky_values['alias']);
 	elgg_clear_sticky_form('groups');
 }
 
