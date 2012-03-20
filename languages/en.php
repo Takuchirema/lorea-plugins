@@ -12,7 +12,7 @@ $english = array(
 	 */
 	'groups:alias' => "Group alias",
 	'groups:alias:invalid' => "There are invalid chars",
-	'groups:alias:already_token' => "This group alias is already token",
+	'groups:alias:already_taken' => "This group alias is already pointing to another group",
 
 );
 

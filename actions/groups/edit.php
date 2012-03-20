@@ -37,14 +37,12 @@ foreach ($CONFIG->group as $shortname => $valuetype) {
 			try {
 				validate_username($input[$shortname]);
 				if(!get_input('group_guid') && get_group_from_group_alias($input[$shortname])) {
-					throw new Exception(elgg_echo('groups:alias:already_token'));
+					throw new Exception(elgg_echo('groups:alias:already_taken'));
 				}
 			} catch(Exception $e) {
 				register_error($e->getMessage());
 				forward(REFERER);
 			}
-		} else {
-			unset($input[$shortname]);
 		}
 	}
 }
@@ -62,6 +60,11 @@ if (($group_guid) && (!$group->canEdit())) {
 	register_error(elgg_echo("groups:cantedit"));
 
 	forward(REFERER);
+}
+
+// Keep existing alias unless explicit update
+if (!empty($group->alias) || empty($input['alias']) || $input['alias'] == $group->alias) {
+	unset($input['alias']);
 }
 
 // Assume we can edit or this is a new group
