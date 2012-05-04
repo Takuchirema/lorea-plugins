@@ -45,8 +45,8 @@ echo elgg_view('page/elements/spotlight/module', array(
 	'items' => array(
 		'https://n-1.cc/pg/groups/6217/bughunting/' => elgg_echo('dev:bughunting'),
 		'https://n-1.cc/pg/groups/5241/testers-de-la-red-social/' => elgg_echo('dev:testers'),
-		'https://dev.lorea.org/' => elgg_echo('dev:network'),
-		'https://github.com/lorea/'=> elgg_echo('dev:repo'),
+		'https://dev18.lorea.org/' => elgg_echo('dev:network'),
+		'https://gitorious.org/lorea/'=> elgg_echo('dev:repo'),
 		
 	),
 ));
