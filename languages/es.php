@@ -1,31 +1,21 @@
 <?php
-/**
-         * Elgg spotlight lorea
-         * 
-         * @package
-         * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-         * @author lorea
-         * @copyright lorea
-         * @link http://lorea.cc
-         */
+$es = array (
+  'relatedgroups' => 'Grupos relacionados',
+  'relatedgroups:more' => 'Ver todos los grupos relacionados',
+  'relatedgroups:owner' => 'Grupos relacionados a %s',
+  'relatedgroups:none' => 'No hay grupos relacionados aún.',
+  'relatedgroups:group' => 'Grupos relacionados del grupo',
+  'relatedgroups:add' => 'Gestiona grupos relacionados',
+  'relatedgroups:add:label' => 'Escribe el nombre del grupo',
+  'relatedgroups:addurl:label' => 'Copia la URL del grupo aquí',
+  'relatedgroups:add:button' => 'Relaciona',
+  'relatedgroups:dontwork' => '¿No funciona?',
+  'add' => 'Añade',
+  'relatedgroups:in_frontpage' => 'Mostrar los grupos relacionados en la pagina del grupo',
+  'relatedgroups:unrelated' => 'Grupos no relacionados',
+  'relatedgroups:nopermissons' => 'No tienes permisos para modificar los grupos relacionados',
+  'relatedgroups:add:error' => 'Se ha producido un error. Seguro que has introducido bien el nombre del grupo?',
+);
 
-	$spanish = array(
-                    "relatedgroups:in_frontpage" => 'Mostrar los grupos relacionados en la pagina del grupo',
-                        "relatedgroups:owned" => 'Groupos relacionados con %s',
-                    "relatedgroups:addrelated" => 'Gestionar grupos relacionados',
-                    "relatedgroups:related" => 'Grupos relacionados',
-		    "relatedgroups:autocomplete" => 'Relacionar el grupo',
-                    "relatedgroups:unrelated" => 'Grupos no relacionados',
-                    "relatedgroups:related:instructions" => 'haz click sobre un icono para hacer el grupo no relacionado',
-		    "relatedgroups:autocomplete:instructions" => 'introduce el nombre del grupo y haz click en "añadir" para hacer el grupo relacionado',
-                    "add" => "Añade",
-                    "relatedgroups:unrelated:instructions" => 'haz click sobre un icono para hacer el grupo relacionado',
-		    "relatedgroups:unrelated:showall" => 'Mostrar todos los grupos',
-                    "relatedgroups:nopermissons" => 'No tienes permisos para modificar los grupos relacionados',
-	            "relatedgroups:add:error" => 'Se ha producido un error. Seguro que has introducido bien el nombre del grupo?',
+add_translation("es", $es);
 
-	);
-	
-	add_translation("es",$spanish);
-
-?>
