@@ -54,6 +54,10 @@ if(elgg_instanceof($container, 'group')) {
 	echo "<div class=\"elgg-subtext\">$container_link</div>";
 }
 echo "<div class=\"elgg-subtext\">$subtitle</div>";
+
+$subgroups = elgg_view('subgroups/subgroups_icons', array('entity' => $entity));
+echo "<div class=\"subgroups-icons\">$subgroups</div>";
+
 echo $tags;
 
 echo elgg_view('object/summary/extend', $vars);
