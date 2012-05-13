@@ -33,6 +33,9 @@ function subgroups_init() {
 	// Register pagesetup event handler	
 	elgg_register_event_handler('pagesetup', 'system', 'subgroups_setup_sidebar_menus');
 	
+	// Register unsetter container_guid handler
+	elgg_register_event_handler('update', 'group', 'subgroups_unset_group_container');
+	
 	// Register an unrelate link to entity menu (max priority to run the last)
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'subgroups_menu_setup', 9999);
 
@@ -127,4 +130,20 @@ function subgroups_menu_setup($hook, $type, $return, $params){
 		$return[] = ElggMenuItem::factory($options);
 	}
 	return $return;
+}
+
+/**
+ * Unset container guid when a group is created. Triggered on group save.
+ * Using SQL since event is triggered on save() function and we can't do
+ * call the function again.
+ *
+ */
+function subgroups_unset_group_container($event, $object_type, $entity) {
+	global $CONFIG;
+	if (!elgg_instanceof($entity->getContainerEntity(), 'group')) {
+		$query = "UPDATE {$CONFIG->dbprefix}entities set"
+			. " container_guid=0 where guid={$entity->guid}";
+		return !!(update_data($query));
+	}
+	return true;
 }
