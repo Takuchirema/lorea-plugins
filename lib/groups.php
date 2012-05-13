@@ -20,6 +20,7 @@ function groups_handle_all_page() {
 		case 'popular':
 			$content = elgg_list_entities_from_relationship_count(array(
 				'type' => 'group',
+				'container_guid' => 0,
 				'relationship' => 'member',
 				'inverse_relationship' => false,
 				'full_view' => false,
@@ -44,6 +45,7 @@ function groups_handle_all_page() {
 		default:
 			$content = elgg_list_entities(array(
 				'type' => 'group',
+				'container_guid' => 0,
 				'full_view' => false,
 			));
 			if (!$content) {
