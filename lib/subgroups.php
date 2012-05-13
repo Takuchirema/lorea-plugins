@@ -17,7 +17,7 @@ function get_subgroups($group, $options = array()){
 		
 		$options['type'] = 'group';
 		$options['container_guid'] = $group->guid;
-		return elgg_get_entities(array($options));
+		return elgg_get_entities($options);
 		
 	} else {
 		return false;

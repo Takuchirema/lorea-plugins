@@ -128,5 +128,3 @@ function subgroups_menu_setup($hook, $type, $return, $params){
 	}
 	return $return;
 }
-
-?>
