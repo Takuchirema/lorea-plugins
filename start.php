@@ -19,6 +19,8 @@ elgg_register_event_handler('init', 'system', 'subgroups_init');
 function subgroups_init() {
 	// register a library of helper functions
 	elgg_register_library('elgg:subgroups', elgg_get_plugins_path() . 'subgroups/lib/subgroups.php');
+	// override groups library
+	elgg_register_library('elgg:groups', elgg_get_plugins_path() . 'subgroups/lib/groups.php');
 
 	// Register actions
 	$actions_path = elgg_get_plugins_path() . 'subgroups/actions/subgroups';
