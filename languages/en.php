@@ -14,6 +14,8 @@ $english = array(
 	"subgroups:group" => 'Group subgroups',
 	"subgroups:in_frontpage" => 'Show subgroups on group page',
 	"subgroups:add" => 'Manage subgroups',
+	"subgroups:new" => 'New subgroup',
+	"subgroups:new:of" => 'New subgroup of &laquo;%s&raquo;',
 	"subgroups:add:label" => "Write the group's name",
 	"subgroups:addurl:label" => "Copy the group URL here",
 	"subgroups:add:button" => 'Add as subgroup',
@@ -24,5 +26,4 @@ $english = array(
 	"subgroups:add:error" => 'There are an error. Did you write correctly the group\'s name?',
 );
 
-add_translation("en",$english);
-	
+add_translation("en", $english);
