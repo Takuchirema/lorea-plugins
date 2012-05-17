@@ -20,6 +20,8 @@ elgg_push_breadcrumb($page_owner->name, $page_owner->getURL());
 $title = elgg_echo('subgroups:add');
 elgg_push_breadcrumb($title);
 
+elgg_register_title_button('subgroups', 'new');
+
 $content = list_subgroups($page_owner);
 
 $form_vars = array();

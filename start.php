@@ -6,8 +6,8 @@
  * 
  * TODO:
  *       * ElggSubgroup class with getMetaContainerGUID() ?
- *       * Subgroups should disapear from general group listing, like subpages
  *       * Subgroup graphs
+ *       * Toggle 'add existing group' form with a button
  * 
  */
 
@@ -33,6 +33,9 @@ function subgroups_init() {
 	
 	// Register an unrelate link to entity menu (max priority to run the last)
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'subgroups_menu_setup', 9999);
+	
+	// Extend group fields
+	elgg_register_plugin_hook_handler('profile:fields', 'group', 'subgroups_add_container_field');
 
 	// Extending views
 	elgg_extend_view('groups/sidebar/members', 'groups/sidebar/subgroups', 300);
@@ -92,6 +95,31 @@ function subgroups_page_handler($page){
 			elgg_set_page_owner_guid($page[1]);
 			include($pages_path."/subgroups/owner.php");
 			break;
+		case 'new':
+			$group = new ElggGroup((int)$page[1]);
+		
+			if (!$group->guid) {
+				register_error(elgg_echo('error:default'));
+				return false;
+			}
+		
+			elgg_load_library('elgg:groups');
+			$title = elgg_echo('subgroups:new:of', array($group->name));
+			
+			elgg_push_breadcrumb(elgg_echo('groups'), "groups/all");
+			elgg_push_breadcrumb($group->name, $group->getURL());
+			elgg_push_breadcrumb(elgg_echo('subgroups:new'));
+			
+			elgg_set_page_owner_guid($group->guid);
+			
+			$body = elgg_view_layout('content', array(
+				'content' => elgg_view('groups/edit'),
+				'title' => $title,
+				'filter' => '',
+			));
+			echo elgg_view_page($title, $body);
+			
+			break;
 		default:
 			return false;
 	}
@@ -127,4 +155,7 @@ function subgroups_menu_setup($hook, $type, $return, $params){
 	return $return;
 }
 
-?>
+function subgroups_add_container_field($hook, $type, $return, $params) {
+	$return['container_guid'] = 'hidden';
+	return $return;
+}
