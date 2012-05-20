@@ -11,16 +11,16 @@ elgg_register_event_handler('init', 'system', 'audio_html5_init');
 function audio_html5_init() {
 	
 	// File plugin do not get OGG files as audio, because its mime type is application/ogg. This will solve this inconvenience.
-	elgg_register_plugin_hook_handler('file_simple_type', 'object', 'audio_html5_ogg_general_type');
+	elgg_register_plugin_hook_handler('file:simpletype', 'application/ogg', 'audio_html5_ogg_simpletype');
 	elgg_register_plugin_hook_handler('file:icon:url', 'override', 'audio_html5_ogg_icon_url_override');
 	
 	elgg_extend_view('css/elgg', 'audio_html5/css');
 	
 }
 
-function audio_html5_ogg_general_type($hook, $type, $return, $params) {
-	if($params['entity']->mimetype == 'application/ogg') {	
-		$return = "audio";
+function audio_html5_ogg_simpletype($hook, $type, $return, $params) {
+	if ($type == "application/ogg") {
+		return "audio";
 	}
 	return $return;
 }
