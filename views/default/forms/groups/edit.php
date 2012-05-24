@@ -141,7 +141,7 @@ if (isset($vars['entity'])) {
 if (elgg_get_page_owner_guid()) {
 	echo elgg_view('input/hidden', array(
 		'name' => 'container_guid',
-		'value' => $vars['entity']->getGUID() ?
+		'value' => isset($vars['entity']) ?
 										$vars['entity']->getContainerGUID() :
 										elgg_get_page_owner_guid(),
 	));
