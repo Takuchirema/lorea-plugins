@@ -9,8 +9,10 @@ $groups = elgg_get_entities(array(
 ));
 
 foreach($groups as $group) {
+	global $CONFIG;
 	if (!elgg_instanceof($group->getContainerEntity(), 'group')) {
-		$group->container_guid = $group->owner_guid;
-		$group->save();
+		$query = "UPDATE {$CONFIG->dbprefix}entities set"
+				. " container_guid=0 where guid={$group->owner_guid}";
+		update_data($query);
 	}
 }
