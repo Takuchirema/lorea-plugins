@@ -10,9 +10,9 @@ Note this is not a theme in itself. It needs to work over some other theme, and 
 Installation: Put inside your mod/ folder and enjoy!!
 
 Tickets and source repository:
-	http://bitbucket.org/rhizomatik/elgg_microthemes/
+	https://gitorious.org/lorea/microthemes/
 
-License: See COPYING (GPLv2)
+License: See COPYING (AGPLv3)
 
 Includes the colorpicker from http://www.eyecon.ro/colorpicker/#download under the vendors directory which is not covered by our license.
 
