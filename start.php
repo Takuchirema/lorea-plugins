@@ -59,7 +59,9 @@ function microthemes_page_handler($page) {
 		case 'css':
 			include("$page_base/css.php");
 			break;
-		case 'new':
+		case 'add':
+			include("$page_base/new.php");
+			break;
 		case 'edit':
 			set_input('object_guid', $page[1]);
 			include("$page_base/edit.php");
