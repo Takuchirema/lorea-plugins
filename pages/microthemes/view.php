@@ -1,18 +1,43 @@
 <?php
-	global $CONFIG;
+/**
+ * Individual's or group's microthemes
+ *
+ * @package ElggMicrothemes
+ */
 
-	$assignto = get_input('assign_to');
-	$isself = $assignto == get_loggedin_userid();
+// access check for closed groups
+group_gatekeeper();
 
-        $body = '<div id="one_column">';
-        $body .= elgg_view("page_elements/title",array('title'=>elgg_echo('microthemes:view')));
-        $body .= '<div class="contentWrapper">';
-	//$body .= "<a href='".$CONFIG->wwwroot."pg/microthemes/edit'>".elgg_echo('microthemes:create')."</a>";
-        $form_body = elgg_view('input/submit', array('internalname' => 'submit', 'value' => elgg_echo('microthemes:create')));
-        $body .= "<div style='display:inline-block;'>".elgg_view('input/form', array('action' => $CONFIG->wwwroot."pg/microthemes/edit", 'body' => $form_body))."</div> ";
-	$body .= elgg_echo('microthemes:themeinstructions');
-	$body .= '<br/>'.elgg_view('microthemes/clearbuttons', array('assign_to'=> $assignto));
-        $body .= '</div><div class="contentWrapper">';
-        $body .= elgg_list_entities(array('types'=>'object', 'subtypes'=>'microtheme', 'full_view'=>false, 'assign_to'=>666, 'pagination' =>true, 'limit' => 999))."</div></div>";
-        echo page_draw('microthemes:manage' ,$body);
-?>
+$owner = elgg_get_page_owner_entity();
+if (!$owner) {
+	forward('profile/' . elgg_get_logged_in_user_entity()->name);
+}
+
+elgg_register_title_button();
+
+$params = array();
+
+$title = elgg_echo("microthemes:user", array($owner->name));
+
+// List files
+$content = elgg_list_entities(array(
+	'types' => 'object',
+	'subtypes' => 'microtheme',
+	'limit' => 10,
+	'full_view' => FALSE,
+	'pagination' => TRUE,
+));
+if (!$content) {
+	$content = elgg_echo("microthemes:none");
+}
+
+$sidebar = elgg_view('microthemes/sidebar');
+
+$params['content'] = $content;
+$params['title'] = $title;
+$params['sidebar'] = $sidebar;
+$params['filter'] = '';
+
+$body = elgg_view_layout('content', $params);
+
+echo elgg_view_page($title, $body);

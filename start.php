@@ -54,7 +54,7 @@ function microthemes_init(){
  */
 function microthemes_page_handler($page) {
 	elgg_push_context('microthemes');
-	$page_base = elgg_get_plugins_path() . "pages/microthemes";
+	$page_base = elgg_get_plugins_path() . "microthemes/pages/microthemes";
 	switch ($page[0]) {
 		case 'css':
 			include("$page_base/css.php");
