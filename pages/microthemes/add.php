@@ -1,32 +1,25 @@
 <?php
 /**
- * Edit a microtheme
+ * Create a new microtheme
  *
- * @package ElggMicrothemes
+ * @package ElggMicrotheme
  */
 
+$owner = elgg_get_page_owner_entity();
+
 gatekeeper();
+group_gatekeeper();
 
-$guid = (int) get_input('guid');
-$microtheme = get_entity($guid);
-if (!$microtheme) {
-	forward();
-}
-if (!$microtheme->canEdit()) {
-	forward();
-}
+$title = elgg_echo('microthemes:add');
 
-$title = elgg_echo('microthemes:edit');
-
+// set up breadcrumbs
 elgg_push_breadcrumb(elgg_echo('microthemes'));
-elgg_push_breadcrumb($microtheme->title);
+elgg_push_breadcrumb($owner->name);
 elgg_push_breadcrumb($title);
 
-elgg_set_page_owner_guid($microtheme->getContainerGUID());
-
+// create form
 $form_vars = array('enctype' => 'multipart/form-data');
 $body_vars = array();
-
 $content = elgg_view_form('microthemes/edit', $form_vars, $body_vars);
 
 $body = elgg_view_layout('content', array(

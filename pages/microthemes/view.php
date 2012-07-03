@@ -1,6 +1,6 @@
 <?php
 /**
- * Individual's or group's microthemes
+ * Shows curent microtheme and lists possible new ones.
  *
  * @package ElggMicrothemes
  */
@@ -23,9 +23,8 @@ $title = elgg_echo("microthemes:user", array($owner->name));
 $content = elgg_list_entities(array(
 	'types' => 'object',
 	'subtypes' => 'microtheme',
-	'limit' => 10,
-	'full_view' => FALSE,
-	'pagination' => TRUE,
+	'full_view' => false,
+	'list_type' => 'gallery',
 ));
 if (!$content) {
 	$content = elgg_echo("microthemes:none");

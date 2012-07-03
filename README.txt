@@ -12,9 +12,9 @@ Installation: Put inside your mod/ folder and enjoy!!
 Tickets and source repository:
 	https://gitorious.org/lorea/microthemes/
 
-License: See COPYING (AGPLv3)
+License: See COPYING (GPLv2)
 
 Includes the colorpicker from http://www.eyecon.ro/colorpicker/#download under the vendors directory which is not covered by our license.
 
 --
-devel@lorea.cc
+devel@lorea.org

@@ -5,9 +5,9 @@
 	<version>1.8</version>
 	<category>theme</category>
 	<description>Microthemes for elgg, allows to create and select different themes for users, site and groups.</description>
-	<website>https://lorea.org</website>
-	<copyright>(C) Lorea 2010-2012</copyright>
-	<license>GNU Affero General Public License, version 3 or higher</license>
+	<copyright>(C) Lorea 2011</copyright>
+	<website>https://lorea.org/</website>
+	<license>GNU General Public License version 2</license>
 	<requires>
 		<type>elgg_release</type>
 		<version>1.8</version>
