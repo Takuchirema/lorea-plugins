@@ -28,6 +28,16 @@ function microthemes_init(){
 	
 	elgg_register_event_handler('pagesetup', 'system', 'microthemes_pagesetup');
 	
+	// register the color picker's JavaScript
+	$colorpicker_js = elgg_get_simplecache_url('js', 'input/color_picker');
+	elgg_register_simplecache_view('js/input/color_picker');
+	elgg_register_js('elgg.input.colorpicker', $colorpicker_js);
+	
+	// register the color picker's CSS
+	$colorpicker_css = elgg_get_simplecache_url('css', 'input/color_picker');
+	elgg_register_simplecache_view('css/input/color_picker');
+	elgg_register_css('elgg.input.colorpicker', $colorpicker_css);
+	
 	elgg_register_menu_item('page', array(
 		'name' => 'choose_profile_microtheme',
 		'href' => "microthemes/owner/" . elgg_get_page_owner_entity()->username,
