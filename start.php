@@ -23,7 +23,10 @@ function microthemes_init(){
 	elgg_register_action("microthemes/choose", "$action_base/choose.php");
 	elgg_register_action("microthemes/clear", "$action_base/clear.php");
 	
+	// Register URL handlers for files
+	elgg_register_entity_url_handler('object', 'microtheme', 'microthemes_url_override');
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'microthemes_icon_url_override');
+	
 	elgg_register_plugin_hook_handler('register', 'menu:user_hover', 'microthemes_user_hover_menu');
 	
 	elgg_register_event_handler('pagesetup', 'system', 'microthemes_pagesetup');
@@ -94,8 +97,8 @@ function microthemes_page_handler($page) {
 
 function microthemes_icon_url_override($hook, $entity_type, $returnvalue, $params) {
 	$entity = $params['entity'];
-	if ($entity->getSubtype() == 'microthemes') {
-		return $entity->bgurl;
+	if ($entity->getSubtype() == 'microtheme') {
+		return elgg_get_site_url() . 'mod/microthemes/thumbnail.php?guid=' . $entity->guid;
 	}
 	return $returnvalue;
 }

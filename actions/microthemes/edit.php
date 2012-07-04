@@ -36,7 +36,7 @@ if ($new) {
 	}
 
 } else {
-	// load original file object
+	// load original microtheme object
 	$theme = new ElggObject($guid);
 	if (!$theme->guid) {
 		register_error(elgg_echo('microthemes:cannotload'));
@@ -87,7 +87,7 @@ if (isset($_FILES['background_image']['name']) && !empty($_FILES['background_ima
 		$thumb->write($thumbnail);
 		$thumb->close();
 
-		$file->thumbnail = $prefix."thumb".$filestorename;
+		$theme->thumbnail = $prefix."thumb".$filestorename;
 		unset($thumbnail);
 	}
 
@@ -97,7 +97,7 @@ if (isset($_FILES['background_image']['name']) && !empty($_FILES['background_ima
 		$thumb->open("write");
 		$thumb->write($thumbsmall);
 		$thumb->close();
-		$file->smallthumb = $prefix."smallthumb".$filestorename;
+		$theme->smallthumb = $prefix."smallthumb".$filestorename;
 		unset($thumbsmall);
 	}
 
@@ -107,7 +107,7 @@ if (isset($_FILES['background_image']['name']) && !empty($_FILES['background_ima
 		$thumb->open("write");
 		$thumb->write($thumblarge);
 		$thumb->close();
-		$file->largethumb = $prefix."largethumb".$filestorename;
+		$theme->largethumb = $prefix."largethumb".$filestorename;
 		unset($thumblarge);
 	}
 } else {
