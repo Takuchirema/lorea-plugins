@@ -17,11 +17,11 @@ function microthemes_init(){
 	elgg_register_page_handler('microthemes', 'microthemes_page_handler');
 	
 	// Register some actions
-	$action_base = elgg_get_plugins_path() . 'pages/actions/pages';
+	$action_base = elgg_get_plugins_path() . 'microthemes/actions/microthemes';
+	elgg_register_action("microthemes/edit", "$action_base/edit.php");
 	elgg_register_action("microthemes/delete", "$action_base/delete.php");
-	elgg_register_action("microthemes/clear", "$actions_base/clear.php");
-	elgg_register_action("microthemes/edit", "$actions_base/edit.php");
-	elgg_register_action("microthemes/choose", "$actions_base/choose.php");
+	elgg_register_action("microthemes/choose", "$action_base/choose.php");
+	elgg_register_action("microthemes/clear", "$action_base/clear.php");
 	
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'microthemes_icon_url_override');
 	elgg_register_plugin_hook_handler('register', 'menu:user_hover', 'microthemes_user_hover_menu');

@@ -1,92 +1,130 @@
 <?php
-	$entity_guid = get_input('entity_guid');
-	$title = get_input('title');
-	$assign_to = get_input('assign_to');
-	$height = get_input('height');
-	try {
-		$height = (int)$height;
-	}
-	catch (Except $e) {
-		$height = 120;
-	}
-	$bg_color = get_input('bg_color');
-	$repeat = get_input('repeat');
-	$options = get_input('options');
-	$alignment = get_input('alignment');
-	$topbar_color = get_input('topbar_color');
-	$banner_file = get_input('banner_file');
-	$footer_file = get_input('footer_file');
+/**
+ * Elgg microtheme uploader/edit action
+ *
+ * @package ElggMicrothemes
+ */
 
-	if ($entity_guid) {
-		$newObject = new ElggObject($entity_guid);
-		$newObject->title = $title;
-	}
-	else {
-		$newObject = new ElggObject();
-		$newObject->title = $title;
-		$newObject->subtype = 'microtheme';
-		$newObject->owner_guid = get_loggedin_userid();
-		$newObject->container_guid = get_loggedin_userid();
-		$newObject->access_id = ACCESS_PUBLIC;
-	}
-	if ($newObject->save()) {
-		$newObject->bg_alignment = $alignment;
-		if ($options && in_array('hidesitename', $options))
-			$newObject->hidesitename = 1;
-		else
-			$newObject->hidesitename = 0;
-		if ($options && in_array('translucid_page', $options))
-			$newObject->translucid_page = 1;
-		else
-			$newObject->translucid_page = 0;
-		if ($repeat && in_array('repeatx', $repeat))
-			$newObject->repeatx = 1;
-		else
-			$newObject->repeatx = 0;
-		if ($repeat && in_array('repeaty', $repeat))
-			$newObject->repeaty = 1;
-		else
-			$newObject->repeaty = 0;
-		$newObject->bg_color = $bg_color;
-		$newObject->height = $height;
-		$newObject->topbar_color = $topbar_color;
-		// save the banner
-		if ((isset($_FILES['banner_file'])) && (substr_count($_FILES['banner_file']['type'],'image/')))
-                {
-			$prefix = "microthemes/banner_".$newObject->guid;
-			$filehandler = new ElggFile();
-			$filehandler->owner_guid = $newObject->owner_guid;
-			$filehandler->container_guid = $newObject->owner_guid;
-			$filehandler->setFilename($prefix.'_master.jpg');
-			$filehandler->open("write");
-			$filehandler->write(get_uploaded_file('banner_file'));
-			$filehandler->close();
-			$newObject->bgurl = $CONFIG->wwwroot.'mod/microthemes/graphics/icon.php?size=master&mode=banner&object_guid='.$newObject->guid;
-			// thumbnails
-			$thumbsmall = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),40,40, true);
-			$thumbmedium = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),100,100, false);
-			if ($thumbsmall) {
-				$thumb = new ElggFile();
-				$thumb->owner_guid = $newObject->owner_guid;
-				$thumb->container_guid = $newObject->owner_guid;
-				$thumb->setMimeType('image/jpeg');
+// Get variables
+$title = get_input("title");
+$access_id = (int) get_input("access_id");
+$guid = (int) get_input('guid');
+$tags = get_input("tags");
 
-				$thumb->setFilename($prefix."_small.jpg");
-                                $thumb->open("write");
-                                $thumb->write($thumbsmall);
-                                $thumb->close();
+elgg_make_sticky_form('microtheme');
 
-				$thumb->setFilename($prefix."_medium.jpg");
-                                $thumb->open("write");
-                                $thumb->write($thumbmedium);
-                                $thumb->close();
-			}
+// check if upload failed
+if (!empty($_FILES['background_image']['name']) && $_FILES['background_image']['error'] != 0) {
+	register_error(elgg_echo('microthemes:background:cannotload'));
+	forward(REFERER);
+}
 
-		}
-		// save the footer
-		/*if ((isset($_FILES['footer_file'])) && (substr_count($_FILES['footer_file']['type'],'image/')))
-                {
-		}*/
+// check whether this is a new file or an edit
+$new = true;
+if ($guid > 0) {
+	$new = false;
+}
+
+if ($new) {
+	$theme = new ElggObject();
+	$theme->subtype = "microtheme";
+
+	// if no title on new upload, grab filename
+	if (empty($title)) {
+		register_error('microthemes:notitle');
+		forward(REFERER);
 	}
-	forward("pg/microthemes/view?assign_to=".$assign_to);
-?>
+
+} else {
+	// load original file object
+	$theme = new ElggObject($guid);
+	if (!$theme->guid) {
+		register_error(elgg_echo('microthemes:cannotload'));
+		forward(REFERER);
+	}
+
+	// user must be able to edit file
+	if (!$theme->canEdit()) {
+		register_error(elgg_echo('microthmees:noaccess'));
+		forward(REFERER);
+	}
+
+	if (!$title) {
+		// user blanked title, but we need one
+		$title = $theme->title;
+	}
+}
+
+$theme->title = $title;
+$theme->access_id = $access_id;
+
+$tags = explode(",", $tags);
+$theme->tags = $tags;
+
+// if we have a background upload, process it
+if (isset($_FILES['background_image']['name']) && !empty($_FILES['background_image']['name'])) {
+
+	$prefix = "microthemes/banner_{$theme->guid}";
+	$file = new ElggFile();
+	$file->owner_guid = $theme->owner_guid;
+	$file->container_guid = $theme->owner_guid;
+	$file->setFilename($prefix.'_master.jpg');
+	$file->open("write");
+	$file->write(get_uploaded_file('background_image'));
+	$file->close();
+
+	$guid = $theme->save();
+
+	$theme->icontime = time();
+		
+	$thumbnail = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 60, 60, true);
+	if ($thumbnail) {
+		$thumb = new ElggFile();
+		$thumb->setMimeType($_FILES['upload']['type']);
+
+		$thumb->setFilename($prefix."thumb".$filestorename);
+		$thumb->open("write");
+		$thumb->write($thumbnail);
+		$thumb->close();
+
+		$file->thumbnail = $prefix."thumb".$filestorename;
+		unset($thumbnail);
+	}
+
+	$thumbsmall = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 153, 153, true);
+	if ($thumbsmall) {
+		$thumb->setFilename($prefix."smallthumb".$filestorename);
+		$thumb->open("write");
+		$thumb->write($thumbsmall);
+		$thumb->close();
+		$file->smallthumb = $prefix."smallthumb".$filestorename;
+		unset($thumbsmall);
+	}
+
+	$thumblarge = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 600, 600, false);
+	if ($thumblarge) {
+		$thumb->setFilename($prefix."largethumb".$filestorename);
+		$thumb->open("write");
+		$thumb->write($thumblarge);
+		$thumb->close();
+		$file->largethumb = $prefix."largethumb".$filestorename;
+		unset($thumblarge);
+	}
+} else {
+	// not saving a file but still need to save the entity to push attributes to database
+	$theme->save();
+}
+
+// file saved so clear sticky form
+elgg_clear_sticky_form('microtheme');
+
+
+if ($guid) {
+	system_message(elgg_echo("microthemes:saved"));
+	if ($new) {
+		add_to_river('river/object/microtheme/create', 'create', elgg_get_logged_in_user_guid(), $theme->guid);
+	}
+} else {
+	register_error(elgg_echo("microthemes:nosave"));
+}
+forward($theme->getURL());
