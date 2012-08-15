@@ -1,6 +1,6 @@
 <?php
 echo "<div class=\"spotlight-module\">";
-echo "<h2>{$vars['title']}</h2>";
+echo "<h3>{$vars['title']}</h3>";
 
 echo "<ul>";
 

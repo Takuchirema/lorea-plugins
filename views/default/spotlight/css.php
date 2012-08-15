@@ -3,6 +3,7 @@
 *************************************** */
 .spotlight {
 	margin-top: 6em;
+	font-size: 0.9em;
 }
 
 .spotlight-column {
@@ -15,5 +16,10 @@
 }
 
 .spotlight li {
-	list-style: square inside none;
+	list-style: none;
+}
+
+.spotlight h3 {
+	color: grey;
+	font-weight: bold;
 }
