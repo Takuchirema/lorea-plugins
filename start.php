@@ -57,7 +57,6 @@ function assemblies_init() {
  * Assemblies page handler
  *
  * URLs take the form of
- *  All assemblies in site:     assembly/all
  *  List assemblies in group:   assembly/owner/<guid>
  *  View assembly:              assembly/view/<guid>
  *  Add assembly call:          assembly/add/<guid>
@@ -77,9 +76,6 @@ function assemblies_page_handler($page) {
 	elgg_push_breadcrumb(elgg_echo('assemblies'), 'assemblies/all');
 
 	switch ($page[0]) {
-		case 'all':
-			assemblies_handle_all_page();
-			break;
 		case 'owner':
 			assemblies_handle_list_page($page[1]);
 			break;
