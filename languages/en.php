@@ -15,6 +15,13 @@ $english = array(
 	'assemblies:group' => 'Group assemblies',
 	'assemblies:enableassemblies' => 'Enable group assemblies',
 
+	// Group widget
+	'assemblies:link:view' => 'View',
+	'assemblies:link:edit' => 'Edit',
+	'assemblies:info' => 'Info',
+	'assemblies:agenda' => 'Agenda',
+	'assemblies:minutes' => 'Minutes',
+
 	// Editing
 	'assembly:add' => 'Add assembly call',
 	'assembly:edit' => 'Edit assembly call',

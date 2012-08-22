@@ -36,7 +36,8 @@ function assemblies_init() {
 
 	// Add group option
 	add_group_tool_option('assemblies', elgg_echo('assemblies:enableassemblies'), true);
-	elgg_extend_view('groups/tool_latest', 'assemblies/group_module');
+	#elgg_extend_view('groups/tool_latest', 'assemblies/group_module');
+	elgg_extend_view('groups/profile/summary','assemblies/group_module');
 
 	// add a assemblies widget
 	elgg_register_widget_type('assemblies', elgg_echo('assemblies'), elgg_echo('assemblies:widget:description'));
@@ -117,7 +118,7 @@ function assemblies_url_handler($entity) {
 function assemblies_owner_block_menu($hook, $type, $return, $params) {
 	if (elgg_instanceof($params['entity'], 'group')) {
 		if ($params['entity']->assemblies_enable != "no") {
-			$url = "assemblies/owner/{$params['entity']->guid}";
+			$url = "assembly/owner/{$params['entity']->guid}";
 			$item = new ElggMenuItem('assemblies', elgg_echo('assemblies:group'), $url);
 			$return[] = $item;
 		}

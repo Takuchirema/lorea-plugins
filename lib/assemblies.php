@@ -33,7 +33,10 @@ function assemblies_handle_list_page($guid) {
 		'container_guid' => $guid,
 		'full_view' => false,
 	);
-	$content = elgg_list_entities($options);
+
+	$content = elgg_view('assemblies/general', array('entity'=>$guid));
+
+	$content .= elgg_list_entities($options);
 	if (!$content) {
 		$content = elgg_echo('assemblies:none');
 	}
@@ -78,7 +81,7 @@ function assemblies_handle_edit_page($type, $guid) {
 		elgg_push_breadcrumb($title);
 
 		$body_vars = assemblies_prepare_form_vars();
-		$content = elgg_view_form('assembly/save', array(), $body_vars);
+		$content = elgg_view_form('assemblies/save', array(), $body_vars);
 	} else {
 		$entity = get_entity($guid);
 		if (!$entity || !$entity->canEdit()) {
@@ -98,7 +101,7 @@ function assemblies_handle_edit_page($type, $guid) {
 		elgg_push_breadcrumb($title);
 
 		$body_vars = assemblies_prepare_form_vars($entity);
-		$content = elgg_view_form('assembly/save', array(), $body_vars);
+		$content = elgg_view_form('assemblies/save', array(), $body_vars);
 	}
 
 	$params = array(
@@ -121,18 +124,19 @@ function assemblies_handle_view_page($guid) {
 	global $autofeed;
 	$autofeed = true;
 
-	$entity = get_entity($guid);
-	if (!$entity) {
+	$group = get_entity($guid);
+	if (!$group) {
 		register_error(elgg_echo('noaccess'));
 		$_SESSION['last_forward_from'] = current_page_url();
 		forward('');
 	}
 
-	$group = $entity->getContainerEntity();
+	/*$group = $entity->getContainerEntity();
 	if (!$group) {
 		register_error(elgg_echo('groups:notfound'));
 		forward();
-	}
+	}*/
+	$entity = $group;
 
 	elgg_set_page_owner_guid($group->getGUID());
 
