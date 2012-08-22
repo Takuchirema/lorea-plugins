@@ -18,11 +18,13 @@ function assemblies_init() {
 	// add to the main css
 	elgg_extend_view('css/elgg', 'assemblies/css');
 
+	elgg_register_event_handler('upgrade', 'upgrade', 'assemblies_run_upgrades');
+
 	// routing of urls
 	elgg_register_page_handler('assembly', 'assemblies_page_handler');
 
 	// override the default url to view a assembly object
-	elgg_register_entity_url_handler('object', 'assembly', 'assembly_url_handler');
+	elgg_register_entity_url_handler('object', 'assembly', 'assemblies_url_handler');
 
 	// notifications
 	register_notification_object('object', 'assembly', elgg_echo('assemblies:newpost'));
@@ -44,7 +46,7 @@ function assemblies_init() {
 
 	// register actions
 	$action_path = elgg_get_plugins_path() . 'assemblies/actions/assemblies';
-	elgg_register_action('assemblies/edit', "$action_path/edit.php");
+	elgg_register_action('assemblies/save', "$action_path/save.php");
 	elgg_register_action('assemblies/delete', "$action_path/delete.php");
 
 	// entity menu
@@ -52,6 +54,16 @@ function assemblies_init() {
 
 	// ecml
 	elgg_register_plugin_hook_handler('get_views', 'ecml', 'assemblies_ecml_views_hook');
+
+	// data types
+	elgg_set_config('assembly', array(
+		#'title' => 'text',
+		#'description' => 'longtext',
+		'date' => 'date',
+		#'tags' => 'tags',
+		'access_id' => 'access',
+	));
+
 }
 
 /**
@@ -107,9 +119,9 @@ function assemblies_url_handler($entity) {
 		return FALSE;
 	}
 
-	$friendly_title = elgg_get_friendly_title($entity->title);
+	//$friendly_title = elgg_get_friendly_title($entity->title);
 
-	return "assembly/view/{$entity->guid}/$friendly_title";
+	return "assembly/view/{$entity->guid}";
 }
 
 /**
@@ -178,4 +190,21 @@ function assemblies_ecml_views_hook($hook, $entity_type, $return_value, $params)
 	$return_value['object/assembly'] = elgg_echo('assemblies:assemblies');
 
 	return $return_value;
+}
+
+/**
+ * Upgrade from 1.7 to 1.8.
+ */
+function assemblies_run_upgrades($event, $type, $details) {
+	$assemblies_upgrade_version = elgg_get_plugin_setting('upgrade_version', 'assemblies');
+
+	if (!$assemblies_upgrade_version) {
+		 // When upgrading, check if the ElggAssembly class has been registered as this
+		 // was added in Elgg 1.8
+		if (!update_subtype('object', 'assembly', 'ElggAssembly')) {
+			add_subtype('object', 'assembly', 'ElggAssembly');
+		}
+
+		elgg_set_plugin_setting('upgrade_version', 1, 'assemblies');
+	}
 }

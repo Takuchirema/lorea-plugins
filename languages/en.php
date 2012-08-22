@@ -15,10 +15,24 @@ $english = array(
 	'assemblies:group' => 'Group assemblies',
 	'assemblies:enableassemblies' => 'Enable group assemblies',
 
+	// General properties
+	'assemblies:periodicity' => 'Periodicity',
+	'assemblies:chat' => 'Chat url',
+	'assemblies:streaming' => 'Streaming url',
+	'assemblies:voip' => 'Voip url',
+
+	// Assembly fields
+	'assemblies:assembly:title' => 'Title',
+	'assemblies:assembly:description' => 'Description',
+	'assemblies:assembly:date' => 'Date',
+	'assemblies:assembly:access_id' => 'Access',
+
 	// Group widget
 	'assemblies:link:view' => 'View',
 	'assemblies:link:edit' => 'Edit',
 	'assemblies:info' => 'Info',
+	'assemblies:info:when' => 'When',
+	'assemblies:info:where' => 'Where',
 	'assemblies:agenda' => 'Agenda',
 	'assemblies:minutes' => 'Minutes',
 

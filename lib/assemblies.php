@@ -138,7 +138,7 @@ function assemblies_handle_view_page($guid) {
 	}*/
 	$entity = $group;
 
-	elgg_set_page_owner_guid($group->getGUID());
+	elgg_set_page_owner_guid($group->container_guid);
 
 	group_gatekeeper();
 

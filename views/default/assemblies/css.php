@@ -9,6 +9,7 @@
 /* Assemblies Plugin */
 
 .assembly-box {
+	background: #F4F4F4 !important;
 	height:100px !important;
 	margin-right: 2%;
 	float: left;
