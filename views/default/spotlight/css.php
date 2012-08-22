@@ -19,7 +19,7 @@
 	list-style: circle inside none;
 }
 
-.spotlight h2 {
+.spotlight h3 {
 	font-weight: bold;
 	font-size: 1.5em;
 	color: #aaa;
