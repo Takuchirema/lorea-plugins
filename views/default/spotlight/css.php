@@ -2,6 +2,7 @@
 	SPOTLIGHT
 *************************************** */
 .spotlight {
+	font-size: 85%;
 	margin-top: 6em;
 }
 
@@ -15,5 +16,15 @@
 }
 
 .spotlight li {
-	list-style: square inside none;
+	list-style: circle inside none;
 }
+
+.spotlight h2 {
+	font-weight: bold;
+	font-size: 1.5em;
+	color: #aaa;
+	padding: 5px;
+	text-shadow: 0px 1px 1px #fff, 0 -1px 1px #333;
+}
+
+
