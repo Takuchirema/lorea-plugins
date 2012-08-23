@@ -91,12 +91,7 @@ $draft_warning
 </div>
 
 <div class="elgg-foot">
-	<div class="elgg-subtext mbm">
-	$save_status <span class="assembly-save-status-time">$saved</span>
-	</div>
-
 	$guid_input
-
 	$action_buttons
 </div>
 
