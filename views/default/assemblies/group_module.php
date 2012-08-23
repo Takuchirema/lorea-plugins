@@ -21,9 +21,23 @@ $all_link .= " ".elgg_view('output/url', array(
 	'is_trusted' => true,
 ));
 
-$info = elgg_view("assemblies/info", array('entity' => $guid));
-$agenda = elgg_view("assemblies/agenda", array('entity' => $guid));
-$minutes = elgg_view("assemblies/minutes", array('entity' => $guid));
+$info = elgg_view("assemblies/group_module_box", array_merge($vars, array(
+	'box' => 'info',
+	'entity' => $group,
+	'class' => 'elgg-col elgg-col-1of5',
+)));
+
+$agenda = elgg_view("assemblies/group_module_box", array_merge($vars, array(
+	'box' => 'agenda',
+	'entity' => $group,
+	'class' => 'elgg-col elgg-col-3of5',
+)));
+
+$minutes = elgg_view("assemblies/group_module_box", array_merge($vars, array(
+	'box' => 'minutes',
+	'entity' => $group,
+	'class' => 'elgg-col elgg-col-1of5',
+)));
 
 $content = $info . $agenda . $minutes;
 

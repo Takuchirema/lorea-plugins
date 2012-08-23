@@ -8,21 +8,20 @@
 
 /* Assemblies Plugin */
 
-.assembly-box {
-	background: #F4F4F4 !important;
-	height:100px !important;
-	margin-right: 2%;
-	float: left;
+.group-submodule-box {
+	height:100px;
 }
 
-.assembly-info {
-	width: 20%;
+.group-submodule-box > .group-submodule-box-inner {
+	background-color: #F4F4F4;
+	height: 100%;
+	margin: 0 5px 0 5px;
 }
 
-.assembly-minutes {
-	width: 20%;
+.group-submodule-box:first-child > .group-submodule-box-inner {
+	margin-left: 0;
 }
 
-.assembly-agenda {
-	width: 50%;
+.group-submodule-box:last-child > .group-submodule-box-inner {
+	margin-right: 0;
 }
