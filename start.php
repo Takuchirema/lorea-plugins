@@ -54,9 +54,12 @@ function assemblies_init() {
 		#'tags' => 'tags',
 		'access_id' => 'access',
 	));
-	$crud = crud_register_type('assembly');
-	$crud->children_type = 'agenda_point';
-	$crud->module = 'assemblies';
+	
+	if (elgg_is_active_plugin('crud')) {
+		$crud = crud_register_type('assembly');
+		$crud->children_type = 'agenda_point';
+		$crud->module = 'assemblies';
+	}
 }
 
 /**
