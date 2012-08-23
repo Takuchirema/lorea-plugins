@@ -36,6 +36,11 @@ $english = array(
 	'assemblies:agenda' => 'Agenda',
 	'assemblies:minutes' => 'Minutes',
 
+	// Crud
+	'crud:assembly:nochildren' => 'There are no points created for this assembly',
+	'crud:assembly:addchild' => 'Add',
+	
+
 	// Editing
 	'assembly:add' => 'Add assembly call',
 	'assembly:edit' => 'Edit assembly call',

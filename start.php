@@ -20,21 +20,12 @@ function assemblies_init() {
 
 	elgg_register_event_handler('upgrade', 'upgrade', 'assemblies_run_upgrades');
 
-	// routing of urls
-	elgg_register_page_handler('assembly', 'assemblies_page_handler');
-
-	// override the default url to view a assembly object
-	elgg_register_entity_url_handler('object', 'assembly', 'assemblies_url_handler');
-
 	// notifications
 	register_notification_object('object', 'assembly', elgg_echo('assemblies:newpost'));
 	elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'assemblies_notify_message');
 
 	// add group assemblies link to
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'assemblies_owner_block_menu');
-
-	// Register for search.
-	elgg_register_entity_type('object', 'assembly');
 
 	// Add group option
 	add_group_tool_option('assemblies', elgg_echo('assemblies:enableassemblies'), true);
@@ -45,9 +36,9 @@ function assemblies_init() {
 	elgg_register_widget_type('assemblies', elgg_echo('assemblies'), elgg_echo('assemblies:widget:description'));
 
 	// register actions
-	$action_path = elgg_get_plugins_path() . 'assemblies/actions/assemblies';
-	elgg_register_action('assemblies/save', "$action_path/save.php");
-	elgg_register_action('assemblies/delete', "$action_path/delete.php");
+	//$action_path = elgg_get_plugins_path() . 'assemblies/actions/assemblies';
+	//elgg_register_action('assemblies/save', "$action_path/save.php");
+	//elgg_register_action('assemblies/delete', "$action_path/delete.php");
 
 	// entity menu
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'assemblies_entity_menu_setup');
@@ -63,65 +54,9 @@ function assemblies_init() {
 		#'tags' => 'tags',
 		'access_id' => 'access',
 	));
-
-}
-
-/**
- * Assemblies page handler
- *
- * URLs take the form of
- *  List assemblies in group:   assembly/owner/<guid>
- *  View assembly:              assembly/view/<guid>
- *  Add assembly call:          assembly/add/<guid>
- *  Edit assembly call/minutes: assembly/edit/<guid>
- *
- * @param array $page Array of url segments for routing
- * @return bool
- */
-function assemblies_page_handler($page) {
-
-	elgg_load_library('elgg:assemblies');
-
-	if (!isset($page[0])) {
-		$page[0] = 'all';
-	}
-
-	elgg_push_breadcrumb(elgg_echo('assemblies'), 'assemblies/all');
-
-	switch ($page[0]) {
-		case 'owner':
-			assemblies_handle_list_page($page[1]);
-			break;
-		case 'add':
-			assemblies_handle_edit_page('add', $page[1]);
-			break;
-		case 'edit':
-			assemblies_handle_edit_page('edit', $page[1]);
-			break;
-		case 'view':
-			assemblies_handle_view_page($page[1]);
-			break;
-		default:
-			return false;
-	}
-	return true;
-}
-
-/**
- * Format and return the URL for assemblies.
- *
- * @param ElggObject $entity Assembly object
- * @return string URL of assembly.
- */
-function assemblies_url_handler($entity) {
-	if (!$entity->getOwnerEntity()) {
-		// default to a standard view if no owner.
-		return FALSE;
-	}
-
-	//$friendly_title = elgg_get_friendly_title($entity->title);
-
-	return "assembly/view/{$entity->guid}";
+	$crud = crud_register_type('assembly');
+	$crud->children_type = 'agenda_point';
+	$crud->module = 'assemblies';
 }
 
 /**
