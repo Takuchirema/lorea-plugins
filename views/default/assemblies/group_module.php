@@ -1,13 +1,17 @@
 <?php
 /**
- * Group blog module
+ * Assemblies module
  */
+
+elgg_load_library('elgg:assemblies');
 
 $group = elgg_get_page_owner_entity();
 
 if ($group->assemblies_enable == "no") {
 	return true;
 }
+
+$assembly = assemblies_get_next_assembly($group);
 
 $all_link = elgg_view('output/url', array(
 	'href' => "assembly/view/$group->guid",
@@ -21,13 +25,16 @@ $all_link .= " ".elgg_view('output/url', array(
 	'is_trusted' => true,
 ));
 
+
 $info = elgg_view("assemblies/group_module_box", array_merge($vars, array(
+	'next_assembly' => $assembly,
 	'box' => 'info',
 	'entity' => $group,
 	'class' => 'elgg-col elgg-col-1of5',
 )));
 
 $agenda = elgg_view("assemblies/group_module_box", array_merge($vars, array(
+	'next_assembly' => $assembly,
 	'box' => 'agenda',
 	'entity' => $group,
 	'class' => 'elgg-col elgg-col-3of5',
