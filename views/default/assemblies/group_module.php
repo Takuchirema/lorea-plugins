@@ -14,13 +14,13 @@ if ($group->assemblies_enable == "no") {
 $assembly = assemblies_get_next_assembly($group);
 
 $all_link = elgg_view('output/url', array(
-	'href' => "assembly/view/$group->guid",
+	'href' => "assembly/view/$assembly->guid",
 	'text' => elgg_echo('assemblies:link:view'),
 	'is_trusted' => true,
 ));
 
 $all_link .= " ".elgg_view('output/url', array(
-	'href' => "assembly/edit/$group->guid",
+	'href' => "assembly/edit/$assembly->guid",
 	'text' => elgg_echo('assemblies:link:edit'),
 	'is_trusted' => true,
 ));
