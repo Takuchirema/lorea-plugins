@@ -9,6 +9,7 @@ $english = array(
 	'assemblies:assembly' => 'Assembly',
 	'item:object:assembly' => 'Assemblies',
 	'assemblies:none' => 'No assemblies',
+	'assemblies:none-previous' => 'No previous assemblies',
 
 	'assemblies:title:all_assemblies' => 'All site assemblies',
 
@@ -26,6 +27,13 @@ $english = array(
 	'assemblies:assembly:description' => 'Description',
 	'assemblies:assembly:date' => 'Date',
 	'assemblies:assembly:access_id' => 'Access',
+
+	// Agenda points
+	'agenda_point:add' => 'Add agenda point',
+	'assemblies:agenda_point:title' => 'Title',
+	'assemblies:agenda_point:description' => 'Description',
+	'assemblies:agenda_point:date' => 'Date',
+	'assemblies:agenda_point:access_id' => 'Access',
 
 	// Group widget
 	'assemblies:link:view' => 'View',
@@ -55,7 +63,8 @@ $english = array(
 	'assemblies:error:cannot_edit' => 'This assembly may not exist or you may not have permissions to edit it.',
 
 	// river
-	'river:create:object:assembly' => '%s published a assembly call %s',
+	'river:create:object:assembly' => '%s published an assembly call %s',
+	'river:create:object:agenda_point' => '%s published an agenda point %s',
 	'river:comment:object:assembly' => '%s commented on the assembly %s',
 
 	// notifications
