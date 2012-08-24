@@ -18,5 +18,5 @@ if (!empty($assembly)) {
 	}
 	echo "</ul>";
 } else {
-	echo elgg_echo("assemblies:none");
+	echo "<p>".elgg_echo("assemblies:none")."</p>";
 }

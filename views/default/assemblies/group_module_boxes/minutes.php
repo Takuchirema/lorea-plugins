@@ -29,5 +29,5 @@ if (count($assemblies)) {
 	}
 	echo "</ul>";
 } else {
-	echo elgg_echo("assemblies:none-previous");
+	echo "<p>".elgg_echo("assemblies:none-previous")."</p>";
 }
