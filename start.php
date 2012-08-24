@@ -60,6 +60,21 @@ function assemblies_init() {
 		$crud->children_type = 'agenda_point';
 		$crud->module = 'assemblies';
 	}
+
+	elgg_set_config('agenda_point', array(
+		'title' => 'text',
+		'description' => 'longtext',
+		#'date' => 'date',
+		'tags' => 'tags',
+		'access_id' => 'access',
+	));
+	
+	if (elgg_is_active_plugin('crud')) {
+		$crud = crud_register_type('agenda_point');
+		#$crud->children_type = 'agenda_point';
+		$crud->module = 'assemblies';
+	}
+
 }
 
 /**
