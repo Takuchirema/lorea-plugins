@@ -22,33 +22,31 @@ if ($next_assembly) {
 				));
 }
 
-// Set defaults
-if (empty($periodicity))
-	$periodicity = 'undefined';
-if (empty($chat))
-	$chat = 'undefined';
-if (empty($streaming_url))
-	$streaming_url = 'undefined';
-if (empty($voip))
-	$voip = 'undefined';
-if (empty($assembly_location))
-	$assembly_location = 'undefined';
-
 // Show general assembly settings
-echo "<b>".elgg_echo('assemblies:assembly_location')."</b>";
-echo ": " . $assembly_location;
-echo "<br/>";
-echo "<b>".elgg_echo('assemblies:periodicity')."</b>";
-echo ": " . $periodicity;
-echo "<br/>";
-echo "<b>".elgg_echo('assemblies:chat')."</b>";
-echo ": " . $chat;
-echo "<br/>";
-echo "<b>".elgg_echo('assemblies:streaming')."</b>";
-echo ": " . $streaming_url;
-echo "<br/>";
-echo "<b>".elgg_echo('assemblies:voip')."</b>";
-echo ": " . $voip;
+if ($assembly_location) {
+	echo "<b>".elgg_echo('assemblies:assembly_location')."</b>";
+	echo ": " . $assembly_location;
+	echo "<br/>";
+}
+if ($periodicity) {
+	echo "<b>".elgg_echo('assemblies:periodicity')."</b>";
+	echo ": " . $periodicity;
+	echo "<br/>";
+}
+if ($chat) {
+	echo "<b>".elgg_echo('assemblies:chat')."</b>";
+	echo ": " . $chat;
+	echo "<br/>";
+}
+if ($streaming_url) {
+	echo "<b>".elgg_echo('assemblies:streaming')."</b>";
+	echo ": " . $streaming_url;
+	echo "<br/>";
+}
+if ($voip) {
+	echo "<b>".elgg_echo('assemblies:voip')."</b>";
+	echo ": " . $voip;
+}
 
 // Show next assembly link
 if ($next_assembly) {
