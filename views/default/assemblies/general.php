@@ -20,15 +20,15 @@ if (empty($voip))
 	$voip = 'undefined';
 
 // Show general assembly settings
-echo elgg_echo('assemblies:periodicity');
+echo "<b>".elgg_echo('assemblies:periodicity')."</b>";
 echo ": " . $periodicity;
 echo "<br/>";
-echo elgg_echo('assemblies:chat');
+echo "<b>".elgg_echo('assemblies:chat')."</b>";
 echo ": " . $chat;
 echo "<br/>";
-echo elgg_echo('assemblies:streaming');
+echo "<b>".elgg_echo('assemblies:streaming')."</b>";
 echo ": " . $streaming_url;
 echo "<br/>";
-echo elgg_echo('assemblies:voip');
+echo "<b>".elgg_echo('assemblies:voip')."</b>";
 echo ": " . $voip;
 echo "<br/>";

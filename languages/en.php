@@ -28,6 +28,7 @@ $english = array(
 	'assemblies:assembly:date' => 'Date',
 	'assemblies:assembly:access_id' => 'Access',
 	'assemblies:assembly:children' => 'Agenda points',
+	'assemblies:assembly:owner' => 'Proposed by %s',
 
 	// Agenda points
 	'agenda_point:add' => 'Add agenda point',
@@ -39,6 +40,8 @@ $english = array(
 	'assemblies:agenda_point:status' => 'Status',
 	'assemblies:agenda_point:tags' => 'Tags',
 	'assemblies:agenda_point:mode' => 'Class',
+	'assemblies:agenda_point:owner' => 'Proposed by %s',
+
 	// modes
 	'assemblies:agenda_point:permanent' => 'Permanent',
 	'assemblies:agenda_point:conjunctural' => 'Conjunctural',
