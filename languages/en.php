@@ -14,7 +14,8 @@ $english = array(
 
 	'assemblies:title:all_assemblies' => 'All site assemblies',
 
-	'assemblies:group' => 'Group assemblies',
+	'assemblies:assembly:group' => 'Group assemblies',
+	'assemblies:agenda_point:group' => 'Group decissions',
 	'assemblies:enableassemblies' => 'Enable group assemblies',
 
 	// General properties
@@ -44,6 +45,7 @@ $english = array(
 	'assemblies:agenda_point:owner' => 'Proposed by %s',
 
 	// modes
+	'assemblies:agenda_point:all' => 'All',
 	'assemblies:agenda_point:permanent' => 'Permanent',
 	'assemblies:agenda_point:conjunctural' => 'Conjunctural',
 	// statuses
