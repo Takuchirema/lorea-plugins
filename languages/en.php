@@ -89,6 +89,8 @@ $english = array(
 	// river
 	'river:create:object:assembly' => '%s published an assembly call %s',
 	'river:create:object:agenda_point' => '%s published an agenda point %s',
+	'river:edited:object:assembly' => '%s edited an assembly call %s',
+	'river:edited:object:agenda_point' => '%s edited an agenda point %s',
 	'river:comment:object:assembly' => '%s commented on the assembly %s',
 	'river:comment:object:agenda_point' => '%s commented on the agenda point %s',
 
