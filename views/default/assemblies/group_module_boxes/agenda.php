@@ -17,13 +17,14 @@ if (!empty($assembly)) {
 			))."</li>";
 	}
 	echo "</ul>";
+
+	echo "<hr /><p>".elgg_view('output/url', array(
+		'href' => "agenda_point/add/$assembly->guid",
+		'text' => ucfirst(elgg_echo('agenda_point:add'))."</p>",
+	));
+
+
 } else {
 	echo "<p>".elgg_echo("assemblies:none")."</p>";
 }
-
-echo "<hr /><p>".elgg_view('output/url', array(
-        'href' => "agenda_point/add/$assembly->guid",
-        'text' => ucfirst(elgg_echo('agenda_point:add'))."</p>",
-));
-
 

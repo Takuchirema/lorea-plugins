@@ -14,11 +14,13 @@ $assembly_location = $group->assembly_location;
 
 // Grab next assembly and format title
 $next_assembly = assemblies_get_next_assembly($group);
-$title = date("d/m/y", $next_assembly->date);
-$next_assembly_url = elgg_view('output/url', array(
-                        'href' => "assembly/view/$next_assembly->guid",
-                        'text' => $title,
-                        ));
+if ($next_assembly) {
+	$title = date("d/m/y", $next_assembly->date);
+	$next_assembly_url = elgg_view('output/url', array(
+				'href' => "assembly/view/$next_assembly->guid",
+				'text' => $title,
+				));
+}
 
 // Set defaults
 if (empty($periodicity))
@@ -47,8 +49,12 @@ echo ": " . $streaming_url;
 echo "<br/>";
 echo "<b>".elgg_echo('assemblies:voip')."</b>";
 echo ": " . $voip;
-echo "<br/>";
-echo "<br/>";
-echo "<b>".elgg_echo('assemblies:next')."</b>";
-echo ": " . $next_assembly_url;
-echo "<br/>";
+
+// Show next assembly link
+if ($next_assembly) {
+	echo "<br/>";
+	echo "<br/>";
+	echo "<b>".elgg_echo('assemblies:next')."</b>";
+	echo ": " . $next_assembly_url;
+	echo "<br/>";
+}
