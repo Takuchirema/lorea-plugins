@@ -8,6 +8,7 @@ $english = array(
 	'assemblies' => 'Assemblies',
 	'assemblies:assembly' => 'Assembly',
 	'item:object:assembly' => 'Assemblies',
+	'item:object:agenda_point' => 'Agenda points',
 	'assemblies:none' => 'No assemblies',
 	'assemblies:none-previous' => 'No previous assemblies',
 
@@ -28,7 +29,7 @@ $english = array(
 	'assemblies:assembly:date' => 'Date',
 	'assemblies:assembly:access_id' => 'Access',
 	'assemblies:assembly:children' => 'Agenda points',
-	'assemblies:assembly:owner' => 'Proposed by %s',
+	'assemblies:assembly:owner' => 'Created by %s',
 
 	// Agenda points
 	'agenda_point:add' => 'Add agenda point',
@@ -73,8 +74,12 @@ $english = array(
 	'assemblies:message:saved' => 'Assembly call saved.',
 	'assemblies:error:cannot_save' => 'Cannot save assembly call.',
 	'assemblies:error:cannot_write_to_container' => 'Insufficient access to save assembly to group.',
-	'assemblies:message:deleted_post' => 'Assembly deleted.',
-	'assemblies:error:cannot_delete_post' => 'Cannot delete assembly.',
+	'assemblies:message:deleted_assembly' => 'Assembly deleted.',
+	'assemblies:error:cannot_delete_assembly' => 'Cannot delete assembly.',
+	'assemblies:error:assembly_not_found' => 'Assembly not found.',
+	'assemblies:message:deleted_agenda_point' => 'Agenda point deleted.',
+	'assemblies:error:cannot_delete_agenda_point' => 'Cannot delete agenda point.',
+	'assemblies:error:agenda_point_not_found' => 'Agenda point not found.',
 	'assemblies:error:missing:title' => 'Please enter a assembly title!',
 	'assemblies:error:cannot_edit' => 'This assembly may not exist or you may not have permissions to edit it.',
 
@@ -82,6 +87,7 @@ $english = array(
 	'river:create:object:assembly' => '%s published an assembly call %s',
 	'river:create:object:agenda_point' => '%s published an agenda point %s',
 	'river:comment:object:assembly' => '%s commented on the assembly %s',
+	'river:comment:object:agenda_point' => '%s commented on the agenda point %s',
 
 	// notifications
 	'assemblies:newcall' => 'A new assembly call',
