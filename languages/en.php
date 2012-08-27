@@ -14,6 +14,7 @@ $english = array(
 
 	'assemblies:title:all_assemblies' => 'All site assemblies',
 
+	'assemblies:group' => 'Group assembly',
 	'assemblies:assembly:group' => 'Group assemblies',
 	'assemblies:agenda_point:group' => 'Group decissions',
 	'assemblies:enableassemblies' => 'Enable group assemblies',
