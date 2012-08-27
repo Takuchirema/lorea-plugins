@@ -27,13 +27,26 @@ $english = array(
 	'assemblies:assembly:description' => 'Description',
 	'assemblies:assembly:date' => 'Date',
 	'assemblies:assembly:access_id' => 'Access',
+	'assemblies:assembly:children' => 'Agenda points',
 
 	// Agenda points
 	'agenda_point:add' => 'Add agenda point',
+	'agenda_point:edit' => 'Edit agenda point',
 	'assemblies:agenda_point:title' => 'Title',
 	'assemblies:agenda_point:description' => 'Description',
 	'assemblies:agenda_point:date' => 'Date',
 	'assemblies:agenda_point:access_id' => 'Access',
+	'assemblies:agenda_point:status' => 'Status',
+	'assemblies:agenda_point:tags' => 'Tags',
+	'assemblies:agenda_point:mode' => 'Class',
+	// modes
+	'assemblies:agenda_point:permanent' => 'Permanent',
+	'assemblies:agenda_point:conjunctural' => 'Conjunctural',
+	// statuses
+	'assemblies:agenda_point:new' => 'New',
+	'assemblies:agenda_point:accepted' => 'Accepted',
+	'assemblies:agenda_point:discarded' => 'Discarded',
+	'assemblies:agenda_point:delayed' => 'Delayed',
 
 	// Group widget
 	'assemblies:link:view' => 'View',

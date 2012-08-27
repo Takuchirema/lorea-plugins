@@ -65,6 +65,8 @@ function assemblies_init() {
 		'title' => 'text',
 		'description' => 'longtext',
 		#'date' => 'date',
+		'status' => 'crudselect',
+		'mode' => 'crudselect',
 		'tags' => 'tags',
 		'access_id' => 'access',
 	));
@@ -73,6 +75,9 @@ function assemblies_init() {
 		$crud = crud_register_type('agenda_point');
 		#$crud->children_type = 'agenda_point';
 		$crud->module = 'assemblies';
+		$crud->icon_var = 'status';
+		$crud->setVariable('status', 'crudselect', array('new', 'accepted', 'discarded', 'delayed'), 'new');
+		$crud->setVariable('mode', 'crudselect', array('permanent', 'conjunctural'), 'conjunctural');
 	}
 
 }
