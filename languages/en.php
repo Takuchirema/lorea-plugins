@@ -13,6 +13,7 @@ $english = array(
 	'assemblies:none-previous' => 'No previous assemblies',
 
 	'assemblies:title:all_assemblies' => 'All site assemblies',
+	'assembly:edit_general' => 'Edit defaults',
 
 	'assemblies:group' => 'Group assembly',
 	'assemblies:assembly:group' => 'Group assemblies',
@@ -26,6 +27,7 @@ $english = array(
 	'assemblies:chat' => 'Chat url',
 	'assemblies:streaming' => 'Streaming url',
 	'assemblies:voip' => 'Voip url',
+	'assemblies:location' => 'Default location',
 
 	// Assembly fields
 	'assemblies:assembly:title' => 'Title',

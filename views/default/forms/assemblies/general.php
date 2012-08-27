@@ -11,23 +11,15 @@ $vars['entity'] = $group;
 // Grab variables
 $periodicity = $group->assembly_periodicity;
 $chat = $group->assembly_chat;
-$streaming_url = $group->assembly_streaming;
 $voip = $group->assembly_voip;
-
-// Set defaults
-if (empty($periodicity))
-	$periodicity = 'undefined';
-if (empty($chat))
-	$chat = 'undefined';
-if (empty($streaming_url))
-	$streaming_url = 'undefined';
-if (empty($voip))
-	$voip = 'undefined';
+$location = $group->assembly_location;
+$streaming = $group->assembly_streaming;
 
 $vars['periodicity'] = $periodicity;
 $vars['chat'] = $chat;
-$vars['streaming_url'] = $streaming_url;
+$vars['streaming'] = $streaming;
 $vars['voip'] = $voip;
+$vars['location'] = $location;
 
 $action_buttons = '';
 
@@ -49,11 +41,11 @@ $chat_input = elgg_view('input/text', array(
 	'id' => 'assembly_chat',
 	'value' => $vars['chat']
 ));
-$streaming_url_label = elgg_echo('assemblies:streaming_url');
-$streaming_url_input = elgg_view('input/text', array(
-	'name' => 'streaming_url',
-	'id' => 'assembly_streaming_url',
-	'value' => $vars['streaming_url']
+$streaming_label = elgg_echo('assemblies:streaming');
+$streaming_input = elgg_view('input/text', array(
+	'name' => 'streaming',
+	'id' => 'assembly_streaming',
+	'value' => $vars['streaming']
 ));
 $voip_label = elgg_echo('assemblies:voip');
 $voip_input = elgg_view('input/text', array(
@@ -61,6 +53,13 @@ $voip_input = elgg_view('input/text', array(
 	'id' => 'assembly_voip',
 	'value' => $vars['voip']
 ));
+$location_label = elgg_echo('assemblies:location');
+$location_input = elgg_view('input/text', array(
+	'name' => 'location',
+	'id' => 'assembly_location',
+	'value' => $vars['location']
+));
+
 
 // hidden inputs
 $guid_input = elgg_view('input/hidden', array('name' => 'guid', 'value' => $vars['guid']));
@@ -81,14 +80,20 @@ $draft_warning
 </div>
 
 <div>
-	<label for="assembly_streaming_url">$streaming_url_label</label>
-	$streaming_url_input
+	<label for="assembly_streaming">$streaming_label</label>
+	$streaming_input
 </div>
 
 <div>
 	<label for="assembly_voip">$voip_label</label>
 	$voip_input
 </div>
+
+<div>
+	<label for="assembly_location">$location_label</label>
+	$location_input
+</div>
+
 
 <div class="elgg-foot">
 	$guid_input

@@ -46,6 +46,9 @@ function assemblies_init() {
 	// ecml
 	elgg_register_plugin_hook_handler('get_views', 'ecml', 'assemblies_ecml_views_hook');
 
+	// specific actions
+	$action_path = elgg_get_plugins_path() . 'assemblies/actions/assemblies';
+	elgg_register_action("assemblies/general", "$action_path/general.php");
 	// data types
 	elgg_set_config('assembly', array(
 		#'title' => 'text',
