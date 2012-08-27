@@ -9,7 +9,7 @@
 /* Assemblies Plugin */
 
 .group-submodule-box {
-	height:100px;
+	height:auto;
 }
 
 .group-submodule-box > .group-submodule-box-inner {

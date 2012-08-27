@@ -52,6 +52,11 @@ $minutes = elgg_view("assemblies/group_module_box", array_merge($vars, array(
 
 $content = $info . $agenda . $minutes;
 
+$new_link = elgg_view('output/url', array(
+        'href' => "assembly/add/$group->guid",
+        'text' => ucfirst(elgg_echo('agenda_point:add')),
+));
+
 echo elgg_view('groups/profile/module', array(
 	'title' => elgg_echo('assemblies:group'),
 	'content' => $content,

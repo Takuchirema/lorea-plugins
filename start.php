@@ -51,6 +51,7 @@ function assemblies_init() {
 		#'title' => 'text',
 		#'description' => 'longtext',
 		'date' => 'date',
+		'location' => 'text',
 		#'tags' => 'tags',
 		'access_id' => 'access',
 	));

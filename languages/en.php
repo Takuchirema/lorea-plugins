@@ -18,8 +18,10 @@ $english = array(
 	'assemblies:assembly:group' => 'Group assemblies',
 	'assemblies:agenda_point:group' => 'Group decissions',
 	'assemblies:enableassemblies' => 'Enable group assemblies',
+	'assemblies:next' => 'Next assembly',
 
 	// General properties
+	'assemblies:assembly_location' => 'Default location',
 	'assemblies:periodicity' => 'Periodicity',
 	'assemblies:chat' => 'Chat url',
 	'assemblies:streaming' => 'Streaming url',
@@ -29,6 +31,7 @@ $english = array(
 	'assemblies:assembly:title' => 'Title',
 	'assemblies:assembly:description' => 'Description',
 	'assemblies:assembly:date' => 'Date',
+	'assemblies:assembly:location' => 'Location',
 	'assemblies:assembly:access_id' => 'Access',
 	'assemblies:assembly:children' => 'Agenda points',
 	'assemblies:assembly:owner' => 'Created by %s',
