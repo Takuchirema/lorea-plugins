@@ -10,6 +10,7 @@ $english = array(
 	'item:object:assembly' => 'Assemblies',
 	'item:object:agenda_point' => 'Agenda points',
 	'assemblies:none' => 'No assemblies',
+	'assemblies:assembly:none' => 'No assemblies',
 	'assemblies:none-previous' => 'No previous assemblies',
 
 	'assemblies:title:all_assemblies' => 'All site assemblies',
@@ -17,7 +18,7 @@ $english = array(
 
 	'assemblies:group' => 'Group assembly',
 	'assemblies:assembly:group' => 'Group assemblies',
-	'assemblies:agenda_point:group' => 'Group decissions',
+	'assemblies:agenda_point:group' => 'Group minutes',
 	'assemblies:enableassemblies' => 'Enable group assemblies',
 	'assemblies:next' => 'Next assembly',
 
