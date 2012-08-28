@@ -28,7 +28,7 @@ function assemblies_init() {
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'assemblies_owner_block_menu');
 
 	// Add group option
-	add_group_tool_option('assemblies', elgg_echo('assemblies:enableassemblies'), true);
+	add_group_tool_option('assemblies', elgg_echo('assemblies:enableassemblies'), false);
 	#elgg_extend_view('groups/tool_latest', 'assemblies/group_module');
 	elgg_extend_view('groups/profile/summary','assemblies/group_module');
 
