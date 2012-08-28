@@ -7,7 +7,7 @@ elgg_load_library('elgg:assemblies');
 
 $group = elgg_get_page_owner_entity();
 
-if ($group->assemblies_enable == "no") {
+if ($group->assemblies_enable != "yes") {
 	return true;
 }
 

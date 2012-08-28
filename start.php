@@ -94,7 +94,7 @@ function assemblies_init() {
  */
 function assemblies_owner_block_menu($hook, $type, $return, $params) {
 	if (elgg_instanceof($params['entity'], 'group')) {
-		if ($params['entity']->assemblies_enable != "no") {
+		if ($params['entity']->assemblies_enable == "yes") {
 			$url = "assembly/owner/{$params['entity']->guid}";
 			$item = new ElggMenuItem('assemblies', elgg_echo('assemblies:assembly:group'), $url);
 			$return[] = $item;
