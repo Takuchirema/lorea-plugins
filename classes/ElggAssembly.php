@@ -12,14 +12,4 @@ class ElggAssembly extends ElggObject {
 
 		$this->attributes['subtype'] = "assembly";
 	}
-
-	/**
-	 * Test function
-	 *
-	 * @return bool
-	 * @since 1.8.0
-	 */
-	public function testAssembly() {
-		return true;
-	}
 }
