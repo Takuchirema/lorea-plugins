@@ -36,7 +36,7 @@ $english = array(
 	'assemblies:assembly:date' => 'Date',
 	'assemblies:assembly:location' => 'Location',
 	'assemblies:assembly:access_id' => 'Access',
-	'assemblies:assembly:children' => 'Agenda points',
+	'assemblies:assembly:children' => 'Agenda',
 	'assemblies:assembly:owner' => 'Created by %s',
 
 	// Agenda points
