@@ -48,24 +48,24 @@ function assemblies_init() {
 	$action_path = elgg_get_plugins_path() . 'assemblies/actions/assemblies';
 	elgg_register_action("assemblies/general", "$action_path/general.php");
 	// data types
-	elgg_set_config('assembly', array(
+	$variables = array(
 		#'title' => 'text',
 		#'description' => 'longtext',
 		'date' => 'date',
 		'location' => 'text',
 		#'tags' => 'tags',
 		'access_id' => 'access',
-	));
+	);
 	
 	if (elgg_is_active_plugin('crud')) {
-		$crud = crud_register_type('assembly');
+		$crud = crud_register_type('assembly', $variables);
 		$crud->children_type = 'agenda_point';
 		$crud->module = 'assemblies';
 		$crud->list_order = 'date';
 		$crud->list_order_direction = 'DESC';
 	}
 
-	elgg_set_config('agenda_point', array(
+	$variables = array(
 		'title' => 'text',
 		'description' => 'longtext',
 		#'date' => 'date',
@@ -73,10 +73,10 @@ function assemblies_init() {
 		'mode' => 'crudselect',
 		'tags' => 'tags',
 		'access_id' => 'access',
-	));
+	);
 	
 	if (elgg_is_active_plugin('crud')) {
-		$crud = crud_register_type('agenda_point');
+		$crud = crud_register_type('agenda_point', $variables);
 		#$crud->children_type = 'agenda_point';
 		$crud->module = 'assemblies';
 		$crud->icon_var = 'status';
