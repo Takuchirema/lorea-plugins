@@ -115,6 +115,13 @@ View and suggest new proposals on the new assembly call:
 %s
 ',
 
+	// Other
+	'assemblies:decission:link' => 'Link to next assembly',
+	'assemblies:decission:linked' => 'Linked proposal to the next assembly',
+	'assemblies:decission:cantlink' => 'Cant link the proposal',
+	'assemblies:decission:nonext' => 'There are no pending assemblies',
+
+
 	// widget
 	'assemblies:widget:description' => 'Display latest assembly calls',
 	'assemblies:moreassemblies' => 'More assembly calls',

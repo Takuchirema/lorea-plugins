@@ -22,6 +22,9 @@ function assemblies_init() {
 	register_notification_object('object', 'assembly', elgg_echo('assemblies:newpost'));
 	elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'assemblies_notify_message');
 
+	// handler for link to assembly menu item
+        elgg_register_plugin_hook_handler('crud:decission:view_buttons', 'view_buttons', 'assemblies_decission_view_buttons');
+
 	// add group assemblies link to
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'assemblies_owner_block_menu');
 
@@ -34,7 +37,8 @@ function assemblies_init() {
 	elgg_register_widget_type('assemblies', elgg_echo('assemblies'), elgg_echo('assemblies:widget:description'));
 
 	// register actions
-	//$action_path = elgg_get_plugins_path() . 'assemblies/actions/assemblies';
+	$action_path = elgg_get_plugins_path() . 'assemblies/actions/assemblies';
+	elgg_register_action("assemblies/link", "$action_path/link.php");
 	//elgg_register_action('assemblies/save', "$action_path/save.php");
 	//elgg_register_action('assemblies/delete', "$action_path/delete.php");
 
@@ -156,5 +160,21 @@ function assemblies_ecml_views_hook($hook, $entity_type, $return_value, $params)
 	$return_value['object/assembly'] = elgg_echo('assemblies:assemblies');
 
 	return $return_value;
+}
+
+/**
+ * Show button to link decission to next assembly
+ */
+function assemblies_decission_view_buttons($hook, $type, $return, $params) {
+    $entity = $params['entity'];
+    if (empty($entity->parent_guid)) {
+        elgg_register_menu_item('title', array(
+                                'name' => 'link',
+                                'href' => "action/assemblies/link?guid=$entity->guid",
+                                'text' => elgg_echo("assemblies:decission:link"),
+                                'is_action' => true,
+                                'link_class' => 'elgg-button elgg-button-action',
+                        ));
+    }
 }
 
