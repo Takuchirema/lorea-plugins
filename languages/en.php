@@ -8,7 +8,7 @@ $english = array(
 	'assemblies' => 'Assemblies',
 	'assemblies:assembly' => 'Assembly',
 	'item:object:assembly' => 'Assemblies',
-	'item:object:agenda_point' => 'Agenda points',
+	'item:object:decission' => 'Agenda points',
 	'assemblies:none' => 'No assemblies',
 	'assemblies:assembly:none' => 'No assemblies',
 	'assemblies:none-previous' => 'No previous assemblies',
@@ -18,7 +18,7 @@ $english = array(
 
 	'assemblies:group' => 'Group assembly',
 	'assemblies:assembly:group' => 'Group assemblies',
-	'assemblies:agenda_point:group' => 'Group minutes',
+	'assemblies:decission:group' => 'Group minutes',
 	'assemblies:enableassemblies' => 'Enable group assemblies',
 	'assemblies:next' => 'Next assembly',
 
@@ -39,27 +39,29 @@ $english = array(
 	'assemblies:assembly:children' => 'Agenda',
 	'assemblies:assembly:owner' => 'Created by %s',
 
-	// Agenda points
-	'agenda_point:add' => 'Add agenda point',
-	'agenda_point:edit' => 'Edit agenda point',
-	'assemblies:agenda_point:title' => 'Title',
-	'assemblies:agenda_point:description' => 'Description',
-	'assemblies:agenda_point:date' => 'Date',
-	'assemblies:agenda_point:access_id' => 'Access',
-	'assemblies:agenda_point:status' => 'Status',
-	'assemblies:agenda_point:tags' => 'Tags',
-	'assemblies:agenda_point:mode' => 'Class',
-	'assemblies:agenda_point:owner' => 'Proposed by %s',
+	// Decissions
+	'decission:add' => 'Add agenda point',
+	'decission:edit' => 'Edit agenda point',
+	'assemblies:decission:title' => 'Title',
+	'assemblies:decission:description' => 'Description',
+	'assemblies:decission:date' => 'Date',
+	'assemblies:decission:access_id' => 'Access',
+	'assemblies:decission:status' => 'Status',
+	'assemblies:decission:tags' => 'Tags',
+	'assemblies:decission:mode' => 'Class',
+	'assemblies:decission:owner' => 'Proposed by %s',
+	'assemblies:decission:children' => 'Alternative proposals for this decission',
+	'assemblies:decission:none' => 'No decissions',
 
 	// modes
-	'assemblies:agenda_point:all' => 'All',
-	'assemblies:agenda_point:permanent' => 'Permanent',
-	'assemblies:agenda_point:conjunctural' => 'Conjunctural',
+	'assemblies:decission:all' => 'All',
+	'assemblies:decission:permanent' => 'Permanent',
+	'assemblies:decission:conjunctural' => 'Conjunctural',
 	// statuses
-	'assemblies:agenda_point:new' => 'New',
-	'assemblies:agenda_point:accepted' => 'Accepted',
-	'assemblies:agenda_point:discarded' => 'Discarded',
-	'assemblies:agenda_point:delayed' => 'Delayed',
+	'assemblies:decission:new' => 'New',
+	'assemblies:decission:accepted' => 'Accepted',
+	'assemblies:decission:discarded' => 'Discarded',
+	'assemblies:decission:delayed' => 'Delayed',
 
 	// Group widget
 	'assemblies:link:view' => 'View',
@@ -86,19 +88,19 @@ $english = array(
 	'assemblies:message:deleted_assembly' => 'Assembly deleted.',
 	'assemblies:error:cannot_delete_assembly' => 'Cannot delete assembly.',
 	'assemblies:error:assembly_not_found' => 'Assembly not found.',
-	'assemblies:message:deleted_agenda_point' => 'Agenda point deleted.',
-	'assemblies:error:cannot_delete_agenda_point' => 'Cannot delete agenda point.',
-	'assemblies:error:agenda_point_not_found' => 'Agenda point not found.',
+	'assemblies:message:deleted_decission' => 'Agenda point deleted.',
+	'assemblies:error:cannot_delete_decission' => 'Cannot delete agenda point.',
+	'assemblies:error:decission_not_found' => 'Agenda point not found.',
 	'assemblies:error:missing:title' => 'Please enter a assembly title!',
 	'assemblies:error:cannot_edit' => 'This assembly may not exist or you may not have permissions to edit it.',
 
 	// river
 	'river:create:object:assembly' => '%s published an assembly call %s',
-	'river:create:object:agenda_point' => '%s published an agenda point %s',
+	'river:create:object:decission' => '%s published an agenda point %s',
 	'river:edited:object:assembly' => '%s edited an assembly call %s',
-	'river:edited:object:agenda_point' => '%s edited an agenda point %s',
+	'river:edited:object:decission' => '%s edited an agenda point %s',
 	'river:comment:object:assembly' => '%s commented on the assembly %s',
-	'river:comment:object:agenda_point' => '%s commented on the agenda point %s',
+	'river:comment:object:decission' => '%s commented on the agenda point %s',
 
 	// notifications
 	'assemblies:newcall' => 'A new assembly call',

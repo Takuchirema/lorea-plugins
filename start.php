@@ -59,7 +59,7 @@ function assemblies_init() {
 	
 	if (elgg_is_active_plugin('crud')) {
 		$crud = crud_register_type('assembly', $variables);
-		$crud->children_type = 'agenda_point';
+		$crud->children_type = 'decission';
 		$crud->module = 'assemblies';
 		$crud->list_order = 'date';
 		$crud->list_order_direction = 'DESC';
@@ -76,7 +76,7 @@ function assemblies_init() {
 	);
 	
 	if (elgg_is_active_plugin('crud')) {
-		$crud = crud_register_type('agenda_point', $variables);
+		$crud = crud_register_type('decission', $variables);
 		#$crud->children_type = 'agenda_point';
 		$crud->module = 'assemblies';
 		$crud->icon_var = 'status';
@@ -96,9 +96,9 @@ function assemblies_owner_block_menu($hook, $type, $return, $params) {
 			$url = "assembly/owner/{$params['entity']->guid}";
 			$item = new ElggMenuItem('assemblies', elgg_echo('assemblies:assembly:group'), $url);
 			$return[] = $item;
-			$url = "agenda_point/owner/{$params['entity']->guid}";
+			/*$url = "agenda_point/owner/{$params['entity']->guid}";
 			$item = new ElggMenuItem('agenda_points', elgg_echo('assemblies:agenda_point:group'), $url);
-			$return[] = $item;
+			$return[] = $item;*/
 		}
 	}
 

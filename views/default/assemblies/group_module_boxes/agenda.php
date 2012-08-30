@@ -12,15 +12,15 @@ if (!empty($assembly)) {
 	echo "<ul>";
 	foreach ($children as $child) {
 		echo "<li>".elgg_view('output/url', array(
-        		'href' => "agenda_point/view/$child->guid",
+        		'href' => "decission/view/$child->guid",
 		        'text' => $child->title,
 			))."</li>";
 	}
 	echo "</ul>";
 
 	echo "<hr /><p>".elgg_view('output/url', array(
-		'href' => "agenda_point/add/$assembly->guid",
-		'text' => ucfirst(elgg_echo('agenda_point:add'))."</p>",
+		'href' => "decission/add/$assembly->guid",
+		'text' => ucfirst(elgg_echo('decission:add'))."</p>",
 	));
 
 
