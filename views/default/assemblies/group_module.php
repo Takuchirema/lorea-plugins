@@ -13,10 +13,13 @@ if ($group->assemblies_enable != "yes") {
 
 $assembly = assemblies_get_next_assembly($group);
 
+$all_link = "";
+
 if (!empty($assembly)) {
-	$all_link = elgg_view('output/url', array(
+	$all_link .= elgg_view('output/url', array(
 		'href' => "assembly/view/$assembly->guid",
 		'text' => elgg_echo('assemblies:link:view'),
+		'title' => elgg_echo('assemblies:link:view:tooltip'),
 		'is_trusted' => true,
 	));
 
@@ -24,10 +27,17 @@ if (!empty($assembly)) {
 		$all_link .= " ".elgg_view('output/url', array(
 			'href' => "assembly/edit/$assembly->guid",
 			'text' => elgg_echo('assemblies:link:edit'),
+			'title' => elgg_echo('assemblies:link:edit:tooltip'),
 			'is_trusted' => true,
 		));
 	}
 }
+$all_link .= " ".elgg_view('output/url', array(
+	'href' => "assembly/owner/$group->guid",
+	'text' => elgg_echo('link:view:all'),
+	'title' => elgg_echo('assemblies:link:view:all:tooltip'),
+	'is_trusted' => true,
+));
 
 
 $info = elgg_view("assemblies/group_module_box", array_merge($vars, array(

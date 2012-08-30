@@ -72,6 +72,11 @@ $english = array(
 	'assemblies:agenda' => 'Agenda',
 	'assemblies:minutes' => 'Minutes',
 
+	// Tooltips
+	'assemblies:link:view:tooltip' => 'View the currently scheduled assembly',
+	'assemblies:link:edit:tooltip' => 'Edit the currently scheduled assembly',
+	'assemblies:link:view:all:tooltip' => 'View all assemblies',
+
 	// Crud
 	'crud:assembly:nochildren' => 'There are no points created for this assembly',
 	'crud:assembly:addchild' => 'Add',
