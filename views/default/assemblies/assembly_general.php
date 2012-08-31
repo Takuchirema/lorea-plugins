@@ -15,7 +15,7 @@ $assembly_location = $group->assembly_location;
 // Grab next assembly and format title
 $next_assembly = assemblies_get_next_assembly($group);
 if ($next_assembly) {
-	$title = date(elgg_echo('crud:date_format'), $next_assembly->date);
+	$title = $next_assembly->getTitleLink();;
 	$next_assembly_url = elgg_view('output/url', array(
 				'href' => "assembly/view/$next_assembly->guid",
 				'text' => $title,
