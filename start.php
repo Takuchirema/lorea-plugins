@@ -29,9 +29,6 @@ function assemblies_init() {
 	// handler for link to assembly menu item
 	elgg_register_plugin_hook_handler('crud:decission:view_buttons', 'view_buttons', 'assemblies_decission_view_buttons');
 
-	// add group assemblies link to
-	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'assemblies_owner_block_menu');
-
 	// Add group option
 	add_group_tool_option('assemblies', elgg_echo('assemblies:enableassemblies'), false);
 	#elgg_extend_view('groups/tool_latest', 'assemblies/group_module');
