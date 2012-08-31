@@ -77,12 +77,12 @@ function assemblies_init() {
 		'description' => 'longtext',
 		#'date' => 'date',
 		'status' => array(
-			'input_type' => 'crud/select',
+			'type' => 'crud/select',
 			'default_value' => 'new',
 			'options' => array('new', 'accepted', 'discarded', 'delayed'),
 		),
 		'mode' => array(
-			'input_type' => 'crud/select',
+			'type' => 'crud/select',
 			'default_value' => 'conjunctural',
 			'options' => array('permanent', 'conjunctural'),
 		),
