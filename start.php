@@ -65,7 +65,7 @@ function assemblies_init() {
 		'access_id' => 'access',
 	);
 	
-	$crud = crud_register_type('assembly', $variables);
+	$crud = crud_register_type('assembly', $variables, 'ElggAssembly');
 	$crud->children_type = 'decission';
 	$crud->module = 'assemblies';
 	$crud->list_order = 'date';

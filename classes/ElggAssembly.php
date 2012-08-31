@@ -2,7 +2,7 @@
 /**
  * Extended class for assemblies
  */
-class ElggAssembly extends ElggObject {
+class ElggAssembly extends CrudObject {
 
 	/**
 	 * Set subtype to assembly.
