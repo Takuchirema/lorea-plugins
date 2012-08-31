@@ -38,7 +38,7 @@ function assemblies_init() {
 	elgg_extend_view('groups/profile/summary','assemblies/group_module');
 
 	// add a assemblies widget
-	elgg_register_widget_type('assemblies', elgg_echo('assemblies'), elgg_echo('assemblies:widget:description'));
+	elgg_register_widget_type('assembly', elgg_echo('assemblies'), elgg_echo('assemblies:widget:description'));
 
 	// register actions
 	$action_path = elgg_get_plugins_path() . 'assemblies/actions/assemblies';
