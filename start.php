@@ -54,7 +54,10 @@ function assemblies_init() {
 	elgg_register_action("assemblies/general", "$action_path/general.php");
 	// data types
 	$variables = array(
-		#'title' => 'text',
+		'title' => array(
+			'type' => 'text',
+			'default_value' => elgg_echo('assemblies:general_assembly'),
+		),
 		#'description' => 'longtext',
 		'date' => 'date',
 		'location' => 'text',
@@ -68,6 +71,7 @@ function assemblies_init() {
 	$crud->list_order = 'date';
 	$crud->list_order_direction = 'DESC';
 	$crud->owner_menu = 'group';
+	$crud->title_extend = 'date';
 	
 	$variables = array(
 		'title' => 'text',

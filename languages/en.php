@@ -12,6 +12,7 @@ $english = array(
 	'assemblies:none' => 'No assemblies',
 	'assemblies:assembly:none' => 'No assemblies',
 	'assemblies:none-previous' => 'No previous assemblies',
+	'assemblies:general_assembly' => 'General assembly',
 
 	'assemblies:title:all_assemblies' => 'All site assemblies',
 	'assembly:edit_general' => 'Edit defaults',
