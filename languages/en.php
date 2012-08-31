@@ -48,6 +48,7 @@ $english = array(
 	'assemblies:decission:access_id' => 'Access',
 	'assemblies:decission:status' => 'Status',
 	'assemblies:decission:tags' => 'Tags',
+	'assemblies:decission:proposal' => 'Proposal',
 	'assemblies:decission:mode' => 'Class',
 	'assemblies:decission:owner' => 'Proposed by %s',
 	'assemblies:decission:children' => 'Alternative proposals for this decission',

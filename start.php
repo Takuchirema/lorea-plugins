@@ -75,6 +75,10 @@ function assemblies_init() {
 	$variables = array(
 		'title' => 'text',
 		'description' => 'longtext',
+		'proposal' => array(
+			'input_type' => 'longtext',
+			'embedded' => 'description',
+		),
 		#'date' => 'date',
 		'status' => array(
 			'input_type' => 'crud/select',
@@ -94,6 +98,7 @@ function assemblies_init() {
 		$crud = crud_register_type('decission', $variables);
 		#$crud->children_type = 'agenda_point';
 		$crud->module = 'assemblies';
+		$crud->embed = 'firstchild';
 		$crud->icon_var = 'status';
 		$crud->list_tabs = 'mode';
 	}
