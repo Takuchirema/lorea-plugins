@@ -1,6 +1,6 @@
 <?php
 /**
- * User blog widget edit view
+ * User assembly widget edit view
  */
 
 // set default value
@@ -17,6 +17,6 @@ $dropdown = elgg_view('input/dropdown', $params);
 
 ?>
 <div>
-	<?php echo elgg_echo('blog:numbertodisplay'); ?>:
+	<?php echo elgg_echo('assemblies:assembly:numbertodisplay'); ?>:
 	<?php echo $dropdown; ?>
 </div>

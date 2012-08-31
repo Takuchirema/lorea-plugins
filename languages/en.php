@@ -127,11 +127,14 @@ View and suggest new proposals on the new assembly call:
 	'assemblies:decission:nonext' => 'There are no pending assemblies',
 
 
-	// widget
+	// group`widget
 	'assemblies:widget:description' => 'Display latest assembly calls',
 	'assemblies:moreassemblies' => 'More assembly calls',
 	'assemblies:numbertodisplay' => 'Number of assembly calls to display',
 	'assemblies:nocalls' => 'No assembly calls',
+
+	// user`widget
+	'assemblies:assembly:numbertodisplay' => 'Max number of assemblies to display'
 );
 
 add_translation('en', $english);
