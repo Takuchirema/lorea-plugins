@@ -54,6 +54,7 @@ $english = array(
 	'assemblies:decission:mode' => 'Class',
 	'assemblies:decission:owner' => 'Proposed by %s',
 	'assemblies:decission:children' => 'Alternative proposals for this decission',
+	'assemblies:decission:child' => 'Proposal',
 	'assemblies:decission:none' => 'No decissions',
 
 	// modes
