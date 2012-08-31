@@ -8,7 +8,7 @@ $group = elgg_get_page_owner_entity();
 // Get next assembly
 $assembly = $vars['next_assembly'];
 if (!empty($assembly)) {
-	$children = crud_get_children($assembly);
+	$children = $assembly->getChildren();
 	echo "<ul>";
 	foreach ($children as $child) {
 		echo "<li>".elgg_view('output/url', array(
