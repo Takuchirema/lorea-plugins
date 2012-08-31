@@ -73,7 +73,7 @@ function assemblies_init() {
 		'title' => 'text',
 		'description' => 'longtext',
 		'proposal' => array(
-			'input_type' => 'longtext',
+			'type' => 'longtext',
 			'embedded' => 'description',
 		),
 		#'date' => 'date',
