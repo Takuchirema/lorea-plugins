@@ -12,6 +12,10 @@ elgg_register_event_handler('init', 'system', 'assemblies_init');
  * Init assemblies plugin.
  */
 function assemblies_init() {
+	
+	if (!elgg_is_active_plugin('crud')) {
+		return;
+	}
 
 	elgg_register_library('elgg:assemblies', elgg_get_plugins_path() . 'assemblies/lib/assemblies.php');
 
@@ -23,7 +27,7 @@ function assemblies_init() {
 	elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'assemblies_notify_message');
 
 	// handler for link to assembly menu item
-        elgg_register_plugin_hook_handler('crud:decission:view_buttons', 'view_buttons', 'assemblies_decission_view_buttons');
+	elgg_register_plugin_hook_handler('crud:decission:view_buttons', 'view_buttons', 'assemblies_decission_view_buttons');
 
 	// add group assemblies link to
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'assemblies_owner_block_menu');
@@ -61,14 +65,13 @@ function assemblies_init() {
 		'access_id' => 'access',
 	);
 	
-	if (elgg_is_active_plugin('crud')) {
-		$crud = crud_register_type('assembly', $variables);
-		$crud->children_type = 'decission';
-		$crud->module = 'assemblies';
-		$crud->list_order = 'date';
-		$crud->list_order_direction = 'DESC';
-	}
-
+	$crud = crud_register_type('assembly', $variables);
+	$crud->children_type = 'decission';
+	$crud->module = 'assemblies';
+	$crud->list_order = 'date';
+	$crud->list_order_direction = 'DESC';
+	$crud->owner_menu = 'group';
+	
 	$variables = array(
 		'title' => 'text',
 		'description' => 'longtext',
@@ -89,24 +92,6 @@ function assemblies_init() {
 		$crud->list_tabs = 'mode';
 	}
 
-}
-
-/**
- * Add a menu item to an ownerblock
- */
-function assemblies_owner_block_menu($hook, $type, $return, $params) {
-	if (elgg_instanceof($params['entity'], 'group')) {
-		if ($params['entity']->assemblies_enable == "yes") {
-			$url = "assembly/owner/{$params['entity']->guid}";
-			$item = new ElggMenuItem('assemblies', elgg_echo('assemblies:assembly:group'), $url);
-			$return[] = $item;
-			/*$url = "agenda_point/owner/{$params['entity']->guid}";
-			$item = new ElggMenuItem('agenda_points', elgg_echo('assemblies:agenda_point:group'), $url);
-			$return[] = $item;*/
-		}
-	}
-
-	return $return;
 }
 
 /**
