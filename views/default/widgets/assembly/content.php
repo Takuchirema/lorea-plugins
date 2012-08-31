@@ -30,7 +30,7 @@ foreach($groups as $group) {
 		$icon = elgg_view_entity_icon($group, 'tiny');
 		$link = elgg_view('output/url', array(
 			'href' => $next_assembly->getURL(),
-			'text' => date(elgg_echo('crud:date_format'), $next_assembly->date),
+			'text' => $next_assembly->getTitle(),
 		));
 
 		$params = array(
