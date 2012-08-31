@@ -1,5 +1,4 @@
 <?php
-elgg_load_library('elgg:crud');
 
 echo "<b>".elgg_echo("assemblies:agenda")."</b>";
 
@@ -11,10 +10,7 @@ if (!empty($assembly)) {
 	$children = $assembly->getChildren();
 	echo "<ul>";
 	foreach ($children as $child) {
-		echo "<li>".elgg_view('output/url', array(
-        		'href' => "decission/view/$child->guid",
-		        'text' => $child->title,
-			))."</li>";
+		echo "<li>".$child->getTitleLink()."</li>";
 	}
 	echo "</ul>";
 
