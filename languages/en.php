@@ -17,9 +17,8 @@ $english = array(
 	'assemblies:title:all_assemblies' => 'All site assemblies',
 	'assembly:edit_general' => 'Edit defaults',
 
-	'assembly:group' => 'Group assembly',
+	'assembly:group' => 'Group assemblies',
 	'assemblies:group' => 'Group assembly',
-	'assemblies:assembly:group' => 'Group assemblies',
 	'assemblies:decission:group' => 'Group minutes',
 	'assemblies:enableassemblies' => 'Enable group assemblies',
 	'assemblies:next' => 'Next assembly',
