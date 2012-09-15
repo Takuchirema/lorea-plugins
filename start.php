@@ -110,7 +110,7 @@ function assemblies_init() {
 		$crud->module = 'assemblies';
 		$crud->embed = 'firstchild';
 		$crud->icon_var = 'status';
-		$crud->list_tabs = 'mode';
+		$crud->list_tabs = 'status';
 	}
 
 }
