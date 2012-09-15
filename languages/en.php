@@ -36,7 +36,7 @@ $english = array(
 	'assemblies:assembly:description' => 'Description',
 	'assemblies:assembly:date' => 'Date',
 	'assemblies:assembly:location' => 'Location',
-	'assemblies:assembly:category' => 'Categories',
+	'assemblies:assembly:category' => 'Sections',
 	'assemblies:assembly:access_id' => 'Access',
 	'assemblies:assembly:children' => 'Agenda',
 	'assemblies:assembly:owner' => 'Created by %s',
@@ -56,7 +56,7 @@ $english = array(
 	'assemblies:decission:children' => 'Proposals for this decission',
 	'assemblies:decission:child' => 'Proposal',
 	'assemblies:decission:none' => 'No decissions',
-	'assemblies:decission:category' => 'Category',
+	'assemblies:decission:category' => 'Section',
 
 	// modes
 	'assemblies:decission:all' => 'All',

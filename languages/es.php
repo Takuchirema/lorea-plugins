@@ -36,7 +36,7 @@ $spanish = array(
 	'assemblies:assembly:description' => 'Descripción',
 	'assemblies:assembly:date' => 'Fecha',
 	'assemblies:assembly:location' => 'Localización',
-	'assemblies:assembly:category' => 'Categorías',
+	'assemblies:assembly:category' => 'Secciones',
 	'assemblies:assembly:access_id' => 'Acceso',
 	'assemblies:assembly:children' => 'Orden del día',
 	'assemblies:assembly:owner' => 'Creado por %s',
@@ -56,7 +56,7 @@ $spanish = array(
 	'assemblies:decission:children' => 'Propuestas para esta decisión',
 	'assemblies:decission:child' => 'Propuesta',
 	'assemblies:decission:none' => 'No hay decisiones',
-	'assemblies:decission:category' => 'Categoría',
+	'assemblies:decission:category' => 'Sección',
 
 	// modes
 	'assemblies:decission:all' => 'Todas',
