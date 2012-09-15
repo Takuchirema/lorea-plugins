@@ -59,14 +59,18 @@ $spanish = array(
 	'assemblies:decission:category' => 'Sección',
 
 	// modes
-	'assemblies:decission:all' => 'Todas',
-	'assemblies:decission:permanent' => 'Permanentes',
-	'assemblies:decission:conjunctural' => 'Coyunturales',
+	'assemblies:decission:section:all' => 'Todas',
+	'assemblies:decission:section:permanent' => 'Permanentes',
+	'assemblies:decission:section:conjunctural' => 'Coyunturales',
 	// statuses
 	'assemblies:decission:new' => 'Nueva',
 	'assemblies:decission:accepted' => 'Aceptada',
 	'assemblies:decission:discarded' => 'Descartada',
 	'assemblies:decission:delayed' => 'Postpuesta',
+	'assemblies:decission:section:new' => 'Nuevas',
+	'assemblies:decission:section:accepted' => 'Aceptadas',
+	'assemblies:decission:section:discarded' => 'Descartadas',
+	'assemblies:decission:section:delayed' => 'Postpuestas',
 
 	// Group widget
 	'assemblies:link:view' => 'Ver',

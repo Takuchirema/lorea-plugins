@@ -59,7 +59,7 @@ $english = array(
 	'assemblies:decission:category' => 'Section',
 
 	// modes
-	'assemblies:decission:all' => 'All',
+	'assemblies:decission:section:all' => 'All',
 	'assemblies:decission:permanent' => 'Permanent',
 	'assemblies:decission:conjunctural' => 'Conjunctural',
 	// statuses
@@ -67,6 +67,15 @@ $english = array(
 	'assemblies:decission:accepted' => 'Accepted',
 	'assemblies:decission:discarded' => 'Discarded',
 	'assemblies:decission:delayed' => 'Delayed',
+	'assemblies:decission:new' => 'New',
+	'assemblies:decission:accepted' => 'Accepted',
+	'assemblies:decission:discarded' => 'Discarded',
+	'assemblies:decission:delayed' => 'Delayed',
+	'assemblies:decission:section:new' => 'New',
+	'assemblies:decission:section:accepted' => 'Accepted',
+	'assemblies:decission:section:discarded' => 'Discarded',
+	'assemblies:decission:section:delayed' => 'Delayed',
+
 
 	// Group widget
 	'assemblies:link:view' => 'View',
