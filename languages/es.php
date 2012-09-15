@@ -65,7 +65,7 @@ $spanish = array(
 	// statuses
 	'assemblies:decission:new' => 'Nueva',
 	'assemblies:decission:accepted' => 'Aceptada',
-	'assemblies:decission:discarded' => 'Discartada',
+	'assemblies:decission:discarded' => 'Descartada',
 	'assemblies:decission:delayed' => 'Postpuesta',
 
 	// Group widget
