@@ -58,6 +58,10 @@ function assemblies_init() {
 			'type' => 'text',
 			'default_value' => elgg_echo('assemblies:general_assembly'),
 		),
+		'category' => array(
+			'type' => 'tags',
+			'default_value' => 'informativos, debate',
+		),
 		#'description' => 'longtext',
 		'date' => 'date',
 		'location' => 'text',
@@ -67,6 +71,7 @@ function assemblies_init() {
 	
 	$crud = crud_register_type('assembly', $variables, 'ElggAssembly');
 	$crud->children_type = 'decission';
+	$crud->children_categories = 'category';
 	$crud->module = 'assemblies';
 	$crud->list_order = 'date';
 	$crud->list_order_direction = 'DESC';
@@ -85,6 +90,10 @@ function assemblies_init() {
 			'type' => 'crud/select',
 			'default_value' => 'new',
 			'options' => array('new', 'accepted', 'discarded', 'delayed'),
+		),
+		'category' => array(
+			'type' => 'crud/parentselect',
+			'property' => 'category',
 		),
 		'mode' => array(
 			'type' => 'crud/select',
