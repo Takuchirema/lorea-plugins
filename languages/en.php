@@ -41,6 +41,11 @@ $english = array(
 	'assemblies:assembly:children' => 'Agenda',
 	'assemblies:assembly:owner' => 'Created by %s',
 
+	// Date sort menu
+	'assemblies:assembly:section:all' => 'All',
+	'assemblies:assembly:section:previous' => 'Upcoming',
+	'assemblies:assembly:section:next' => 'Done',
+
 	// Decissions
 	'decission:add' => 'Add agenda point',
 	'decission:edit' => 'Edit agenda point',

@@ -21,7 +21,13 @@ if ($next_assembly) {
 				'text' => $title,
 				));
 }
-
+// Show next assembly link
+if ($next_assembly) {
+	echo "<br/>";
+	echo "<b>".elgg_echo('assemblies:next')."</b>";
+	echo ": " . $next_assembly_url;
+	echo "<br/>";
+}
 // Show general assembly settings
 if ($assembly_location) {
 	echo "<b>".elgg_echo('assemblies:assembly_location')."</b>";
@@ -48,11 +54,4 @@ if ($voip) {
 	echo ": " . $voip;
 }
 
-// Show next assembly link
-if ($next_assembly) {
-	echo "<br/>";
-	echo "<br/>";
-	echo "<b>".elgg_echo('assemblies:next')."</b>";
-	echo ": " . $next_assembly_url;
-	echo "<br/>";
-}
+

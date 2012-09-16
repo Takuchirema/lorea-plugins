@@ -41,6 +41,11 @@ $spanish = array(
 	'assemblies:assembly:children' => 'Orden del día',
 	'assemblies:assembly:owner' => 'Creado por %s',
 
+	// Date sort menu
+	'assemblies:assembly:section:all' => 'Todas',
+	'assemblies:assembly:section:previous' => 'Hechas',
+	'assemblies:assembly:section:next' => 'Próximas',
+
 	// Decissions
 	'decission:add' => 'Añadir un punto',
 	'decission:edit' => 'Editar un punto',

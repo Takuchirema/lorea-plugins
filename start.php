@@ -77,6 +77,7 @@ function assemblies_init() {
 	$crud->list_order_direction = 'DESC';
 	$crud->owner_menu = 'group';
 	$crud->title_extend = 'date';
+	$crud->list_tabs = 'date';
 	
 	$variables = array(
 		'title' => 'text',
