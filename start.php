@@ -117,7 +117,7 @@ function push_init() {
 
 	$action_path = elgg_get_plugins_path() . 'elgg-push/actions/push';
 	elgg_register_action("push/subscribe", "$action_path/subscribe.php");
-        elgg_register_action("push/delete_subscription", "$action_path/delete.php");
+        elgg_register_action("push/delete", "$action_path/delete.php");
 
 }
 
