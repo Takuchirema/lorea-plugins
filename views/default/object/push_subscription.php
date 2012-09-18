@@ -46,19 +46,19 @@ if ($vars['full']) {
         $controls = "";
         if ($vars['entity']->canEdit() || isadminloggedin()) {
                 $delete = elgg_view('output/confirmlink', array(
-                        'href' => "{$vars['url']}action/pshb/delete_subscription?guid={$vars['entity']->guid}",
+                        'href' => "{$vars['url']}action/push/delete?guid={$vars['entity']->guid}",
                         'text' => elgg_echo('delete')
                 ));
                 $controls .= " ($delete)";
         }
-        $download = elgg_view('output/url', array('href'=>$vars['url']."action/pshb/download_subscription?guid={$vars['entity']->guid}",
+        $download = elgg_view('output/url', array('href'=>$vars['url']."action/push/download?guid={$vars['entity']->guid}",
                         'text' => elgg_echo('download'),
                         'is_action'=>true));
         $controls .= "($download)";
 
         $info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . $title . "</a></b> $controls </p></div>";
         $info .= '<b>hub:</b> ' .$hub."   ";
-        $info .= '<b>status:</b> ' .elgg_echo('pshb:state:'.$status);
+        $info .= '<b>status:</b> ' .elgg_echo('push:state:'.$status);
 
         if (get_input('search_viewtype') == "gallery") {
                 $icon = "";

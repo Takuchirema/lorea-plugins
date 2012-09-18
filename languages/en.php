@@ -7,6 +7,10 @@ $english = array(
 	"push:delete:success" => "Subscription deleted successfully",
 	"push:delete:failed" => "Failed to delete the subscription",
 	"admin:administer_utilities:push" => 'Pubsubhub subscriptions',
+        "push:state:subscribe" => 'subscribed',
+        "push:state:subscribe failed" => 'subscribe failed',
+	"push:subscribe:success" => "Subscribed successfully",
+	"push:subscribe:failure" => "Failure subscribing to %s",
 );
 
 add_translation("en",$english);
