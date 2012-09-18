@@ -1,6 +1,52 @@
 <?php
 
 /*
+ * pshb_test_subscription
+ *
+ * test subscription to own site
+ */
+function push_subscribeto($url) {
+        $subscription_id = sha1($url . get_site_secret());
+        return push_test_subscription($subscription_id, $url);
+}
+
+/*
+ * pshb_test_subscription
+ *
+ * test subscription to own site
+ */
+function push_test_subscription($subscription_id, $url) {
+        global $CONFIG;
+        //error_log('subscribe:'.$url);
+        //error_log('subscribe:'.$subscription_id);
+        $metadata_pairs = array('subscriber_id'=>$subscription_id);
+        $entities = elgg_get_entities_from_metadata(array('metadata_name_value_pairs'=>$metadata_pairs, 'types'=>'object', 'subtypes'=>'push_subscription'));
+
+        if ($entities) {
+        foreach ($entities as $entity) {
+                $entity->delete();
+        }
+        }
+
+        $sub = PuSHSubscriber::instance('elgg_subs', $subscription_id, 'ElggPuSHSubscription', new ElggPuSHEnvironment());
+        if ($xml = $sub->subscribe($url,
+                        $CONFIG->wwwroot . "push/". $subscription_id)) {
+                $subscription = ElggPuSHSubscription::load('elgg_subs', $subscribtion_id);
+                if ($subscription) {
+                $subscription->entity->title = @current($xml->xpath("//activity:subject"));
+                $subscription->entity->save();
+                }
+               error_log("created subscription");
+                return true;
+        }
+        else {
+               error_log("created subscription failed:".$CONFIG->wwwroot . "push/". $subscription_id);
+                return false;
+        }
+}
+
+
+/*
  * push_notification
  *
  * a push notification has been received
