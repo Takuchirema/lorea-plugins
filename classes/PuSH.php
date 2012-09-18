@@ -1,18 +1,21 @@
 <?php
 
 class PuSH {
-	public static function updateRiverHandler($hook, $type, $returnval, $params) {
+	public static function updateRiverEventHandler($event, $object_type, $item) {
 		global $CONFIG;
 
-		$object_guid = $params['object_guid'];
-		$subject_guid = $params['subject_guid'];
+		$object_guid = $item->object_guid;
+		$subject_guid = $item->subject_guid;
+
+		$access_id = $item->access_id;
+
 		$object = get_entity($object_guid);
 		$subject = get_entity($subject_guid);
 
 		$topic_urls = array();
 
 		// ensure only public stuff gets notified away
-		if ($object->access_id != ACCESS_PUBLIC || $subject->access_id != ACCESS_PUBLIC || $params['access_id'] != ACCESS_PUBLIC) {
+		if ($object->access_id != ACCESS_PUBLIC || $subject->access_id != ACCESS_PUBLIC || $access_id != ACCESS_PUBLIC) {
 			return NULL;
 		}
 
