@@ -37,9 +37,11 @@ function federated_objects_init() {
 
 	elgg_register_plugin_hook_handler('push:notification', 'atom', 'federated_objects_notification');
 
+	// callbacks for specific actions
 	elgg_register_plugin_hook_handler('federated_objects:post', 'article', 'federated_objects_action_post_article');
 	elgg_register_plugin_hook_handler('federated_objects:post', 'bookmark', 'federated_objects_action_post_article');
 	elgg_register_plugin_hook_handler('federated_objects:post', 'note', 'federated_objects_action_post_article');
+	elgg_register_plugin_hook_handler('federated_objects:join', 'group', 'federated_objects_action_post_article');
 }
 
 elgg_register_event_handler('init', 'system', 'federated_objects_init');
