@@ -127,11 +127,6 @@ class PuSHSubscriber {
    * Request handler for subscription callbacks.
    */
   public function handleRequest($callback) {
-	/*error_log("SUBSCRIBE");
-	error_log(PuSH_GET('hub_challenge'));
-	error_log(get_input('hub.challenge'));
-	error_log(get_input('hub_challenge'));
-	error_log(PuSH_GET('hub_challenge'));*/
     if (PuSH_GET('hub_challenge')) {
       $this->verifyRequest();
     }
@@ -166,14 +161,12 @@ class PuSHSubscriber {
      */
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $raw = file_get_contents('php://input');
-      //error_log("raw".$raw);
       if (@simplexml_load_string($raw)) {
         if ($ignore_signature) {
           return $raw;
         }
         if (isset($_SERVER['HTTP_X_HUB_SIGNATURE']) && ($sub = $this->loadSubscription())) {
           $result = array();
-	  // error_log("pshb: ".$_SERVER['HTTP_X_HUB_SIGNATURE']);
           parse_str($_SERVER['HTTP_X_HUB_SIGNATURE'], $result);
           if (isset($result['sha1']) && $result['sha1'] == hash_hmac('sha1', $raw, $sub->secret)) {
             return $raw;
@@ -208,9 +201,7 @@ class PuSHSubscriber {
        *
        * In all other cases confirm negative.
        */
-      // error_log("verify request");
       if ($sub = $this->loadSubscription()) {
-	// error_log("blah".PuSH_GET('hub_verify_token').":".$sub->post_fields['hub.verify_token']);
         if (PuSH_GET('hub_verify_token') == $sub->post_fields['hub.verify_token']) {
           if (PuSH_GET('hub_mode') == 'subscribe' && $sub->status == 'subscribe') {
             $sub->status = 'subscribed';
@@ -261,7 +252,6 @@ class PuSHSubscriber {
    */
   protected function request($hub, $topic, $mode, $callback_url) {
     $secret = hash('sha1', uniqid(rand(), true));
-    // error_log($callback_url);
     $post_fields = array(
       'hub.callback' => $callback_url,
       'hub.mode' => $mode,
@@ -284,8 +274,6 @@ class PuSHSubscriber {
     }
     $data = curl_exec($request);
     $code = curl_getinfo($request, CURLINFO_HTTP_CODE);
-    // error_log($data);
-    // error_log($code);
     if (in_array($code, array(202, 204))) {
       $this->log("Positive response to \"$mode\" request ($code).");
     }
