@@ -13,7 +13,7 @@ $english = array(
 	"push:subscribe:failure" => "Failure subscribing to %s",
 
 	// downloading
-	"push:imported" => "Imported ostatus elements",
+	"push:imported %s" => "Imported %s ostatus elements",
 	"push:couldntdownload" => "Couldn't download from url",
 );
 

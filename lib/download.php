@@ -49,7 +49,7 @@ function push_import_atom_activitystreams($data, $obj=null) {
  */
 function elgg_import_atom_activitystreams($data, $obj=null) {
 	$entries = push_import_atom_activitystreams($data, $obj);
-	system_message(elgg_echo("push:imported")." ".count($entries));
+	system_message(elgg_echo("push:imported", array(count($entries))));
  	forward("admin/administer_utilities/push");
 }
 
@@ -76,7 +76,7 @@ function push_download_atom_activitystreams($url, $obj) {
 function elgg_download_atom_activitystreams($url, $obj) {
 	$entries = push_download_atom_activitystreams($url, $obj);
 	if ($entries) {
-		system_message(elgg_echo("push:imported")." ".count($entries));
+		system_message(elgg_echo("push:imported", array(count($entries))));
 	}
 	else {
 		register_error(elgg_echo('push:couldntdownload'));
