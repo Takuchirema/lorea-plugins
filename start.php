@@ -89,6 +89,7 @@ function federated_objects_create_person($params, $entity) {
 }
 
 function federated_objects_create_note($params, $entity) {
+	error_log("create note!!");
 	$owner = $params['owner_entity'];
 	$entry = $params['entry'];
 	$access_id = ACCESS_PUBLIC;
