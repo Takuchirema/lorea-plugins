@@ -43,7 +43,7 @@ function federated_objects_action_post_note($hook, $type, $return, $params) {
 	$object['author_entity'] = $author;
 
 	$author = FederatedObject::create($author);
-	$object['owner_entity'] = $object;
+	$object['owner_entity'] = $author;
 	$note = FederatedObject::create($object);
 	error_log("note: $hook $type");
 }
@@ -89,32 +89,34 @@ function federated_objects_create_person($params, $entity) {
 }
 
 function federated_objects_create_note($params, $entity) {
-	error_log("create note!!");
 	$owner = $params['owner_entity'];
 	$entry = $params['entry'];
 	$access_id = ACCESS_PUBLIC;
 	$method = 'ostatus';
 
-	$body = @current($entry->xpath("/activity:object/atom:content"));
-	if (!$body) {
+	$body = @current($entry->xpath("activity:object/atom:content"));
+	/*if (!$body) {
 		$body = $entry->xpath("atom:content");
 		if (is_array($body))
 			$body = @current($body);
 		if ($body)
 			$body = $body->asXML();
-	}
+	}*/
 
+	$body = elgg_strip_tags($body);
 
 	if ($entity) {
-		error_log("federated_objects_create_note:exists!");
 		$note = $entity;
 	}
 	else {
+		$access = elgg_set_ignore_access(true);
+
 		$guid = thewire_save_post($body, $owner->guid, $access_id, $parent_guid, $method);
 		$note = get_entity($guid);
 		$note->atom_id = $params['id'];
 		$note->foreign = true;
-		error_log("post created ".$note->guid);
+
+		elgg_set_ignore_access($access);
 	}
 	return $note;
 }

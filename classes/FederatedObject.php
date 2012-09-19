@@ -88,6 +88,7 @@ class FederatedObject {
 						  "//activity:subject/atom:link[attribute::media:width='48']/@href"));
 			$this->author = array('name' => $name,
 				     'id' => $id,
+				     'entry' => $entry,
 				     'type' => 'person',
 				     'link' => $link,
 				     'icon' => $icon);
@@ -106,6 +107,7 @@ class FederatedObject {
 			$link = @current($entry->xpath("activity:target/atom:link[attribute::rel='alternate']/@href"));
 			$this->target = array('id' => $id,
 				     'name' => $name,
+				     'entry' => $entry,
 				     'icon' => $icon,
 				     'link' => $link,
 				     'type' => $type,
@@ -124,6 +126,7 @@ class FederatedObject {
 			$type = $this->getObjectType();
 			$this->object = array('id' => $id,
 				     'name' => $name,
+				     'entry' => $entry,
 				     'icon' => $icon,
 				     'link' => $link,
 				     'type' => $type);
