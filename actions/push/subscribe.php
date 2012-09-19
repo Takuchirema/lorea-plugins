@@ -12,7 +12,7 @@
                 system_message(elgg_echo('push:subscribe:success'));
         }
         else {
-                register_error(elgg_echo('push:subscribe:failure').$dest_url);
+                register_error(elgg_echo('push:subscribe:failure', array($dest_url)));
         }
         forward("admin/administer_utilities/push");
 ?>
