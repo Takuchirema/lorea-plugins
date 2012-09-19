@@ -114,6 +114,7 @@ function federated_objects_create_note($params, $entity) {
 		$note = get_entity($guid);
 		$note->atom_id = $params['id'];
 		$note->foreign = true;
+		error_log("post created ".$note->guid);
 	}
 	return $note;
 }
