@@ -9,7 +9,7 @@ class FederatedObject {
 	 * Load xml
 	 */
 	public static function find($webid) {
-		$options = array('metadata_name' => 'webid',
+		$options = array('metadata_name' => 'atom_id',
 				 'metadata_value' => $webid,
 				 'owner_guid' => ELGG_ENTITIES_ANY_VALUE);
                 $entities = elgg_get_entities_from_metadata($options);
