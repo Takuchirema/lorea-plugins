@@ -40,6 +40,7 @@ function federated_objects_action_post_note($hook, $type, $return, $params) {
 	$author = $notification->getAuthor();
 
 	$author = FederatedObject::create($author);
+	error_log("note: $hook $type");
 }
 
 function fo_randomString($length)
@@ -63,6 +64,7 @@ function federated_objects_create_person($params, $entity) {
 		error_log("federated_objects_create_person:exists!");
 	}
 	else {
+		error_log("federated_objects_create_person:doesnt exists!". $params['id']);
 		$access = elgg_set_ignore_access(true);
 		$entity = new ElggUser();
 		$entity->owner_guid = 0;
@@ -71,10 +73,11 @@ function federated_objects_create_person($params, $entity) {
 		$entity->username = fo_randomString(8);
 		$entity->save();
 		$entity->username = 'ostatus_'.$entity->getGUID();
+		$entity->name = $params['name'];
                 $entity->access_id = ACCESS_PUBLIC;
 		$entity->atom_id = $params['id'];
-		$entity->name = $params['name'];
 		$entity->foreign = true;
+		$entity->save();
 		elgg_set_ignore_access($access);
 	}
 }
