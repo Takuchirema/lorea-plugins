@@ -38,8 +38,13 @@ function federated_objects_action_post_note($hook, $type, $return, $params) {
 	$entry = $params['entry'];
 
 	$author = $notification->getAuthor();
+	$object = $notification->getObject();
+
+	$object['author_entity'] = $author;
 
 	$author = FederatedObject::create($author);
+	$object['owner_entity'] = $object;
+	$note = FederatedObject::create($object);
 	error_log("note: $hook $type");
 }
 
@@ -82,6 +87,34 @@ function federated_objects_create_person($params, $entity) {
 	}
 }
 
+function federated_objects_create_note($params, $entity) {
+	$owner = $params['owner_entity'];
+	$entry = $params['entry'];
+	$access_id = ACCESS_PUBLIC;
+	$method = 'ostatus';
+
+	$body = @current($entry->xpath("/activity:object/atom:content"));
+	if (!$body) {
+		$body = $entry->xpath("atom:content");
+		if (is_array($body))
+			$body = @current($body);
+		if ($body)
+			$body = $body->asXML();
+	}
+
+
+	if ($entity) {
+		error_log("federated_objects_create_note:exists!");
+	}
+	else {
+		$guid = thewire_save_post($body, $owner->guid, $access_id, $parent_guid, $method);
+		$note = get_entity($guid);
+		$note->atom_id = $params['id'];
+		$note->foreign = true;
+	}
+}
+
+
 function federated_objects_init() {
 	#elgg_register_library('elgg:push', elgg_get_plugins_path() . 'elgg-push/lib/push.php');
 
@@ -93,6 +126,7 @@ function federated_objects_init() {
 	elgg_register_plugin_hook_handler('federated_objects:post', 'note', 'federated_objects_action_post_note');
 	elgg_register_plugin_hook_handler('federated_objects:join', 'group', 'federated_objects_action_post_article');
 	FederatedObject::register_constructor('person', 'federated_objects_create_person');
+	FederatedObject::register_constructor('note', 'federated_objects_create_note');
 }
 
 elgg_register_event_handler('init', 'system', 'federated_objects_init');
