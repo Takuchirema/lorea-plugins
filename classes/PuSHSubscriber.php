@@ -77,10 +77,6 @@ class PuSHSubscriber {
     $request = curl_init($url);
     curl_setopt($request, CURLOPT_FOLLOWLOCATION, TRUE);
     curl_setopt($request, CURLOPT_RETURNTRANSFER, TRUE);
-    if ((bool)preg_match('/^https:\/\//i', $url)) {
-		// XXX unhibit ssl verifyier for now...
-                curl_setopt($request, CURLOPT_SSL_VERIFYPEER, 0);
-    }
 
     $data = curl_exec($request);
     $ret_code = curl_getinfo($request, CURLINFO_HTTP_CODE);
