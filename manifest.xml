@@ -14,7 +14,10 @@
 		<type>elgg_release</type>
 		<version>1.8</version>
 	</requires>
-
+	<requires>
+                <type>php_extension</type>
+                <name>curl</name>
+        </requires>
 	<admin_interface>advanced</admin_interface>
 
 </plugin_manifest>
