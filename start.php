@@ -1,46 +1,48 @@
 <?php
 
 /*
- * pshb_test_subscription
+ * push_subscribeto
  *
- * test subscription to own site
+ * subscribe to given url
  */
 function push_subscribeto($url) {
         $subscription_id = sha1($url . get_site_secret());
-        return push_test_subscription($subscription_id, $url);
+        return push_create_subscription($subscription_id, $url);
 }
 
 /*
- * pshb_test_subscription
+ * push_create_subscription
  *
- * test subscription to own site
+ * create the given subscription
  */
-function push_test_subscription($subscription_id, $url) {
-        global $CONFIG;
-        //error_log('subscribe:'.$url);
-        //error_log('subscribe:'.$subscription_id);
-        $metadata_pairs = array('subscriber_id'=>$subscription_id);
-        $entities = elgg_get_entities_from_metadata(array('metadata_name_value_pairs'=>$metadata_pairs, 'types'=>'object', 'subtypes'=>'push_subscription'));
+function push_create_subscription($subscription_id, $url) {
+	$site_url = elgg_get_site_url();
+
+        $metadata_pairs = array('subscriber_id' => $subscription_id);
+        $options = array('metadata_name_value_pairs' => $metadata_pairs,
+			 'types' => 'object',
+			 'subtypes' => 'push_subscription');
+
+        $entities = elgg_get_entities_from_metadata($options);
 
         if ($entities) {
-        foreach ($entities as $entity) {
-                $entity->delete();
-        }
+        	foreach ($entities as $entity) {
+                	$entity->delete();
+	        }
         }
 
         $sub = PuSHSubscriber::instance('elgg_subs', $subscription_id, 'ElggPuSHSubscription', new ElggPuSHEnvironment());
         if ($xml = $sub->subscribe($url,
-                        $CONFIG->wwwroot . "push/". $subscription_id)) {
+                        $site_url . "push/". $subscription_id)) {
                 $subscription = ElggPuSHSubscription::load('elgg_subs', $subscribtion_id);
                 if ($subscription) {
-                $subscription->entity->title = @current($xml->xpath("//activity:subject"));
-                $subscription->entity->save();
+        	        $subscription->entity->title = @current($xml->xpath("//activity:subject"));
+                	$subscription->entity->save();
                 }
-               error_log("created subscription");
                 return true;
         }
         else {
-               error_log("created subscription failed:".$CONFIG->wwwroot . "push/". $subscription_id);
+                error_log("created subscription failed");
                 return false;
         }
 }
@@ -99,7 +101,10 @@ function push_page_handler($page) {
 	$subscriber_id = $page[0];
 	$domain = 'elgg_subs';
 
-	$sub = PuSHSubscriber::instance($domain, $subscriber_id, 'ElggPuSHSubscription', new ElggPuSHEnvironment());
+	$sub = PuSHSubscriber::instance($domain,
+					$subscriber_id,
+					'ElggPuSHSubscription',
+					new ElggPuSHEnvironment());
 	$sub->handleRequest('push_notification');
 	return true;
 }
