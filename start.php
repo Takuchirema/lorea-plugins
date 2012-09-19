@@ -22,7 +22,7 @@ function push_page_handler($page) {
 }
 
 function push_init() {
-	elgg_register_library('elgg:push', elgg_get_plugins_path() . 'push/lib/push.php')
+	elgg_register_library('elgg:push', elgg_get_plugins_path() . 'elgg-push/lib/push.php')
 
 	elgg_extend_view('extensions/channel', 'push/channel');
 
