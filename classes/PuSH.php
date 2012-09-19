@@ -44,11 +44,11 @@ class PuSH {
 		}
 
 		// notify network endpoint
-		$topic_urls[] = $CONFIG->wwwroot . "pg/activity/all?view=atom";
-		$topic_urls[] = $CONFIG->wwwroot . "pg/activity/all?view=rss";
+		$topic_urls[] = $CONFIG->wwwroot . "activity/all?view=atom";
+		$topic_urls[] = $CONFIG->wwwroot . "activity/all?view=rss";
 
 		$hub_url = elgg_get_plugin_setting('hub', 'elgg-push');
-		error_log("hub:".$hub_url);
+
 		$p = new PuSHPublisher($hub_url);
 
 		if (!$p->publish_update($topic_urls)) {
