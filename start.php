@@ -85,6 +85,7 @@ function federated_objects_create_person($params, $entity) {
 		$entity->save();
 		elgg_set_ignore_access($access);
 	}
+	return $entity;
 }
 
 function federated_objects_create_note($params, $entity) {
@@ -105,6 +106,7 @@ function federated_objects_create_note($params, $entity) {
 
 	if ($entity) {
 		error_log("federated_objects_create_note:exists!");
+		$note = $entity;
 	}
 	else {
 		$guid = thewire_save_post($body, $owner->guid, $access_id, $parent_guid, $method);
@@ -112,6 +114,7 @@ function federated_objects_create_note($params, $entity) {
 		$note->atom_id = $params['id'];
 		$note->foreign = true;
 	}
+	return $note;
 }
 
 
