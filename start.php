@@ -41,9 +41,11 @@ function federated_objects_action_post_note($hook, $type, $return, $params) {
 	$object = $notification->getObject();
 
 	$author = FederatedObject::create($author);
+
 	$object['owner_entity'] = $author;
 	$object['entry'] = $entry;
 	$note = FederatedObject::create($object);
+
 	error_log("note: $hook $type");
 }
 
@@ -109,7 +111,7 @@ function federated_objects_create_note($params, $entity) {
 	else {
 		$access = elgg_set_ignore_access(true);
 
-		$guid = thewire_save_post($body, $owner->guid, $access_id, $parent_guid, $method);
+		$guid = thewire_save_post($body, $owner->getGUID(), $access_id, $parent_guid, $method);
 		$note = get_entity($guid);
 		$note->atom_id = $params['id'];
 		$note->foreign = true;
