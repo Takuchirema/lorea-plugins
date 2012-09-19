@@ -8,7 +8,7 @@
 		
 		if ($entity->canEdit() || isadminloggedin()) {
 			
-			if (push_unsubscribeto($entity->topic) && $entity->delete()) {
+			if (push_unsubscribeto($entity->topic)) {
 				
 				system_message(elgg_echo("push:delete:success"));
 				forward("admin/administer_utilities/push");				

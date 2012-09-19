@@ -16,10 +16,12 @@ function push_subscribeto($url) {
  * unsubscribe to given url
  */
 function push_unsubscribeto($url) {
+	$site_url = elgg_get_site_url();
+
         $subscription_id = sha1($url . get_site_secret());
-        $sub = PuSHSubscriber::load('elgg_subs', $subscription_id);
+        $sub = PuSHSubscriber::instance('elgg_subs', $subscription_id, 'ElggPuSHSubscription', new ElggPuSHEnvironment());
         if ($sub->unsubscribe($url,
-                        $site_url . "push/". $subscription_id) != false) {
+                        $site_url . "push/". $subscription_id) !== false) {
 		push_delete_subscriptions($subscription_id);
 		return true;
 	}
