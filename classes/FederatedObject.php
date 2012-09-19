@@ -21,6 +21,7 @@ class FederatedObject {
 		global  $FEDERATED_CONSTRUCTORS;
 		$type = $params['type'];
 		$entity = FederatedObject::find($params['id']);
+		error_log("CREATE:".$FEDERATED_CONSTRUCTORS[$type].":".$params['id']);
 		return call_user_func($FEDERATED_CONSTRUCTORS[$type], $params, $entity);
 	}
 	public static function register_constructor($type, $callback) {
