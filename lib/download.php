@@ -64,7 +64,7 @@ function push_download_atom_activitystreams($url, $obj) {
     	$data = curl_exec($request);
     	$ret_code = curl_getinfo($request, CURLINFO_HTTP_CODE);
 	if ($ret_code == 200 || $ret_code == 302) {
-		return _import_atom_activitystreams($data, $obj);
+		return push_import_atom_activitystreams($data, $obj);
 	}
 	else
 		return false;
