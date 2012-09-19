@@ -40,10 +40,9 @@ function federated_objects_action_post_note($hook, $type, $return, $params) {
 	$author = $notification->getAuthor();
 	$object = $notification->getObject();
 
-	$object['author_entity'] = $author;
-
 	$author = FederatedObject::create($author);
 	$object['owner_entity'] = $author;
+	$object['entry'] = $entry;
 	$note = FederatedObject::create($object);
 	error_log("note: $hook $type");
 }
@@ -103,7 +102,6 @@ function federated_objects_create_note($params, $entity) {
 		if ($body)
 			$body = $body->asXML();
 	}
-
 
 	if ($entity) {
 		$note = $entity;
