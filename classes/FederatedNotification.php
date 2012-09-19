@@ -1,6 +1,54 @@
 <?php
 
 class FederatedNotification {
+	// Elgg Callback
+	public static function notification($hook, $type, $return, $params) {
+		// input parameters
+		$entry = $params['entry'];
+		$subscriber = $params['subscriber'];
+		$salmon_link = $params['salmon_link'];
+
+		$federated = new FederatedNotification();
+		$federated->load($entry);
+
+		// parse verb
+		$verb = $federated->getVerb();
+
+		// parse object type
+		$object_type = $federated->getObjectType();
+
+		$target = $federated->getObject();
+
+		// output
+		$params = array('notification' => $federated,
+				'subscriber' => $subscriber,
+				'salmon_link' => $salmon_link,
+				'entry' => $entry);
+		trigger_plugin_hook('federated_objects:'.$verb, $object_type, $params);
+	}
+
+	// Specific callbacks for river actions
+	public static function postLogger($hook, $type, $return, $params) {
+		$federated = $params['notification'];
+		error_log("action: $hook $type");
+	}
+
+	public static function postObjectCreator($hook, $type, $return, $params) {
+		$notification = $params['notification'];
+		$subscriber = $params['subscriber'];
+		$entry = $params['entry'];
+
+		$author = $notification->getAuthor();
+		$object = $notification->getObject();
+
+		$author = FederatedObject::create($author);
+
+		$object['owner_entity'] = $author;
+		$object['entry'] = $entry;
+		$note = FederatedObject::create($object);
+
+		error_log("note: $hook $type");
+	}
 
 	/**
 	 * Load xml
