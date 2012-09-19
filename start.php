@@ -95,15 +95,15 @@ function federated_objects_create_note($params, $entity) {
 	$method = 'ostatus';
 
 	$body = @current($entry->xpath("activity:object/atom:content"));
-	/*if (!$body) {
+	$body = elgg_strip_tags($body);
+	if (empty($body)) {
 		$body = $entry->xpath("atom:content");
 		if (is_array($body))
 			$body = @current($body);
 		if ($body)
 			$body = $body->asXML();
-	}*/
+	}
 
-	$body = elgg_strip_tags($body);
 
 	if ($entity) {
 		$note = $entity;
