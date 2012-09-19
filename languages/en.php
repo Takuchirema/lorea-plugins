@@ -11,6 +11,10 @@ $english = array(
         "push:state:subscribe failed" => 'subscribe failed',
 	"push:subscribe:success" => "Subscribed successfully",
 	"push:subscribe:failure" => "Failure subscribing to %s",
+
+	// downloading
+	"push:imported" => "Imported ostatus elements",
+	"push:couldntdownload" => "Couldn't download from url",
 );
 
 add_translation("en",$english);

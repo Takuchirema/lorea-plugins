@@ -5,10 +5,7 @@
  */
 function push_page_handler($page) {
 	// A notification has arrived for one of our subscribers
-	elgg_load_library('elgg:push');
-
-	//require_once $CONFIG->path . "engine/lib/api.php";
-	//include_post_data();
+	elgg_load_library('elgg:push:download');
 
 	$subscriber_id = $page[0];
 	$domain = 'elgg_subs';
@@ -23,6 +20,7 @@ function push_page_handler($page) {
 
 function push_init() {
 	elgg_register_library('elgg:push', elgg_get_plugins_path() . 'elgg-push/lib/push.php');
+	elgg_register_library('elgg:push:download', elgg_get_plugins_path() . 'elgg-push/lib/download.php');
 
 	elgg_extend_view('extensions/channel', 'push/channel');
 
@@ -37,6 +35,7 @@ function push_init() {
 	$action_path = elgg_get_plugins_path() . 'elgg-push/actions/push';
 	elgg_register_action("push/subscribe", "$action_path/subscribe.php");
         elgg_register_action("push/delete", "$action_path/delete.php");
+        elgg_register_action("push/download", "$action_path/download.php");
 
 }
 
