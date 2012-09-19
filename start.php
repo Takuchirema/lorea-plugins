@@ -7,7 +7,7 @@ function federated_objects_notification($hook, $type, $return, $params) {
 	$subscriber = $params['subscriber'];
 	$salmon_link = $params['salmon_link'];
 
-	$federated = new FederatedObject();
+	$federated = new FederatedNotification();
 	$federated->load($entry);
 
 	// parse verb
