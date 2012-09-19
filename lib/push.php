@@ -50,7 +50,10 @@ function push_create_subscription($subscription_id, $url) {
 /*
  * push_notification
  *
- * a push notification has been received
+ * A push notification has been received
+ * 
+ * This function separates individual entries and triggers a hook
+ * for each one.
  */
 function push_notification($raw, $domain, $subscriber_id) {
         // Parse $raw and store the changed items for the subscription identified
@@ -78,8 +81,7 @@ function push_notification($raw, $domain, $subscriber_id) {
                 $params = array('entry' => $entry,
 				'subscriber' => $subscriber->entity,
 				'salmon_link' => $salmon_link);
-                trigger_plugin_hook('foreign_notification', 'foreign_notification', $params);
-		error_log("PuSH notification arrived");
+                trigger_plugin_hook('push:notification', 'atom', $params);
         }
 }
 
