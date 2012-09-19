@@ -1,10 +1,32 @@
 <?php
 
+global $FEDERATED_CONSTRUCTORS;
+$FEDERATED_CONSTRUCTORS = array();
+
 class FederatedObject {
 
 	/**
 	 * Load xml
 	 */
+	public static function find($webid) {
+		$options = array('metadata_name' => 'webid',
+				 'metadata_value' => $webid,
+				 'owner_guid' => ELGG_ENTITIES_ANY_VALUE);
+                $entities = elgg_get_entities_from_metadata($options);
+                if ($entities) {
+                        return $entities[0];
+                }
+	}
+	public static function create($params) {
+		global  $FEDERATED_CONSTRUCTORS;
+		$type = $params['type'];
+		$entity = FederatedObject::find($params['id']);
+		return call_user_func($FEDERATED_CONSTRUCTORS[$type])($params, $entity);
+	}
+	public static function register_constructor($type, $callback) {
+		global  $FEDERATED_CONSTRUCTORS;
+		$FEDERATED_CONSTRUCTORS[$type] = $callback;
+	}
 	public function load($xml) {
 		$this->xml = $xml;
 	}
@@ -65,6 +87,7 @@ class FederatedObject {
 						  "//activity:subject/atom:link[attribute::media:width='48']/@href"));
 			$this->author = array('name' => $name,
 				     'id' => $id,
+				     'type' => 'person',
 				     'link' => $link,
 				     'icon' => $icon);
 		}
