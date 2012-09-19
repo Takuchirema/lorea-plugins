@@ -17,7 +17,7 @@ function push_subscribeto($url) {
  */
 function push_unsubscribeto($url) {
         $subscription_id = sha1($url . get_site_secret());
-        $sub = PuSHSubscriber::instance('elgg_subs', $subscription_id, 'ElggPuSHSubscription', new ElggPuSHEnvironment());
+        $sub = PuSHSubscriber::load('elgg_subs', $subscription_id);
         if ($sub->unsubscribe($url,
                         $site_url . "push/". $subscription_id) != false) {
 		push_delete_subscriptions($subscription_id);
