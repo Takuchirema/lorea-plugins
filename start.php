@@ -39,15 +39,44 @@ function federated_objects_action_post_note($hook, $type, $return, $params) {
 
 	$author = $notification->getAuthor();
 
-	error_log("post note!");
 	$author = FederatedObject::create($author);
 }
 
+function fo_randomString($length)
+{
+    // Generate random 32 charecter string
+    $string = md5(time());
+
+    // Position Limiting
+    $highest_startpoint = 32-$length;
+
+    // Take a random starting point in the randomly
+    // Generated String, not going any higher then $highest_startpoint
+    $randomString = substr($string,rand(0,$highest_startpoint),$length);
+
+    return $randomString;
+
+}
+
 function federated_objects_create_person($params, $entity) {
-	if ($entity)
+	if ($entity) {
 		error_log("federated_objects_create_person:exists!");
-	else
-		error_log("federated_objects_create_person:doesnt exists!");
+	}
+	else {
+		$access = elgg_set_ignore_access(true);
+		$entity = new ElggUser();
+		$entity->owner_guid = 0;
+		$entity->container_guid = 0;
+		$entity->subtype = 'ostatus';
+		$entity->username = fo_randomString(8);
+		$entity->save();
+		$entity->username = 'ostatus_'.$entity->getGUID();
+                $entity->access_id = ACCESS_PUBLIC;
+		$entity->atom_id = $params['id'];
+		$entity->name = $params['name'];
+		$entity->foreign = true;
+		elgg_set_ignore_access($access);
+	}
 }
 
 function federated_objects_init() {
