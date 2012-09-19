@@ -87,10 +87,16 @@ class FederatedObject {
 				$body = $body->asXML();
 		}
 
+
 		if ($entity) {
 			$note = $entity;
 		}
 		else {
+			$parent_id = @current($entry->xpath("activity:object/thr:in-reply-to/atom:id"));
+			if ($parent_id) {
+				$parent = FederatedObject::find($parent_id);
+				$parent_guid = $parent->getGUID();
+			}
 			$access = elgg_set_ignore_access(true);
 
 			$guid = thewire_save_post($body, $owner->getGUID(), $access_id, $parent_guid, $method);
