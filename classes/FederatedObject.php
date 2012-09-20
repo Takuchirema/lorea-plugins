@@ -29,13 +29,13 @@ class FederatedObject {
 	public static function isLocalID($webid) {
 		// check if id starts with site url
 		$site_url = elgg_get_site_url();
-		if (srtrpos($webid, $site_url) == 0) {
+		if (strpos($webid, $site_url) === 0) {
 			return true;
 		}
 
 		// check if id starts with tag:host,
 		$host = parse_url($site_url, PHP_URL_HOST);
-		if (srtrpos($webid, "tag:$host,") == 0) {
+		if (strpos($webid, "tag:$host,") === 0) {
 			return true;
 		}
 		return false;

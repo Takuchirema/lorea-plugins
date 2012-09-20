@@ -72,6 +72,7 @@ class FederatedNotification {
 		$river_id = FederatedNotification::getRiverID($id);
 
 		if ($river_id || $notification->isLocal()) {
+			error_log("bailing out ".$river_id);
 			return;
 		}
 
@@ -200,7 +201,7 @@ class FederatedNotification {
 	public function isLocal() {
 		$id = $this->getID();
 
-		if (ForeignObject::isLocalID($id)) {
+		if (FederatedObject::isLocalID($id)) {
 			return true;
 		}
 		return false;
