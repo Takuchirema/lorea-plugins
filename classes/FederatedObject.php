@@ -26,6 +26,21 @@ class FederatedObject {
 		return call_user_func($FEDERATED_CONSTRUCTORS[$type], $params, $entity);
 	}
 
+	public static function isLocalID($webid) {
+		// check if id starts with site url
+		$site_url = elgg_get_site_url();
+		if (srtrpos($webid, $site_url) == 0) {
+			return true;
+		}
+
+		// check if id starts with tag:host,
+		$host = parse_url($site_url, PHP_URL_HOST);
+		if (srtrpos($webid, "tag:$host,") == 0) {
+			return true;
+		}
+		return false;
+	}
+
 	public static function register_constructor($type, $callback) {
 		global  $FEDERATED_CONSTRUCTORS;
 		$FEDERATED_CONSTRUCTORS[$type] = $callback;
@@ -103,6 +118,13 @@ class FederatedObject {
 			$note = get_entity($guid);
 			$note->atom_id = $params['id'];
 			$note->foreign = true;
+			//add_to_river('river/object/thewire/create', 'create', $post->owner_guid, $post->guid);
+			$options = array('object_guid'=>$guid, 'action_types'=>'create', 'subject_guid'=>$owner->getGUID());
+			$river_items = elgg_get_river($options);
+			if ($river_items) {
+				$river_item = $river_items[0];
+				FederatedNotification::setIDMapping($river_item->id, $params['id']);
+			}
 
 			elgg_set_ignore_access($access);
 		}

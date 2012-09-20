@@ -1,6 +1,33 @@
 <?php
 
 class FederatedNotification {
+	// River to atomid mapping
+	public static function getRiverAtomID($river_id) {
+		global $CONFIG;
+		$prefix = $CONFIG->dbprefix;
+		$river_id = (int)$river_id;
+		$sql = "SELECT atom_id FROM {$prefix}river_atomid_mapping WHERE river_id=$river_id";
+		$data = get_data_row($sql);
+		if ($data)
+			return $data->river_id;
+	}
+	public static function getRiverID($atom_id) {
+		global $CONFIG;
+		$prefix = $CONFIG->dbprefix;
+		$atom_id = sanitise_string($atom_id);
+		$sql = "SELECT river_id FROM {$prefix}river_atomid_mapping WHERE atom_id='$atom_id'";
+		$data = get_data_row($sql);
+		if ($data)
+			return $data->river_id;
+	}
+	public static function setIDMapping($river_id, $atom_id) {
+		global $CONFIG;
+		$river_id = (int)$river_id;
+		$atom_id = sanitise_string($atom_id);
+		$prefix = $CONFIG->dbprefix;
+		$sql = "INSERT INTO {$prefix}river_atomid_mapping (river_id, atom_id) VALUES($river_id, '$atom_id')";
+		insert_data($sql);
+	}
 	// Elgg Callback
 	public static function notification($hook, $type, $return, $params) {
 		// input parameters
@@ -41,6 +68,13 @@ class FederatedNotification {
 		$author = $notification->getAuthor();
 		$object = $notification->getObject();
 
+		$id = $notification->getID();
+		$river_id = FederatedNotification::getRiverID($id);
+
+		if ($river_id || $notification->isLocal()) {
+			return;
+		}
+
 		$author = FederatedObject::create($author);
 
 		$object['owner_entity'] = $author;
@@ -55,6 +89,10 @@ class FederatedNotification {
 	 */
 	public function load($xml) {
 		$this->xml = $xml;
+	}
+
+	public function getID() {
+		return @current($this->xml->xpath("atom:id"));
 	}
 
 	public function getVerb() {
@@ -159,4 +197,12 @@ class FederatedNotification {
 		return $this->object;
 	}
 
+	public function isLocal() {
+		$id = $this->getID();
+
+		if (ForeignObject::isLocalID($id)) {
+			return true;
+		}
+		return false;
+	}
 }
