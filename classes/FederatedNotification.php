@@ -107,8 +107,7 @@ class FederatedNotification {
 	}
 
 	public function getID() {
-		#return @current($this->xml->xpath("atom:id"));
-		return @current($this->xml->getElementsByTagName("atom:id"))->nodeValue;
+		return @current($this->xml->xpath("atom:id"));
 	}
 
 	public function getVerb() {
