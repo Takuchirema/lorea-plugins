@@ -9,7 +9,7 @@ class FederatedNotification {
 		$sql = "SELECT atom_id FROM {$prefix}river_atomid_mapping WHERE river_id=$river_id";
 		$data = get_data_row($sql);
 		if ($data)
-			return $data->river_id;
+			return $data->atom_id;
 	}
 	public static function getRiverID($atom_id) {
 		global $CONFIG;
@@ -106,7 +106,8 @@ class FederatedNotification {
 	}
 
 	public function getID() {
-		return @current($this->xml->xpath("atom:id"));
+		#return @current($this->xml->xpath("atom:id"));
+		return @current($this->xml->getElementsByTagName("atom:id"))->nodeValue;
 	}
 
 	public function getVerb() {
