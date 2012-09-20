@@ -34,9 +34,9 @@ class FederatedBookmark {
 			$entity->atom_link = $params['link'];
 			$entity->foreign = true;
 			if ($entity->save()) {
-				if ($notification->getVerb() == 'create') {
-   			             $id = add_to_river('river/object/bookmarks/create','create', $owner->getGUID(), $entity->getGUID());
-				     FederatedNotification::setIDMapping($id, $notification->getID());
+				if ($notification->getVerb() == 'post') {
+   			        	$id = add_to_river('river/object/bookmarks/create','create', $owner->getGUID(), $entity->getGUID());
+					FederatedNotification::setIDMapping($id, $notification->getID());
 			        }
 			}
 
