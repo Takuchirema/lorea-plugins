@@ -121,6 +121,29 @@ class FederatedNotification {
 		}
 		return $verb;
 	}
+	public function getBody() {
+		$entry = $this->xml;
+		$body = @current($entry->xpath("activity:object/atom:content"));
+		$body = elgg_strip_tags($body);
+		if (empty($body)) {
+			$body = $entry->xpath("atom:content");
+			if (is_array($body))
+				$body = @current($body);
+			if ($body)
+				$body = $body->asXML();
+		}
+		return $body;
+	}
+	
+	public function getParentGUID() {
+		$entry = $this->xml;
+		$parent_id = @current($entry->xpath("activity:object/thr:in-reply-to/atom:id"));
+		if ($parent_id) {
+			$parent = FederatedObject::find($parent_id);
+			$parent_guid = $parent->getGUID();
+		}
+		return $parent_guid;
+	}
 
 	public function getUpdated() {
 		return @current($this->xml->xpath("atom:updated"));

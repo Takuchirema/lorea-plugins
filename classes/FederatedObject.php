@@ -89,47 +89,41 @@ class FederatedObject {
 	public static function create_note($params, $entity) {
 		$owner = $params['owner_entity'];
 		$entry = $params['entry'];
+		$notification = $params['notification'];
 		$access_id = ACCESS_PUBLIC;
 		$method = 'ostatus';
 
-		$body = @current($entry->xpath("activity:object/atom:content"));
-		$body = elgg_strip_tags($body);
-		if (empty($body)) {
-			$body = $entry->xpath("atom:content");
-			if (is_array($body))
-				$body = @current($body);
-			if ($body)
-				$body = $body->asXML();
-		}
-
+		$body = $notification->getBody();
 
 		if ($entity) {
 			$note = $entity;
 		}
 		else {
-			$parent_id = @current($entry->xpath("activity:object/thr:in-reply-to/atom:id"));
-			if ($parent_id) {
-				$parent = FederatedObject::find($parent_id);
-				$parent_guid = $parent->getGUID();
-			}
+			$parent_guid = $notification->getParentGUID();
+
 			$access = elgg_set_ignore_access(true);
 
 			$guid = thewire_save_post($body, $owner->getGUID(), $access_id, $parent_guid, $method);
 			$note = get_entity($guid);
 			$note->atom_id = $params['id'];
 			$note->foreign = true;
-			//add_to_river('river/object/thewire/create', 'create', $post->owner_guid, $post->guid);
-			$options = array('object_guid'=>$guid, 'action_types'=>'create', 'subject_guid'=>$owner->getGUID());
-			$river_items = elgg_get_river($options);
-			if ($river_items) {
-				$river_item = $river_items[0];
-				FederatedNotification::setIDMapping($river_item->id, $params['notification']->getID());
-			}
+
+			FederatedNotification::search_tag_river($note, $owner, 'create', $notification);
 
 			elgg_set_ignore_access($access);
 		}
 		return $note;
-}
+	}
+	public static function search_tag_river($object, $owner, $action, $notification) {
+			$options = array('object_guid' => $object->getGUID(),
+					 'action_types' => $action,
+					 'subject_guid' => $owner->getGUID());
+			$river_items = elgg_get_river($options);
+			if ($river_items) {
+				$river_item = $river_items[0];
+				FederatedNotification::setIDMapping($river_item->id, $notification->getID());
+			}
+	}
 
 
 }
