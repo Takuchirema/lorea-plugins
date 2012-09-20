@@ -11,10 +11,7 @@ class FederatedBookmark {
 		$description = @current($entry->xpath("activity:object/atom:summary"));
 		$address = @current($entry->xpath("activity:object/atom:link[attribute::rel='related']/@href"));
 
-		if ($entity) {
-			$note = $entity;
-		}
-		else {
+		if (empty($entity)) {
 			$access = elgg_set_ignore_access(true);
 
 			$entity = new ElggObject;

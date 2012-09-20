@@ -11,7 +11,6 @@ class FederatedPerson {
 			}
 		}
 		else {
-			error_log("federated_objects_create_person:doesnt exists!". $params['id']);
 			$access = elgg_set_ignore_access(true);
 			$entity = new ElggUser();
 			$entity->owner_guid = 0;

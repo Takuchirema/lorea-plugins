@@ -86,14 +86,12 @@ class FederatedNotification {
 		$river_id = FederatedNotification::getRiverID($id);
 
 		if ($river_id || $notification->isLocal()) {
-			error_log("bailing out ".$river_id);
 			return;
 		}
 
 		$author = FederatedObject::create($author);
 
 		if ($target) {
-			error_log("postObjectCreator:create target");
 			$target['entry'] = $entry;
 			$target['notification'] = $notification;
 			$container = FederatedObject::create($target);
@@ -104,8 +102,6 @@ class FederatedNotification {
 		$object['entry'] = $entry;
 		$object['notification'] = $notification;
 		$note = FederatedObject::create($object);
-
-		error_log("note: $hook $type");
 	}
 
 	/**
