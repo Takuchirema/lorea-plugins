@@ -25,6 +25,8 @@ class FederatedBookmark {
 			$entity->title = $params['name'];
 			$entity->description = $description;
 			$entity->address = $address;
+			if ($params['tags'])
+				$entity->tags = $params['tags'];
 
 			// atom fields
 			$entity->atom_id = $params['id'];

@@ -42,6 +42,8 @@ class FederatedGroup {
 			$group->membership = ACCESS_PUBLIC; // XXX
 			$group->description = $description;
 			$group->briefdescription = $brief_description;
+			if ($params['tags'])
+				$group->interests = $params['tags'];
 			$group->atom_id = $params['id'];
 			$group->atom_link = $params['link'];
 			$group->foreign = true;

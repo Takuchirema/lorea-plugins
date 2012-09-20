@@ -211,6 +211,9 @@ class FederatedNotification {
 			$icon = @current($entry->xpath("activity:target/atom:link[attribute::rel='preview']/@href"));
 			$name = @current($entry->xpath("activity:target/atom:title"));
 			$link = @current($entry->xpath("activity:target/atom:link[attribute::rel='alternate']/@href"));
+			$tags = $entry->xpath("activity:target/atom:category/@term");
+			if ($tags)
+				$tags = string_to_tag_array(implode(", ", $tags));
 			if (empty($id) && empty($type)) {
 				return;
 			}
@@ -219,6 +222,7 @@ class FederatedNotification {
 				     'entry' => $entry,
 				     'icon' => $icon,
 				     'link' => $link,
+				     'tags' => $tags,
 				     'type' => trim($type),
 				);
 		}
@@ -232,12 +236,16 @@ class FederatedNotification {
 			$id = $this->xpath(array("activity:object/atom:id", "atom:id"));
 			$icon = @current($entry->xpath("activity:object/atom:link[attribute::rel='preview']/@href"));
 			$link = @current($entry->xpath("activity:object/atom:link[attribute::rel='alternate']/@href"));
+			$tags = $entry->xpath("activity:object/atom:category/@term");
+			if ($tags)
+				$tags = string_to_tag_array(implode(", ", $tags));
 			$type = $this->getObjectType();
 			$this->object = array('id' => $id,
 				     'name' => $name,
 				     'entry' => $entry,
 				     'icon' => $icon,
 				     'link' => $link,
+				     'tags' => $tags,
 				     'type' => trim($type));
 		}
 		return $this->object;
