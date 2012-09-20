@@ -215,12 +215,15 @@ class FederatedNotification {
 			$icon = @current($entry->xpath("activity:target/atom:link[attribute::rel='preview']/@href"));
 			$name = @current($entry->xpath("activity:target/atom:title"));
 			$link = @current($entry->xpath("activity:target/atom:link[attribute::rel='alternate']/@href"));
+			if (empty($id) && empty($type)) {
+				return;
+			}
 			$this->target = array('id' => $id,
 				     'name' => $name,
 				     'entry' => $entry,
 				     'icon' => $icon,
 				     'link' => $link,
-				     'type' => $type,
+				     'type' => trim($type),
 				);
 		}
 		return $this->target;
@@ -239,7 +242,7 @@ class FederatedNotification {
 				     'entry' => $entry,
 				     'icon' => $icon,
 				     'link' => $link,
-				     'type' => $type);
+				     'type' => trim($type));
 		}
 		return $this->object;
 	}
