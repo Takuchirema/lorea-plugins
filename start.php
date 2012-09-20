@@ -1,17 +1,5 @@
 <?php
 
-function federated_objects_thewire_url($object) {
-	if ($object->atom_link)
-		return $object->atom_link;
-	return thewire_url($object);
-}
-
-function federated_objects_user_url($object) {
-	if ($object->atom_link)
-		return $object->atom_link;
-	return profile_url($object);
-}
-
 function federated_objects_init() {
 	// callback for incoming items for now coming from pubsubhub
 	elgg_register_plugin_hook_handler('push:notification', 'atom', array('FederatedNotification', 'notification'));
@@ -27,15 +15,15 @@ function federated_objects_init() {
 	elgg_register_plugin_hook_handler('activitystreams:id', 'river', array('FederatedNotification', 'river_id'));
 
 	// object constructors, plugins can register their own to support new data types
-	FederatedObject::register_constructor('person', array('FederatedObject', 'create_person'));
-	FederatedObject::register_constructor('note', array('FederatedObject', 'create_note'));
+	FederatedObject::register_constructor('person', array('FederatedPerson', 'create'));
+	FederatedObject::register_constructor('note', array('FederatedNote', 'create'));
 
 	// override object urls
 	if (is_plugin_enabled('profile')) {
-		elgg_register_entity_url_handler('user', 'all', 'federated_objects_user_url');
+		elgg_register_entity_url_handler('user', 'all', array('FederatedPerson', 'url'));
 	}
 	if (is_plugin_enabled('thewire')) {
-		elgg_register_entity_url_handler('object', 'thewire', 'federated_objects_thewire_url');
+		elgg_register_entity_url_handler('object', 'thewire', array('FederatedNote', 'url'));
 	}
 }
 
