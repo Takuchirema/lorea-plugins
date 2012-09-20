@@ -11,8 +11,8 @@ function federated_objects_init() {
 	elgg_register_plugin_hook_handler('federated_objects:join', 'group', array('FederatedNotification', 'postLogger'));
 
 	// override atom id for foreign objects
-	elgg_register_plugin_hook_handler('activitystreams:id', 'entity', array('FederatedNotification', 'entity_id'));
-	elgg_register_plugin_hook_handler('activitystreams:id', 'river', array('FederatedNotification', 'river_id'));
+	elgg_register_plugin_hook_handler('activitystreams:id', 'entity', array('AtomRiverMapper', 'entity_id'));
+	elgg_register_plugin_hook_handler('activitystreams:id', 'river', array('AtomRiverMapper', 'river_id'));
 
 	// object constructors, plugins can register their own to support new data types
 	FederatedObject::register_constructor('person', array('FederatedPerson', 'create'));
