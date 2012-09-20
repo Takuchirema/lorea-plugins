@@ -123,7 +123,7 @@ class FederatedObject {
 			$river_items = elgg_get_river($options);
 			if ($river_items) {
 				$river_item = $river_items[0];
-				FederatedNotification::setIDMapping($river_item->id, $params['id']);
+				FederatedNotification::setIDMapping($river_item->id, $params['notification']->getID());
 			}
 
 			elgg_set_ignore_access($access);

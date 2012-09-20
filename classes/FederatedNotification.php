@@ -93,6 +93,7 @@ class FederatedNotification {
 
 		$object['owner_entity'] = $author;
 		$object['entry'] = $entry;
+		$object['notification'] = $notification;
 		$note = FederatedObject::create($object);
 
 		error_log("note: $hook $type");
