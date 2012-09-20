@@ -63,12 +63,13 @@ class FederatedObject {
 	}
 
 	public static function create_person($params, $entity) {
-		if ($entity && $entity->foreign) {
-			error_log("federated_objects_create_person:exists!");
-			$access = elgg_set_ignore_access(true);
-			$entity->atom_id = $params['id'];
-			$entity->atom_link = $params['link'];
-			elgg_set_ignore_access($access);
+		if ($entity) {
+			if ($entity->foreign) {
+				$access = elgg_set_ignore_access(true);
+				$entity->atom_id = $params['id'];
+				$entity->atom_link = $params['link'];
+				elgg_set_ignore_access($access);
+			}
 		}
 		else {
 			error_log("federated_objects_create_person:doesnt exists!". $params['id']);
