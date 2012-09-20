@@ -6,7 +6,7 @@ function federated_objects_init() {
 
 	// callbacks for specific actions, implement procedures to manage object - verb combinations
 	elgg_register_plugin_hook_handler('federated_objects:post', 'article', array('FederatedNotification', 'postLogger'));
-	elgg_register_plugin_hook_handler('federated_objects:post', 'bookmark', array('FederatedNotification', 'postLogger'));
+	elgg_register_plugin_hook_handler('federated_objects:post', 'bookmark', array('FederatedNotification', 'postObjectCreator'));
 	elgg_register_plugin_hook_handler('federated_objects:post', 'note', array('FederatedNotification', 'postObjectCreator'));
 	elgg_register_plugin_hook_handler('federated_objects:join', 'group', array('FederatedNotification', 'postLogger'));
 
@@ -17,6 +17,7 @@ function federated_objects_init() {
 	// object constructors, plugins can register their own to support new data types
 	FederatedObject::register_constructor('person', array('FederatedPerson', 'create'));
 	FederatedObject::register_constructor('note', array('FederatedNote', 'create'));
+	FederatedObject::register_constructor('bookmark', array('FederatedBookmark', 'create'));
 
 	// override object urls
 	if (is_plugin_enabled('profile')) {
@@ -24,6 +25,9 @@ function federated_objects_init() {
 	}
 	if (is_plugin_enabled('thewire')) {
 		elgg_register_entity_url_handler('object', 'thewire', array('FederatedNote', 'url'));
+	}
+	if (is_plugin_enabled('bookmarks')) {
+		elgg_register_entity_url_handler('object', 'bookmarks', array('FederatedBookmark', 'url'));
 	}
 }
 
