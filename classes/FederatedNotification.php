@@ -28,7 +28,20 @@ class FederatedNotification {
 		$sql = "INSERT INTO {$prefix}river_atomid_mapping (river_id, atom_id) VALUES($river_id, '$atom_id')";
 		insert_data($sql);
 	}
-	// Elgg Callback
+	// Elgg Callbacks
+	public static function river_id($hook, $type, $return, $params) {
+		$item = $params['item'];
+		$atom_id = FederatedNotification::getRiverAtomID($item->id);
+		if ($atom_id)
+			return $atom_id;
+		return $return;
+	}
+	public static function entity_id($hook, $type, $return, $params) {
+		$entity = $params['entity'];
+		if ($entity->atom_id)
+			return $entity->atom_id;
+		return $return;
+	}
 	public static function notification($hook, $type, $return, $params) {
 		// input parameters
 		$entry = $params['entry'];

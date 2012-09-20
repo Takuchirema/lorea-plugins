@@ -11,6 +11,9 @@ function federated_objects_init() {
 	elgg_register_plugin_hook_handler('federated_objects:post', 'note', array('FederatedNotification', 'postObjectCreator'));
 	elgg_register_plugin_hook_handler('federated_objects:join', 'group', array('FederatedNotification', 'postLogger'));
 
+	elgg_register_plugin_hook_handler('activitystreams:id', 'entity', array('FederatedNotification', 'entity_id'));
+	elgg_register_plugin_hook_handler('activitystreams:id', 'river', array('FederatedNotification', 'river_id'));
+
 	// object constructors, plugins can register their own to support new data types
 	FederatedObject::register_constructor('person', array('FederatedObject', 'create_person'));
 	FederatedObject::register_constructor('note', array('FederatedObject', 'create_note'));
