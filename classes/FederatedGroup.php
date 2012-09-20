@@ -2,6 +2,7 @@
 
 class FederatedGroup {
 	public static function create($params, $entity) {
+		global $CONFIG;
 		$owner = $params['owner_entity'];
 		$entry = $params['entry'];
 		$notification = $params['notification'];
@@ -14,6 +15,7 @@ class FederatedGroup {
 				$entity->atom_link = $params['link'];
 				elgg_set_ignore_access($access);
 			}
+			$group = $entity;
 		}
 		else {
 			$access = elgg_set_ignore_access(true);
