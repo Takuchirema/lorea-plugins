@@ -63,8 +63,12 @@ class FederatedObject {
 	}
 
 	public static function create_person($params, $entity) {
-		if ($entity) {
+		if ($entity && $entity->foreign) {
 			error_log("federated_objects_create_person:exists!");
+			$access = elgg_set_ignore_access(true);
+			$entity->atom_id = $params['id'];
+			$entity->atom_link = $params['link'];
+			elgg_set_ignore_access($access);
 		}
 		else {
 			error_log("federated_objects_create_person:doesnt exists!". $params['id']);
@@ -79,6 +83,7 @@ class FederatedObject {
 			$entity->name = $params['name'];
 			$entity->access_id = ACCESS_PUBLIC;
 			$entity->atom_id = $params['id'];
+			$entity->atom_link = $params['link'];
 			$entity->foreign = true;
 			$entity->save();
 			elgg_set_ignore_access($access);
@@ -106,6 +111,7 @@ class FederatedObject {
 			$guid = thewire_save_post($body, $owner->getGUID(), $access_id, $parent_guid, $method);
 			$note = get_entity($guid);
 			$note->atom_id = $params['id'];
+			$note->atom_link = $params['link'];
 			$note->foreign = true;
 
 			FederatedObject::search_tag_river($note, $owner, 'create', $notification);
