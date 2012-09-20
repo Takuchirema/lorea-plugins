@@ -108,7 +108,7 @@ class FederatedObject {
 			$note->atom_id = $params['id'];
 			$note->foreign = true;
 
-			FederatedNotification::search_tag_river($note, $owner, 'create', $notification);
+			FederatedObject::search_tag_river($note, $owner, 'create', $notification);
 
 			elgg_set_ignore_access($access);
 		}
