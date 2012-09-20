@@ -80,6 +80,7 @@ class FederatedNotification {
 
 		$author = $notification->getAuthor();
 		$object = $notification->getObject();
+		$target = $notification->getTarget();
 
 		$id = $notification->getID();
 		$river_id = FederatedNotification::getRiverID($id);
@@ -90,6 +91,14 @@ class FederatedNotification {
 		}
 
 		$author = FederatedObject::create($author);
+
+		if ($target) {
+			error_log("postObjectCreator:create target");
+			$target['entry'] = $entry;
+			$target['notification'] = $notification;
+			$container = FederatedObject::create($target);
+			$object['container_entity'] = $container;
+		}
 
 		$object['owner_entity'] = $author;
 		$object['entry'] = $entry;

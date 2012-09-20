@@ -18,6 +18,7 @@ function federated_objects_init() {
 	FederatedObject::register_constructor('person', array('FederatedPerson', 'create'));
 	FederatedObject::register_constructor('note', array('FederatedNote', 'create'));
 	FederatedObject::register_constructor('bookmark', array('FederatedBookmark', 'create'));
+	FederatedObject::register_constructor('group', array('FederatedGroup', 'create'));
 
 	// override object urls
 	if (is_plugin_enabled('profile')) {
@@ -28,6 +29,9 @@ function federated_objects_init() {
 	}
 	if (is_plugin_enabled('bookmarks')) {
 		elgg_register_entity_url_handler('object', 'bookmarks', array('FederatedBookmark', 'url'));
+	}
+	if (is_plugin_enabled('groups')) {
+		elgg_register_entity_url_handler('group', 'all', array('FederatedGroup', 'url'));
 	}
 }
 
