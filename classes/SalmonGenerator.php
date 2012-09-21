@@ -1,0 +1,192 @@
+<?php
+
+class SalmonGenerator
+{
+	static function onRiverUpdate($event, $object_type, $item) {
+		$object_guid = $item->object_guid;
+		$subject_guid = $item->subject_guid;
+
+		$access_id = $item->access_id;
+
+		$object = get_entity($object_guid);
+		$subject = get_entity($subject_guid);
+
+		$hub_url = pshb_get_hub();
+
+		$container = get_entity($object->container_guid);
+		$item_id = $item->id;
+
+		// ensure only public stuff gets notified away (for now..)
+		if ($object->access_id != ACCESS_PUBLIC || $subject->access_id != ACCESS_PUBLIC)
+		        return $returnvalue;
+
+
+		return $returnvalue; // XXX check and enable one by one
+		// check action types to see what to do
+		if (($item->action_type == "create" || $item->action_type == "update") && in_array($object->getSubtype(), array("blog", "bookmarks", 'groupforumpost', 'groupforumtopic', 'page', 'page_top', 'tasks', 'event_calendar'))) {
+			$container = get_entity($object->container_guid);
+			if ($container->foreign && !$object->foreign) {
+				$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($container);
+				SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
+			}
+		}
+		elseif (($item->action_type == "done" || $item->action_type == "undone") && in_array($object->getSubtype(), array("tasks"))) {
+			$container = get_entity($object->container_guid);
+			if ($container->foreign && !$object->foreign) {
+				$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($container);
+				SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
+			}
+		}
+		elseif ($subject instanceof ElggUser && $item->action_type == "comment" && ($object->foreign || $container->foreign)) {
+			if ($object->foreign)
+				$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($container); // XXXX
+			else
+				$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($container);
+			SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
+		}
+		elseif ($subject instanceof ElggUser && in_array($item->action_type, array("join", "leave")) && $object->foreign) {
+			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($object);
+			SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
+		}
+		return $returnvalue;
+	}
+
+        function create_object($event, $object_type, $object) {
+                if ($event == 'create' && $object->getSubtype() === 'messages') {
+                        $fromId = $object->fromId;
+                        $toId = $object->toId;
+                        $fromEntity = get_entity($object->fromId);
+                        $toEntity = get_entity($object->toId);
+                        if ($toEntity->foreign && !$fromEntity->foreign && $fromEntity->guid == $object->owner_guid)
+                        {
+
+                        $viewtype = elgg_get_viewtype();
+                        elgg_set_viewtype('atom');
+                        $update = elgg_view('activitystreams/entry',
+                                array('standalone'=>true,
+                                        'entry_id'=>$object->getURL().$object->time_created,
+                                        'verb'=>'sendto',
+                                        'title'=>$object->title,
+                                        'body'=>$object->description,
+                                        'annotation_id'=>null,
+                                        'created'=>$object->time_created,
+                                        'updated'=>$object->time_created,
+                                        'subject'=>$fromEntity,
+                                        'container'=>$toEntity,
+                                        'entity'=>$object));
+                                elgg_set_viewtype($viewtype);
+                                // need the salmon link here
+                                $endpoint = SalmonDiscovery::getSalmonEndpointEntity($toEntity);
+                                if ($endpoint)
+                                        SalmonProtocol::postEnvelope($endpoint, $update, $fromEntity);
+                        }
+                }
+
+        }
+        function group_addtogroup($hook, $entity_type, $returnvalue, $params) {
+                SalmonGenerator::group_sendrequest('addtogroup');
+                return $returnvalue;
+        }
+        function group_killrequest($hook, $entity_type, $returnvalue, $params) {
+                SalmonGenerator::group_sendrequest('killrequest');
+                return $returnvalue;
+        }
+        function group_joinrequest($hook, $entity_type, $returnvalue, $params) {
+                SalmonGenerator::group_sendrequest('joinrequest');
+                return $returnvalue;
+        }
+        function group_sendrequest($verb) {
+                global $CONFIG;
+                if (!$subject = get_entity(get_input('user_guid', get_loggedin_userid())))
+                        return (false);
+                if (!$object = get_entity(get_input('group_guid', 0)))
+                        return (false);
+                if (!($subject->foreign || $object->foreign))
+                        return;
+                $time = time();
+                $viewtype = elgg_get_viewtype();
+                elgg_set_viewtype('atom');
+                $update = elgg_view('activitystreams/entry',
+                        array('standalone'=>true,
+                                'entry_id'=>$CONFIG->wwwroot.$object->guid.$time,
+                                'verb'=>$verb,
+                                'title'=>$object->name,
+                                'body'=>$object->name,
+                                'annotation_id'=>null,
+                                'created'=>$time,
+                                'updated'=>$time,
+                                'subject'=>$subject,
+                                'container'=>$object,
+                                'entity'=>$object));
+                elgg_set_viewtype($viewtype);
+                if ($subject->atom_id) { // remote controlling
+			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($subject);
+                        SalmonProtocol::sendUpdate($salmon_link, $update, $subject);
+                }
+                if ($object->foreign) {
+			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($object);
+                        SalmonProtocol::sendUpdate($salmon_link, $update, $subject);
+                }
+        }
+        function friend_sendrequest($verb, $inputpar) {
+                global $CONFIG;
+                if (!$friend = get_entity(get_input($inputpar, 0)))
+                        return (false);
+                if (!$friend->foreign)
+                        return;
+                $time = time();
+                $user = get_loggedin_user();
+                $viewtype = elgg_get_viewtype();
+                elgg_set_viewtype('atom');
+                $update = elgg_view('activitystreams/entry',
+                        array('standalone'=>true,
+                                'entry_id'=>$CONFIG->wwwroot.$friend->username.$time,
+                                'verb'=>$verb,
+                                'title'=>$friend->name,
+                                'body'=>$friend->name,
+                                'annotation_id'=>null,
+                                'created'=>$time,
+                                'updated'=>$time,
+                                'subject'=>$user,
+                                'container'=>$friend,
+                                'entity'=>$friend));
+                elgg_set_viewtype($viewtype);
+                if ($user->atom_id) {
+			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($user);
+                        SalmonProtocol::sendUpdate($salmon_link, $update, $user);
+                }
+		$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($friend);
+                SalmonProtocol::sendUpdate($salmon_link, $update, $user);
+        }
+        function add_friend($hook, $entity_type, $returnvalue, $params) {
+                SalmonGenerator::friend_sendrequest('requestfriendship', 'friend');
+                return $returnvalue;
+        }
+        function approve_friend($hook, $entity_type, $returnvalue, $params) {
+                SalmonGenerator::friend_sendrequest('approvefriendship', 'guid');
+                return $returnvalue;
+        }
+        function decline_friend($hook, $entity_type, $returnvalue, $params) {
+                SalmonGenerator::friend_sendrequest('declinefriendship', 'guid');
+                return $returnvalue;
+        }
+        function remove_friend($hook, $entity_type, $returnvalue, $params) {
+                SalmonGenerator::friend_sendrequest('removefriendship', 'friend');
+                return $returnvalue;
+        }
+        function flag_user($hook, $entity_type, $returnvalue, $params) {
+                $entity = get_entity(get_input('uid'));
+                if (!($entity->type == 'user' && $entity->foreign))
+                        return;
+                SalmonGenerator::friend_sendrequest('http://activitystrea.ms/schema/1.0/follow', 'uid');
+                return $returnvalue;
+        }
+        function unflag_user($hook, $entity_type, $returnvalue, $params) {
+                if (!($entity->type == 'user' && $entity->foreign))
+                        return;
+                SalmonGenerator::friend_sendrequest('http://ostatus.org/schema/1.0/unfollow', 'uid');
+                return $returnvalue;
+        }
+
+
+}

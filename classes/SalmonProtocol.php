@@ -1,0 +1,122 @@
+<?php
+
+class SalmonProtocol {
+	static function request($page) {
+		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+			$target_entity = null;
+			if (count($page) && $page[0] === "endpoint") {
+				$target_id = $page[1];
+				$target_entity = $page[2];
+			}
+			$raw = file_get_contents('php://input');
+
+			$envelope = new SalmonEnvelope($raw);
+			if ($envelope->valid) {
+				$envelope->apply($target_entity);
+			}
+		}
+	}
+	function sendUpdate($salmon_link, $item, $object, $subject) {
+		if (strpos($salmon_link, 'http') !== 0) {
+			return;
+		}
+
+		$viewtype = elgg_get_viewtype();
+		elgg_set_viewtype('atom');
+		$update = elgg_view('river/item',
+				    array('item' => $item,
+					// XXX what is standalone?
+					  'standalone' => true),
+				    false,
+				    false,
+				    'activitystream');
+		elgg_set_viewtype($viewtype);
+		SalmonProtocol::postEnvelope($salmon_link, $update, $subject);
+	}
+
+	static function postEnvelope($salmon_link, $update, $subject) {
+		if (!$salmon_link)
+			return;
+
+		// create envelope
+		$key = new SalmonKey($subject);
+		$encoded_update = Base64url::encode($update);
+		$postdata = '<?xml version="1.0" encoding="utf-8"?>'."\n";
+		$postdata .= '<me:provenance xmlns:me="http://salmon-protocol.org/ns/magic-env">'."\n";
+		$postdata .= "<me:data type='application/atom+xml'>";
+		$postdata .= $encoded_update;
+		$postdata .= "</me:data>
+	    <me:encoding>base64url</me:encoding>
+	    <me:alg>RSA-SHA256</me:alg>
+	    <me:sig keyhash='".$key->getHash()."'>";
+		$postdata .= $key->sign($encoded_update);
+		$postdata .= "</me:sig>";
+		$postdata .= "</me:provenance>";
+
+		// post using curl
+		$ch = curl_init($salmon_link);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/magic-envelope+xml'));
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		if ((bool)preg_match('/^https:\/\//i', $salmon_link)) {
+			// XXX inhibit ssl verifyier for now...
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		}
+		$error_n = curl_exec($ch);
+		curl_close($ch);
+	}
+
+	static function checkSignature($data, $sig, $raw_key) {
+		$key = openssl_get_publickey($raw_key);
+		$res = openssl_verify($data, $sig, $key, "sha256");
+		openssl_free_key($key);
+		return ($res === 1);
+	}
+
+	static function makeAsnSegment($type, $string) {
+		switch ($type){
+		    case 0x02:
+			if (ord($string) > 0x7f)
+			    $string = chr(0).$string;
+			break;
+		    case 0x03:
+			$string = chr(0).$string;
+			break;
+		}
+
+		$length = strlen($string);
+
+		if ($length < 128){
+		   $output = sprintf("%c%c%s", $type, $length, $string);
+		} else if ($length < 0x0100){
+		   $output = sprintf("%c%c%c%s", $type, 0x81, $length, $string);
+		} else if ($length < 0x010000) {
+		   $output = sprintf("%c%c%c%c%s", $type, 0x82, $length/0x0100, $length%0x0100, $string);
+		} else {
+		    $output = NULL;
+		}
+		return($output);
+	}
+
+	static function convertRSA($modulus, $exponent) {
+		/* make an ASN publicKeyInfo */
+		$exponentEncoding = SalmonProtocol::makeAsnSegment(0x02, $exponent);
+		$modulusEncoding = SalmonProtocol::makeAsnSegment(0x02, $modulus);
+		$sequenceEncoding = SalmonProtocol::makeAsnSegment(0x30, $modulusEncoding.$exponentEncoding);
+		$bitstringEncoding = SalmonProtocol::makeAsnSegment(0x03, $sequenceEncoding);
+		$rsaAlgorithmIdentifier = pack("H*", "300D06092A864886F70D0101010500");
+		$publicKeyInfo = SalmonProtocol::makeAsnSegment (0x30, $rsaAlgorithmIdentifier.$bitstringEncoding);
+
+		/* encode the publicKeyInfo in base64 and add PEM brackets */
+		$publicKeyInfoBase64 = base64_encode($publicKeyInfo);
+		$encoding = "-----BEGIN PUBLIC KEY-----\n";
+		$offset = 0;
+		while ($segment=substr($publicKeyInfoBase64, $offset, 64)){
+		   $encoding = $encoding.$segment."\n";
+		   $offset += 64;
+		}
+		return $encoding."-----END PUBLIC KEY-----\n";
+	}
+}
