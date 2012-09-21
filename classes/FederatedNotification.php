@@ -4,7 +4,6 @@ class FederatedNotification {
 	public static function notification($hook, $type, $return, $params) {
 		// input parameters
 		$entry = $params['entry'];
-		$subscriber = $params['subscriber'];
 		$salmon_link = $params['salmon_link'];
 
 		$federated = new FederatedNotification();
@@ -20,7 +19,6 @@ class FederatedNotification {
 
 		// output
 		$params = array('notification' => $federated,
-				'subscriber' => $subscriber,
 				'salmon_link' => $salmon_link,
 				'entry' => $entry);
 		trigger_plugin_hook('federated_objects:'.$verb, $object_type, $params);
@@ -34,7 +32,6 @@ class FederatedNotification {
 
 	public static function postObjectCreator($hook, $type, $return, $params) {
 		$notification = $params['notification'];
-		$subscriber = $params['subscriber'];
 		$entry = $params['entry'];
 
 		$author = $notification->getAuthor();
