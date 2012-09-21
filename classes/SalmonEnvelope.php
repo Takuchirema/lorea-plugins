@@ -31,16 +31,13 @@ class SalmonEnvelope {
 				break;
 			}
 		}
-	//	$id = @current($xml->xpath('//atom:author/atom:uri'));
 		if (!$id)
-			$id = @current($xml->xpath("//atom:author/atom:id"));
+			$id = @current($xml->xpath("//atom:author/atom:uri"));
 
 		if (!$key) {
 			$key = SalmonDiscovery::getRemoteKey($id, $sig_hash);
 		}
-		if (!$key) {
-		}
-		elseif (SalmonProtocol::checkSignature($b64data, $sig, $key)) {
+		if (SalmonProtocol::checkSignature($b64data, $sig, $key)) {
 			$this->valid = true;
 		}
 		else {
