@@ -8,7 +8,8 @@ function federated_objects_init() {
 	elgg_register_plugin_hook_handler('federated_objects:post', 'article', array('FederatedNotification', 'postLogger'));
 	elgg_register_plugin_hook_handler('federated_objects:post', 'bookmark', array('FederatedNotification', 'postObjectCreator'));
 	elgg_register_plugin_hook_handler('federated_objects:post', 'note', array('FederatedNotification', 'postObjectCreator'));
-	elgg_register_plugin_hook_handler('federated_objects:join', 'group', array('FederatedNotification', 'postLogger'));
+	elgg_register_plugin_hook_handler('federated_objects:post', 'group', array('FederatedNotification', 'postObjectCreator'));
+	elgg_register_plugin_hook_handler('federated_objects:join', 'group', array('FederatedGroup', 'onGroupJoin'));
 
 	// override atom id for foreign objects
 	elgg_register_plugin_hook_handler('activitystreams:id', 'entity', array('AtomRiverMapper', 'entity_id'));
@@ -30,9 +31,9 @@ function federated_objects_init() {
 	if (is_plugin_enabled('bookmarks')) {
 		elgg_register_entity_url_handler('object', 'bookmarks', array('FederatedBookmark', 'url'));
 	}
-	if (is_plugin_enabled('groups')) {
-		elgg_register_entity_url_handler('group', 'all', array('FederatedGroup', 'url'));
-	}
+	#if (is_plugin_enabled('groups')) {
+#		elgg_register_entity_url_handler('group', 'all', array('FederatedGroup', 'url'));
+#	}
 }
 
 elgg_register_event_handler('init', 'system', 'federated_objects_init');

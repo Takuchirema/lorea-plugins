@@ -21,6 +21,10 @@ class FederatedGroup {
 			$access = elgg_set_ignore_access(true);
 			$group = new ElggGroup();
 			$group->owner_guid = 0;
+			if ($owner) {
+				$group->owner_guid = $owner->guid;
+			}
+				
 			$group->container_guid = 0;
 			$group->subtype = 'ostatus';
 			$group->name = $params['name'];
@@ -48,9 +52,17 @@ class FederatedGroup {
 			$group->atom_link = $params['link'];
 			$group->foreign = true;
 			$group->save();
+			if ($owner) {
+				add_to_river('river/group/create', 'create', $owner->guid, $group->getGUID(), $group->access_id);
+				FederatedObject::search_tag_river($group, $owner, 'create', $notification);
+			}
 			elgg_set_ignore_access($access);
 		}
 		return $group;
+	}
+	public static function onGroupJoin($hook, $type, $return, $params) {
+		error_log("Group Join!");
+		return $return;
 	}
 	public static function url($object) {
 		if ($object->atom_link)
