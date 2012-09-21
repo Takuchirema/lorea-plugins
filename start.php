@@ -1,6 +1,46 @@
 <?php
 
+function federated_menu_item($entity) {
+	$options = array(
+                'name' => 'federated',
+                'text' => elgg_echo('federated_objects_federated'),
+                'href' => false,
+                'priority' => 1000,
+        );
+        return ElggMenuItem::factory($options);
+
+}
+
+function federated_river_menu_setup($hook, $type, $return, $params) {
+	$item = $params['item'];
+	$object = $item->getObjectEntity();
+
+	if ($object->foreign) {	
+		$return[] = federated_menu_item($object);
+	}
+
+	return $return;
+}
+
+function federated_entity_menu_setup($hook, $type, $return, $params) {
+        if (elgg_in_context('widgets')) {
+                return $return;
+	$entity = $params['entity'];
+
+
+	if ($entity->foreign) {	
+		$return[] = federated_menu_item($entity);
+	}
+
+	return $return;
+}
+
+
 function federated_objects_init() {
+	// menu hooks
+	elgg_register_plugin_hook_handler('register', 'menu:river', 'federated_river_menu_setup', 400);
+        elgg_register_plugin_hook_handler('register', 'menu:entity', 'federated_entity_menu_setup', 400);
+
 	// callback for incoming items for now coming from pubsubhub
 	elgg_register_plugin_hook_handler('push:notification', 'atom', array('FederatedNotification', 'notification'));
 
