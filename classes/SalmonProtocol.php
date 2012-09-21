@@ -63,10 +63,7 @@ class SalmonProtocol {
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		if ((bool)preg_match('/^https:\/\//i', $salmon_link)) {
-			// XXX inhibit ssl verifyier for now...
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		}
+
 		$error_n = curl_exec($ch);
 		curl_close($ch);
 	}
