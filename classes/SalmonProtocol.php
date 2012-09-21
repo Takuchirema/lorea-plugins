@@ -29,7 +29,8 @@ class SalmonProtocol {
 					  'standalone' => true),
 				    false,
 				    false,
-				    'activitystream');
+				    'atom');
+		$update = "<entry xmlns='http://www.w3.org/2005/Atom' xmlns:thr='http://purl.org/syndication/thread/1.0' xmlns:georss='http://www.georss.org/georss' xmlns:activity='http://activitystrea.ms/spec/1.0/' xmlns:media='http://purl.org/syndication/atommedia'>$update</entry>";
 		elgg_set_viewtype($viewtype);
 		SalmonProtocol::postEnvelope($salmon_link, $update, $subject);
 	}
@@ -55,7 +56,9 @@ class SalmonProtocol {
 
 		// post using curl
 		$ch = curl_init($salmon_link);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/magic-envelope+xml'));
+		// Expect header to solve Expectation failed problem from server
+		// see: http://mattly.me/snippet/2011/09/20/php-curl-and-error-417-expectation-failed/
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/magic-envelope+xml', 'Expect:'));
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

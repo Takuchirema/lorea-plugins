@@ -54,6 +54,7 @@ class SalmonDiscovery
 	    $response = Auth_Yadis_Yadis::discover($xrds_url, $fetcher);
 	    $endpoint = false;
 	    if ($response->isXRDS() || !empty($response)) {
+			error_log("XRDS:".$response->response_text);
 			$xrds = new SimpleXMLElement($response->response_text,null,false,'xrd');
 			if ($response->isXRDS()) {
 				$xrds->registerXPathNamespace('xrds', 'xri://$xrds');

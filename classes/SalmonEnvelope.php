@@ -4,7 +4,7 @@ class SalmonEnvelope {
 		$this->valid = false;
 		$this->raw = $raw;
 		$this->xml = @ new SimpleXMLElement($raw);
-		SalmonProtocol::parseXml($this->xml);
+		$this->parseXml($this->xml);
 
 	}
 	function parseXml($salmon_xml, $key=false) {
@@ -22,14 +22,23 @@ class SalmonEnvelope {
 		$xml->registerXPathNamespace('activity', 'http://activitystrea.ms/spec/1.0/');
 		$xml->registerXPathNamespace('atom', 'http://www.w3.org/2005/Atom');
 		//$id = @current($xml->xpath('//thr:in-reply-to/@ref'));
-		$id = @current($xml->xpath('//atom:author/atom:uri'));
+		foreach(array("atom:author/atom:link[attribute::rel='alternate']/@href",
+                                                   "atom:link[attribute::rel='alternate']/@href",
+                                                   "//activity:subject/atom:link[attribute::rel='alternate']/@href"
+                                                ) as $xpath) {
+			$id = @current($xml->xpath($xpath));
+			if ($id) {
+				break;
+			}
+		}
+	//	$id = @current($xml->xpath('//atom:author/atom:uri'));
 		if (!$id)
 			$id = @current($xml->xpath("//atom:author/atom:id"));
 
-		if (!$key)
-			$key = SalmonDiscovery::getRemoteKey($id, $sig_hash);
 		if (!$key) {
-			error_log("no remote key found for ".$id);
+			$key = SalmonDiscovery::getRemoteKey($id, $sig_hash);
+		}
+		if (!$key) {
 		}
 		elseif (SalmonProtocol::checkSignature($b64data, $sig, $key)) {
 			$this->valid = true;

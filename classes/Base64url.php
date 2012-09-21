@@ -3,7 +3,7 @@ class Base64url {
 	function decode($base64url)
 	{
 		$base64 = strtr($base64url, '-_', '+/');
-		$plainText = base64_decode($base64);
+		$text = base64_decode($base64);
 		return ($text);
 	}
 	function encode($text)

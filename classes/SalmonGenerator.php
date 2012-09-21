@@ -11,17 +11,23 @@ class SalmonGenerator
 		$object = get_entity($object_guid);
 		$subject = get_entity($subject_guid);
 
-		$hub_url = pshb_get_hub();
+		$hub_url = elgg_get_plugin_setting('hub', 'elgg-push');
 
 		$container = get_entity($object->container_guid);
 		$item_id = $item->id;
 
 		// ensure only public stuff gets notified away (for now..)
+		$action_type = $item->action_type;
+		if ($subject instanceof ElggUser && in_array($item->action_type, array("join", "leave")) && $object->foreign) {
+			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($object);
+			SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
+	
 		if ($object->access_id != ACCESS_PUBLIC || $subject->access_id != ACCESS_PUBLIC)
 		        return $returnvalue;
 
-
 		return $returnvalue; // XXX check and enable one by one
+	}
+
 		// check action types to see what to do
 		if (($item->action_type == "create" || $item->action_type == "update") && in_array($object->getSubtype(), array("blog", "bookmarks", 'groupforumpost', 'groupforumtopic', 'page', 'page_top', 'tasks', 'event_calendar'))) {
 			$container = get_entity($object->container_guid);
@@ -42,10 +48,6 @@ class SalmonGenerator
 				$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($container); // XXXX
 			else
 				$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($container);
-			SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
-		}
-		elseif ($subject instanceof ElggUser && in_array($item->action_type, array("join", "leave")) && $object->foreign) {
-			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($object);
 			SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
 		}
 		return $returnvalue;
@@ -106,7 +108,7 @@ class SalmonGenerator
                 $time = time();
                 $viewtype = elgg_get_viewtype();
                 elgg_set_viewtype('atom');
-                $update = elgg_view('activitystreams/entry',
+                $update = '<entry>'.elgg_view('activitystreams/entry',
                         array('standalone'=>true,
                                 'entry_id'=>$CONFIG->wwwroot.$object->guid.$time,
                                 'verb'=>$verb,
@@ -117,7 +119,7 @@ class SalmonGenerator
                                 'updated'=>$time,
                                 'subject'=>$subject,
                                 'container'=>$object,
-                                'entity'=>$object));
+                                'entity'=>$object)).'</entry>';
                 elgg_set_viewtype($viewtype);
                 if ($subject->atom_id) { // remote controlling
 			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($subject);
