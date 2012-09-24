@@ -30,6 +30,8 @@ function salmon_init() {
 
 	// event hooks to generate salmon messages
 	elgg_register_event_handler('created', 'river', array('SalmonGenerator', 'onRiverUpdate'));
+	elgg_register_event_handler('create', 'member', array('SalmonGenerator', 'onActionCreate'));
+	elgg_register_event_handler('delete', 'member', array('SalmonGenerator', 'onActionDelete'));
 }
 
 elgg_register_event_handler('init', 'system', 'salmon_init');

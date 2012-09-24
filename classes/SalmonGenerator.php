@@ -2,6 +2,36 @@
 
 class SalmonGenerator
 {
+	static function relationToRiver($relationship, $verb, $view) {
+			$item = new ElggRiverItem(new stdClass());
+			$item->object_guid = $relationship->guid_two;
+			$item->subject_guid = $relationship->guid_one;
+			$item->action_type = $verb;
+			$item->access_id = ACCESS_PUBLIC;
+			$item->posted = $relationship->time_created;
+			$item->annotation_id = ACCESS_PUBLIC;
+			$item->view = $view;
+			$item->id = 'rel-'.$relationship->id.'-'.$verb;
+			return $item;
+	}
+	static function relationToSalmon($relationship, $verb, $view) {
+		$subject = get_entity($relationship->guid_one);
+		$object = get_entity($relationship->guid_two);
+		$relation_name = $relationship->relationship;
+
+		if ($object->foreign && !$subject->foreign && $relation_name == 'member') {
+			$item = SalmonGenerator::relationToRiver($relationship, $verb, $view);
+			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($object);
+			SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
+		}
+
+	}
+	static function onActionCreate($event, $object_type, $relationship) {
+		SalmonGenerator::relationToSalmon($relationship, 'join', 'river/relationship/member/create');
+	}
+	static function onActionDelete($event, $object_type, $relationship) {
+		SalmonGenerator::relationToSalmon($relationship, 'leave', 'river/relationship/member/create');
+	}
 	static function onRiverUpdate($event, $object_type, $item) {
 		$object_guid = $item->object_guid;
 		$subject_guid = $item->subject_guid;
@@ -18,15 +48,11 @@ class SalmonGenerator
 
 		// ensure only public stuff gets notified away (for now..)
 		$action_type = $item->action_type;
-		if ($subject instanceof ElggUser && in_array($item->action_type, array("join", "leave")) && $object->foreign) {
-			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($object);
-			SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
-	
+
 		if ($object->access_id != ACCESS_PUBLIC || $subject->access_id != ACCESS_PUBLIC)
 		        return $returnvalue;
 
 		return $returnvalue; // XXX check and enable one by one
-	}
 
 		// check action types to see what to do
 		if (($item->action_type == "create" || $item->action_type == "update") && in_array($object->getSubtype(), array("blog", "bookmarks", 'groupforumpost', 'groupforumtopic', 'page', 'page_top', 'tasks', 'event_calendar'))) {
