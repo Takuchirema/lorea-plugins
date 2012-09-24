@@ -1,15 +1,15 @@
 <?php
 
 class FederatedBookmark {
-	public static function create($params, $entity) {
+	public static function create($params, $entity, $tag) {
 		$owner = $params['owner_entity'];
 		$entry = $params['entry'];
 		$notification = $params['notification'];
 		$access_id = ACCESS_PUBLIC;
 
 		// specific fields
-		$description = @current($entry->xpath("activity:object/atom:summary"));
-		$address = @current($entry->xpath("activity:object/atom:link[attribute::rel='related']/@href"));
+		$description = @current($entry->xpath("$tag/atom:summary"));
+		$address = @current($entry->xpath("$tag/atom:link[attribute::rel='related']/@href"));
 
 		if (empty($entity)) {
 			$access = elgg_set_ignore_access(true);

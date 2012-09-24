@@ -1,7 +1,7 @@
 <?php
 
 class FederatedNote {
-	public static function create($params, $entity) {
+	public static function create($params, $entity, $tag) {
 		$owner = $params['owner_entity'];
 		$entry = $params['entry'];
 		$notification = $params['notification'];

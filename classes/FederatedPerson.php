@@ -1,7 +1,7 @@
 <?php
 
 class FederatedPerson {
-	public static function create($params, $entity) {
+	public static function create($params, $entity, $tag) {
 		if ($entity) {
 			if ($entity->foreign) {
 				$access = elgg_set_ignore_access(true);

@@ -30,12 +30,12 @@ class FederatedObject {
                 }
 	}
 
-	public static function create($params) {
+	public static function create($params, $tag) {
 		global  $FEDERATED_CONSTRUCTORS;
 		$type = $params['type'];
 		$entity = FederatedObject::find($params['id']);
 		if (isset($FEDERATED_CONSTRUCTORS[$type])) {
-			return call_user_func($FEDERATED_CONSTRUCTORS[$type], $params, $entity);
+			return call_user_func($FEDERATED_CONSTRUCTORS[$type], $params, $entity, $tag);
 		}
 	}
 

@@ -50,19 +50,19 @@ class FederatedNotification {
 			return;
 		}
 
-		$author = FederatedObject::create($author);
+		$author = FederatedObject::create($author, 'atom:author');
 
 		if ($target) {
 			$target['entry'] = $entry;
 			$target['notification'] = $notification;
-			$container = FederatedObject::create($target);
+			$container = FederatedObject::create($target, 'activity:target');
 			$object['container_entity'] = $container;
 		}
 
 		$object['owner_entity'] = $author;
 		$object['entry'] = $entry;
 		$object['notification'] = $notification;
-		$note = FederatedObject::create($object);
+		$note = FederatedObject::create($object, 'activity:object');
 	}
 
 	/**

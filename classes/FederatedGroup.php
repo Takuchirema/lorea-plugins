@@ -1,13 +1,13 @@
 <?php
 
 class FederatedGroup {
-	public static function create($params, $entity) {
+	public static function create($params, $entity, $tag) {
 		global $CONFIG;
 		$owner = $params['owner_entity'];
 		$entry = $params['entry'];
 		$notification = $params['notification'];
-		$brief_description = @current($entry->xpath("activity:target/atom:summary"));
-		$description = @current($entry->xpath("activity:target/atom:content"));
+		$brief_description = @current($entry->xpath("$tag/atom:summary"));
+		$description = @current($entry->xpath("$tag/atom:content"));
 		if ($entity) {
 			if ($entity->foreign) {
 				$access = elgg_set_ignore_access(true);
@@ -83,11 +83,11 @@ class FederatedGroup {
 			return;
 		}
 
-		$user = FederatedObject::create($author);
+		$user = FederatedObject::create($author, 'atom:author');
 
 		$object['entry'] = $entry;
 		$object['notification'] = $notification;
-		$group = FederatedObject::create($object);
+		$group = FederatedObject::create($object, 'activity:object');
 
 		// join or request
 		login($user);
