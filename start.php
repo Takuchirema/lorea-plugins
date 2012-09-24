@@ -1,10 +1,16 @@
 <?php
 
 function federated_menu_item($entity, $name='federated') {
+	if ($entity->foreign) {
+		$url = elgg_get_site_url() . "federated-objects/" . $entity->guid;
+	}
+	else {
+		$url = false;
+	}
 	$options = array(
                 'name' => $name,
                 'text' => elgg_echo("federated_objects:$name"),
-                'href' => false,
+                'href' => $url,
                 'priority' => 1000,
         );
         return ElggMenuItem::factory($options);
@@ -40,6 +46,16 @@ function federated_entity_menu_setup($hook, $type, $return, $params) {
 	return $return;
 }
 
+function federated_objects_page_handler($page) {
+	$guid = (int)$page[0];
+	$entity = get_entity($guid);
+	if ($entity->foreign) {
+		echo elgg_view_page('', elgg_view('federated-objects/view',
+				     array('entity' => $entity)));
+	} else {
+		forward();
+	}
+}
 
 function federated_objects_init() {
 	// menu hooks
@@ -51,11 +67,15 @@ function federated_objects_init() {
 
 	// callbacks for specific actions, implement procedures to manage object - verb combinations
 	elgg_register_plugin_hook_handler('federated_objects:post', 'article', array('FederatedNotification', 'postLogger'));
+	// ObjectCreation
 	elgg_register_plugin_hook_handler('federated_objects:post', 'bookmark', array('FederatedNotification', 'postObjectCreator'));
 	elgg_register_plugin_hook_handler('federated_objects:post', 'note', array('FederatedNotification', 'postObjectCreator'));
+	elgg_register_plugin_hook_handler('federated_objects:post', 'comment', array('FederatedComment', 'onCreateComment'));
 	elgg_register_plugin_hook_handler('federated_objects:post', 'group', array('FederatedNotification', 'postObjectCreator'));
+	// Groups
 	elgg_register_plugin_hook_handler('federated_objects:join', 'group', array('FederatedGroup', 'onGroupJoin'));
 	elgg_register_plugin_hook_handler('federated_objects:leave', 'group', array('FederatedGroup', 'onGroupLeave'));
+	// Friends
 	elgg_register_plugin_hook_handler('federated_objects:friend', 'person', array('FederatedFriends', 'onFriend'));
 	elgg_register_plugin_hook_handler('federated_objects:remove-friend', 'person', array('FederatedFriends', 'onRemoveFriend'));
 	elgg_register_plugin_hook_handler('federated_objects:request-friend', 'person', array('FederatedFriends', 'onRequestFriend'));
@@ -70,6 +90,10 @@ function federated_objects_init() {
 	FederatedObject::register_constructor('note', array('FederatedNote', 'create'));
 	FederatedObject::register_constructor('bookmark', array('FederatedBookmark', 'create'));
 	FederatedObject::register_constructor('group', array('FederatedGroup', 'create'));
+	FederatedObject::register_constructor('comment', array('FederatedComment', 'create'));
+
+	// page handler
+	elgg_register_page_handler('federated-objects','federated_objects_page_handler');
 
 	// override object urls
 	if (is_plugin_enabled('profile')) {
