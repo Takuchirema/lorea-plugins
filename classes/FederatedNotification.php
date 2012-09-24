@@ -5,9 +5,10 @@ class FederatedNotification {
 		// input parameters
 		$entry = $params['entry'];
 		$salmon_link = $params['salmon_link'];
+		$provenance = $params['provenance']; // coming from salmon
 
 		$federated = new FederatedNotification();
-		$federated->load($entry);
+		$federated->load($entry, $provenance);
 
 		// parse verb
 		$verb = $federated->getVerb();
@@ -20,6 +21,7 @@ class FederatedNotification {
 		// output
 		$params = array('notification' => $federated,
 				'salmon_link' => $salmon_link,
+				'provenance' => $provenance,
 				'entry' => $entry);
 		trigger_plugin_hook('federated_objects:'.$verb, $object_type, $params);
 	}
@@ -63,8 +65,9 @@ class FederatedNotification {
 	/**
 	 * Load xml
 	 */
-	public function load($xml) {
+	public function load($xml, $provenance) {
 		$this->xml = $xml;
+		$this->provenance = $provenance;
 	}
 
 	public function getID() {
@@ -210,7 +213,7 @@ class FederatedNotification {
 	public function isLocal() {
 		$id = $this->getID();
 
-		if (FederatedObject::isLocalID($id)) {
+		if (FederatedObject::isLocalID($id) && empty($this->provenance)) {
 			return true;
 		}
 		return false;
