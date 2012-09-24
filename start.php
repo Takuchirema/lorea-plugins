@@ -25,6 +25,7 @@ function federated_river_menu_setup($hook, $type, $return, $params) {
 function federated_entity_menu_setup($hook, $type, $return, $params) {
         if (elgg_in_context('widgets')) {
                 return $return;
+	}
 	$entity = $params['entity'];
 
 
