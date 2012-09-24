@@ -75,6 +75,9 @@ function federated_objects_init() {
 	if (is_plugin_enabled('groups')) {
 		elgg_register_entity_url_handler('group', 'all', array('FederatedGroup', 'url'));
 	}
+
+	// add provenance to river items
+	elgg_extend_view('river/item', 'federated-objects/item');
 }
 
 elgg_register_event_handler('init', 'system', 'federated_objects_init');

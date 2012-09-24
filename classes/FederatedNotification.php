@@ -9,6 +9,10 @@ class FederatedNotification {
 
 		$federated = new FederatedNotification();
 		$federated->load($entry, $provenance);
+		if (!$federated->valid) {
+			error_log("Invalid provenance");
+			return;
+		}
 
 		// parse verb
 		$verb = $federated->getVerb();
@@ -65,8 +69,25 @@ class FederatedNotification {
 	 * Load xml
 	 */
 	public function load($xml, $provenance) {
-		$this->xml = $xml;
-		$this->provenance = $provenance;
+		$xml->registerXPathNamespace('me', 'http://salmon-protocol.org/ns/magic-env');
+		$provenance = @current($entry->xpath("me:provenance"));
+
+		if ($provenance) {
+			$env = SalmonEnvelope($provenance->asXml());
+			if ($env->valid) {
+				$this->xml = $env->data;
+				$this->provenance = $provenance;
+			}
+			else {
+				$this->valid = false;
+				return;
+			}
+		}
+		else {
+			$this->xml = $xml;
+			$this->provenance = $provenance;
+		}
+		$this->valid = true;
 	}
 
 	public function getID() {
