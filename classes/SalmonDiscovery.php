@@ -10,7 +10,7 @@ class SalmonDiscovery
 			if ($ent instanceof ElggUser || $ent instanceof ElggGroup)
 				$endpoint = SalmonDiscovery::getSalmonEndpoint($ent->atom_link);
 			else
-				$endpoint = SalmonDiscovery::getSalmonEndpoint(get_entity($ent->container_guid)->atom_id);
+				$endpoint = SalmonDiscovery::getSalmonEndpoint(get_entity($ent->container_guid)->atom_link);
 			$ent->salmon_link = $endpoint;
 		}
 
