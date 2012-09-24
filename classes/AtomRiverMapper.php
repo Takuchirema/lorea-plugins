@@ -12,6 +12,15 @@ class AtomRiverMapper {
 		if ($data)
 			return $data->atom_id;
 	}
+	public static function getRiverProvenance($river_id) {
+		global $CONFIG;
+		$prefix = $CONFIG->dbprefix;
+		$river_id = (int)$river_id;
+		$sql = "SELECT provenance FROM {$prefix}river_atomid_mapping WHERE river_id=$river_id";
+		$data = get_data_row($sql);
+		if ($data)
+			return $data->provenance;
+	}
 	public static function getRiverID($atom_id) {
 		global $CONFIG;
 		$prefix = $CONFIG->dbprefix;
