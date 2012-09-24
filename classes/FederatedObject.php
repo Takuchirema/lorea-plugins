@@ -9,6 +9,18 @@ class FederatedObject {
 	 * Load xml
 	 */
 	public static function find($webid) {
+		if (FederatedObject::isLocalID($webid)) {
+			return FederatedObject::findLocal($webid);
+		}
+		else {
+			return FederatedObject::findRemote($webid);
+		}
+	}
+	public static function findLocal($webid) {
+		$parts = explode('/', $webid);
+		return get_entity($parts[2]);
+	}
+	public static function findRemote($webid) {
 		$options = array('metadata_name' => 'atom_id',
 				 'metadata_value' => $webid,
 				 'owner_guid' => ELGG_ENTITIES_ANY_VALUE);
