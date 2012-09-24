@@ -1,3 +1,4 @@
+o->xml
 <?php
 class SalmonEnvelope {
 	function __construct($raw) {
@@ -50,11 +51,18 @@ class SalmonEnvelope {
 	function apply($entity=null) {
 		$magicenv_raw = $this->raw;
 		$magicenv = $this->xml;
-		$magicenv->registerXPathNamespace('me', 'http://salmon-protocol.org/ns/magic-env');
+
 		$provenance = @current($magicenv->xpath('//me:provenance'));
+
 		if (empty($provenance) && $magicenv->getName() == 'provenance') {
+			// echo without <?xml part
+			$roots = $magicenv->xpath('/me:provenance/*');
 			// status.net sends like this but seems to like ours too
-			$text_provenance = $magicenv_raw;
+			$text_provenance = '<me:provenance xmlns:me="http://salmon-protocol.org/ns/magic-env">';
+			foreach($roots as $root) {
+				$text_provenance .= $root->asXml();
+			}
+			$text_provenance .= '</me:provenance">';
 		}
 		elseif($provenance) {
 			$text_provenance = $provenance->asXml();
