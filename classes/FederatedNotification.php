@@ -70,13 +70,13 @@ class FederatedNotification {
 	 */
 	public function load($xml, $provenance) {
 		$xml->registerXPathNamespace('me', 'http://salmon-protocol.org/ns/magic-env');
-		$provenance = @current($entry->xpath("me:provenance"));
+		$provenance_xml = @current($xml->xpath("me:provenance"));
 
-		if ($provenance) {
-			$env = SalmonEnvelope($provenance->asXml());
+		if ($provenance_xml) {
+			$env = SalmonEnvelope($provenance_xml->asXml());
 			if ($env->valid) {
 				$this->xml = $env->data;
-				$this->provenance = $provenance;
+				$this->provenance = $provenance_xml;
 			}
 			else {
 				$this->valid = false;
