@@ -54,7 +54,7 @@ class FederatedObject {
 			$river_items = elgg_get_river($options);
 			if ($river_items) {
 				$river_item = $river_items[0];
-				AtomRiverMapper::setIDMapping($river_item->id, $notification->getID());
+				AtomRiverMapper::setIDMapping($river_item->id, $notification->getID(), $notification->provenance);
 			}
 	}
 

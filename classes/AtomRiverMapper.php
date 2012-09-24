@@ -21,12 +21,17 @@ class AtomRiverMapper {
 		if ($data)
 			return $data->river_id;
 	}
-	public static function setIDMapping($river_id, $atom_id) {
+	public static function setIDMapping($river_id, $atom_id, $provenance=null) {
 		global $CONFIG;
 		$river_id = (int)$river_id;
 		$atom_id = sanitise_string($atom_id);
 		$prefix = $CONFIG->dbprefix;
-		$sql = "INSERT INTO {$prefix}river_atomid_mapping (river_id, atom_id) VALUES($river_id, '$atom_id')";
+		if ($provenance) {
+			$provenance = sanitise_string($provenance);
+			$sql = "INSERT INTO {$prefix}river_atomid_mapping (river_id, atom_id, provenance) VALUES($river_id, '$atom_id', '$provenance')";
+		}
+		else {
+		}
 		insert_data($sql);
 	}
 	// Elgg Callbacks
@@ -43,5 +48,4 @@ class AtomRiverMapper {
 			return $entity->atom_id;
 		return $return;
 	}
-
 }

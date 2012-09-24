@@ -21,7 +21,6 @@ class FederatedNotification {
 		// output
 		$params = array('notification' => $federated,
 				'salmon_link' => $salmon_link,
-				'provenance' => $provenance,
 				'entry' => $entry);
 		trigger_plugin_hook('federated_objects:'.$verb, $object_type, $params);
 	}

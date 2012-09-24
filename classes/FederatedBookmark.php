@@ -35,7 +35,7 @@ class FederatedBookmark {
 			if ($entity->save()) {
 				if ($notification->getVerb() == 'post') {
    			        	$id = add_to_river('river/object/bookmarks/create','create', $owner->getGUID(), $entity->getGUID());
-					AtomRiverMapper::setIDMapping($id, $notification->getID());
+					AtomRiverMapper::setIDMapping($id, $notification->getID(), $notification->provenance);
 			        }
 			}
 
