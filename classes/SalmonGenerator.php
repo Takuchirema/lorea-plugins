@@ -1,7 +1,20 @@
 <?php
 
 class SalmonGenerator
-{
+{	
+	static function annotationToRiver($annotation, $verb, $view) {
+			$item = new ElggRiverItem(new stdClass());
+			$item->object_guid = $annotation->entity_guid;
+			$item->subject_guid = $annotation->owner_guid;
+			$item->action_type = $verb;
+			$item->access_id = ACCESS_PUBLIC;
+			$item->posted = $annotation->time_created;
+			$item->annotation_id = $annotation->id;
+			$item->view = $view;
+			$item->id = 'comment-'.$annotation->id.'-'.$verb;
+			return $item;
+	}
+
 	static function relationToRiver($relationship, $verb, $view) {
 			$item = new ElggRiverItem(new stdClass());
 			$item->object_guid = $relationship->guid_two;
@@ -25,6 +38,22 @@ class SalmonGenerator
 			SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
 		}
 
+	}
+	static function annotationToSalmon($annotation, $verb, $view) {
+		$subject = get_entity($annotation->owner_guid);
+		$object = get_entity($annotation->entity_guid);
+		$annotation_name = $annotation->name;
+
+		if ($object->foreign && !$subject->foreign) {
+			$item = SalmonGenerator::annotationToRiver($annotation, $verb, $view);
+			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($object);
+			SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
+		}
+
+	}
+
+	static function onPostComment($event, $object_type, $annotation) {
+		SalmonGenerator::annotationToSalmon($annotation, 'comment', 'river/annotation/generic_comment/create');
 	}
 	static function onActionCreate($event, $object_type, $relationship) {
 		SalmonGenerator::relationToSalmon($relationship, 'join', 'river/relationship/member/create');
