@@ -32,6 +32,9 @@ function salmon_init() {
 	elgg_register_event_handler('created', 'river', array('SalmonGenerator', 'onRiverUpdate'));
 	elgg_register_event_handler('create', 'member', array('SalmonGenerator', 'onActionCreate'));
 	elgg_register_event_handler('delete', 'member', array('SalmonGenerator', 'onActionDelete'));
+	elgg_register_event_handler('delete', 'friend', array('SalmonGenerator', 'onFriendDelete'));
+	elgg_register_event_handler('create', 'friendrequest', array('SalmonGenerator', 'onFriendCreate'));
+	elgg_register_event_handler('delete', 'friendrequest', array('SalmonGenerator', 'onFriendDelete'));
 }
 
 elgg_register_event_handler('init', 'system', 'salmon_init');

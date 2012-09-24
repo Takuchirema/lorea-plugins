@@ -19,7 +19,7 @@ class SalmonGenerator
 		$object = get_entity($relationship->guid_two);
 		$relation_name = $relationship->relationship;
 
-		if ($object->foreign && !$subject->foreign && $relation_name == 'member') {
+		if ($object->foreign && !$subject->foreign) {
 			$item = SalmonGenerator::relationToRiver($relationship, $verb, $view);
 			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($object);
 			SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
@@ -31,6 +31,34 @@ class SalmonGenerator
 	}
 	static function onActionDelete($event, $object_type, $relationship) {
 		SalmonGenerator::relationToSalmon($relationship, 'leave', 'river/relationship/member/create');
+	}
+	static function onFriendCreate($event, $object_type, $relationship) {
+		$subject = get_entity($relationship->guid_one);
+		$object = get_entity($relationship->guid_two);
+		if ($relationship->relationship == 'friendrequest') {
+			// create friend request
+			SalmonGenerator::relationToSalmon($relationship, 'request-friend', 'river/relationship/friend/create');
+		}
+	}
+	static function onFriendDelete($event, $object_type, $relationship) {
+		if ($relationship->relationship == 'friendrequest') {
+			$subject = get_entity($relationship->guid_one);
+			$object = get_entity($relationship->guid_two);
+			$friends = $object->isFriendsWith($subject->guid);
+			if ($friends) {
+				// accept friend request
+				SalmonGenerator::relationToSalmon($relationship, 'friend', 'river/relationship/friend/create');
+			} else {
+				// decline friend request
+				SalmonGenerator::relationToSalmon($relationship, 'decline-friend', 'river/relationship/friend/create');
+			}
+		}
+		elseif ($relationship->relationship == 'friend') {
+			$subject = get_entity($relationship->guid_one);
+			$object = get_entity($relationship->guid_two);
+			// delete friendship
+			SalmonGenerator::relationToSalmon($relationship, 'remove-friend', 'river/relationship/friend/create');
+		}
 	}
 	static function onRiverUpdate($event, $object_type, $item) {
 		$object_guid = $item->object_guid;
