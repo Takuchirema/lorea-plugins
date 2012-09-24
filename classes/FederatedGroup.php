@@ -60,9 +60,13 @@ class FederatedGroup {
 		}
 		return $group;
 	}
+	public static function onGroupLeave($hook, $type, $return, $params) {
+		return FederatedGroup::onGroupJoin($hook, $type, $return, $params);
+	}
 	public static function onGroupJoin($hook, $type, $return, $params) {
 		global $CONFIG;
-		error_log("Group Join!");
+		$action_parts = explode(':', $hook);
+		$action = $action_parts[1];
 		$notification = $params['notification'];
 		$entry = $params['entry'];
 
@@ -88,6 +92,10 @@ class FederatedGroup {
 		// join or request
 		login($user);
 		$join = false;
+		if ($action == 'leave') {
+			$group->leave($user);
+			return $return;
+		}
 		if ($group->isPublicMembership() || $group->canEdit($user->guid)) {
 			// anyone can join public groups and admins can join any group
 			$join = true;
@@ -101,7 +109,6 @@ class FederatedGroup {
 		if ($join) {
 			if (groups_join_group($group, $user)) {
 				FederatedObject::search_tag_river($group, $user, 'join', $notification);
-				error_log("joined group!");
 			} else {
 			}
 		} else {
