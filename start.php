@@ -1,9 +1,9 @@
 <?php
 
-function federated_menu_item($entity) {
+function federated_menu_item($entity, $name='federated') {
 	$options = array(
-                'name' => 'federated',
-                'text' => elgg_echo('federated_objects_federated'),
+                'name' => $name,
+                'text' => elgg_echo("federated_objects:$name"),
                 'href' => false,
                 'priority' => 1000,
         );
@@ -17,6 +17,10 @@ function federated_river_menu_setup($hook, $type, $return, $params) {
 
 	if ($object->foreign) {	
 		$return[] = federated_menu_item($object);
+	}
+	$provenance = AtomRiverMapper::getRiverProvenance($item->id);
+	if (!empty($provenance)) {
+		$return[] = federated_menu_item($object, "provenance");
 	}
 
 	return $return;
