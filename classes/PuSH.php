@@ -54,5 +54,6 @@ class PuSH {
 		if (!$p->publish_update($topic_urls)) {
 			elgg_log($p->last_response(), 'ERROR');
 		}
+		return true;
 	}
 }
