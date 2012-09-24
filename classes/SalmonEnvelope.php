@@ -62,7 +62,7 @@ class SalmonEnvelope {
 			foreach($roots as $root) {
 				$text_provenance .= $root->asXml();
 			}
-			$text_provenance .= '</me:provenance">';
+			$text_provenance .= '</me:provenance>';
 		}
 		elseif($provenance) {
 			$text_provenance = $provenance->asXml();
