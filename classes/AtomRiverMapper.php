@@ -31,6 +31,7 @@ class AtomRiverMapper {
 			$sql = "INSERT INTO {$prefix}river_atomid_mapping (river_id, atom_id, provenance) VALUES($river_id, '$atom_id', '$provenance')";
 		}
 		else {
+			$sql = "INSERT INTO {$prefix}river_atomid_mapping (river_id, atom_id) VALUES($river_id, '$atom_id')";
 		}
 		insert_data($sql);
 	}
