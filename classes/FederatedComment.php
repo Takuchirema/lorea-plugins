@@ -4,6 +4,7 @@ class FederatedComment {
 	public static function create($params, $entity, $tag) {
 		global $CONFIG;
 		$owner = $params['owner_entity'];
+		login($owner);
 		$entry = $params['entry'];
 		$notification = $params['notification'];
 		$parent_guid = $notification->getParentGUID();
@@ -49,7 +50,7 @@ class FederatedComment {
 		$object['owner_entity'] = $author;
 		$object['entry'] = $entry;
 		$object['notification'] = $notification;
-		$note = FederatedObject::create($object, 'activity:object');
+		$note = FederatedObject::create($object, 'activity:object', false);
 	}
 
 
