@@ -72,9 +72,9 @@ function federated_objects_init() {
 	if (is_plugin_enabled('bookmarks')) {
 		elgg_register_entity_url_handler('object', 'bookmarks', array('FederatedBookmark', 'url'));
 	}
-	#if (is_plugin_enabled('groups')) {
-#		elgg_register_entity_url_handler('group', 'all', array('FederatedGroup', 'url'));
-#	}
+	if (is_plugin_enabled('groups')) {
+		elgg_register_entity_url_handler('group', 'all', array('FederatedGroup', 'url'));
+	}
 }
 
 elgg_register_event_handler('init', 'system', 'federated_objects_init');
