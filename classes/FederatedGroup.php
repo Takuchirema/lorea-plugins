@@ -99,6 +99,7 @@ class FederatedGroup {
 
 		if ($join) {
 			if (groups_join_group($group, $user)) {
+				FederatedObject::search_tag_river($group, $user, 'join', $notification);
 				error_log("joined group!");
 			} else {
 			}
