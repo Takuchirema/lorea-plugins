@@ -61,7 +61,70 @@ class FederatedGroup {
 		return $group;
 	}
 	public static function onGroupJoin($hook, $type, $return, $params) {
+		global $CONFIG;
 		error_log("Group Join!");
+		$notification = $params['notification'];
+		$entry = $params['entry'];
+
+		$author = $notification->getAuthor();
+		$object = $notification->getObject();
+
+		if ($author['type'] != 'person' || $object['type'] != 'group')
+			error_log("onGroupJoin with wrong parameters!!");
+
+		$id = $notification->getID();
+		$river_id = AtomRiverMapper::getRiverID($id);
+
+		if ($river_id || $notification->isLocal()) {
+			return;
+		}
+
+		$user = FederatedObject::create($author);
+
+		$object['entry'] = $entry;
+		$object['notification'] = $notification;
+		$group = FederatedObject::create($object);
+
+		// join or request
+		$join = false;
+		if ($group->isPublicMembership() || $group->canEdit($user->guid)) {
+			// anyone can join public groups and admins can join any group
+			$join = true;
+		} else {
+			if (check_entity_relationship($group->guid, 'invited', $user->guid)) {
+				// user has invite to closed group
+				$join = true;
+			}
+		}
+
+		if ($join) {
+			if (groups_join_group($group, $user)) {
+				error_log("joined group!");
+			} else {
+			}
+		} else {
+			add_entity_relationship($user->guid, 'membership_request', $group->guid);
+			error_log("requested membership for group!");
+
+			// Notify group owner
+			$url = "{$CONFIG->url}groups/requests/$group->guid";
+			$subject = elgg_echo('groups:request:subject', array(
+				$user->name,
+				$group->name,
+			));
+			$body = elgg_echo('groups:request:body', array(
+				$group->getOwnerEntity()->name,
+				$user->name,
+				$group->name,
+				$user->getURL(),
+				$url,
+			));
+			if (notify_user($group->owner_guid, $user->getGUID(), $subject, $body)) {
+			} else {
+			}
+		}
+
+
 		return $return;
 	}
 	public static function url($object) {
