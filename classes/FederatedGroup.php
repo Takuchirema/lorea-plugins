@@ -86,6 +86,7 @@ class FederatedGroup {
 		$group = FederatedObject::create($object);
 
 		// join or request
+		login($user);
 		$join = false;
 		if ($group->isPublicMembership() || $group->canEdit($user->guid)) {
 			// anyone can join public groups and admins can join any group
