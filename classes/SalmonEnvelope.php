@@ -48,15 +48,19 @@ class SalmonEnvelope {
 	}
 
 	function apply($entity=null) {
+		$magicenv_raw = $this->raw;
 		$magicenv = $this->xml;
 		$magicenv->registerXPathNamespace('me', 'http://salmon-protocol.org/ns/magic-env');
 		$provenance = @current($magicenv->xpath('//me:provenance'));
-		if (empty($provenance)) {
+		if (empty($provenance) && $magicenv->getName() == 'provenance') {
 			// status.net sends like this but seems to like ours too
 			$text_provenance = $magicenv_raw;
 		}
-		else {
+		elseif($provenance) {
 			$text_provenance = $provenance->asXml();
+		}
+		else {
+			error_log("salmon:no provenance!");
 		}
 		// XXX no salmon_link .. no good!
 
