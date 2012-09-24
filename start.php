@@ -56,6 +56,10 @@ function federated_objects_init() {
 	elgg_register_plugin_hook_handler('federated_objects:post', 'group', array('FederatedNotification', 'postObjectCreator'));
 	elgg_register_plugin_hook_handler('federated_objects:join', 'group', array('FederatedGroup', 'onGroupJoin'));
 	elgg_register_plugin_hook_handler('federated_objects:leave', 'group', array('FederatedGroup', 'onGroupLeave'));
+	elgg_register_plugin_hook_handler('federated_objects:friend', 'person', array('FederatedFriends', 'onFriend'));
+	elgg_register_plugin_hook_handler('federated_objects:remove-friend', 'person', array('FederatedFriends', 'onRemoveFriend'));
+	elgg_register_plugin_hook_handler('federated_objects:request-friend', 'person', array('FederatedFriends', 'onRequestFriend'));
+	elgg_register_plugin_hook_handler('federated_objects:decline-friend', 'person', array('FederatedFriends', 'onDeclineFriend'));
 
 	// override atom id for foreign objects
 	elgg_register_plugin_hook_handler('activitystreams:id', 'entity', array('AtomRiverMapper', 'entity_id'));
