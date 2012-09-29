@@ -53,15 +53,11 @@ class FederatedNotification {
 		$author = FederatedObject::create($author, 'atom:author');
 
 		if ($target) {
-			$target['entry'] = $entry;
-			$target['notification'] = $notification;
 			$container = FederatedObject::create($target, 'activity:target');
 			$object['container_entity'] = $container;
 		}
 
 		$object['owner_entity'] = $author;
-		$object['entry'] = $entry;
-		$object['notification'] = $notification;
 		$note = FederatedObject::create($object, 'activity:object');
 	}
 
@@ -180,6 +176,7 @@ class FederatedNotification {
 			$this->author = array('name' => $name,
 				     'id' => $id,
 				     'entry' => $entry,
+				     'notification' => $this,
 				     'type' => 'person',
 				     'link' => $link,
 				     'icon' => $icon);
@@ -207,6 +204,7 @@ class FederatedNotification {
 				     'name' => $name,
 				     'entry' => $entry,
 				     'icon' => $icon,
+				     'notification' => $this,
 				     'link' => $link,
 				     'tags' => $tags,
 				     'type' => trim($type),
@@ -229,6 +227,7 @@ class FederatedNotification {
 			$this->object = array('id' => $id,
 				     'name' => $name,
 				     'entry' => $entry,
+				     'notification' => $this,
 				     'icon' => $icon,
 				     'link' => $link,
 				     'tags' => $tags,
@@ -245,12 +244,23 @@ class FederatedNotification {
 		return $this->xpath(array("//atom:link[attribute::rel='hub']/@href"));
 	}
 
-	public function getIcon($size=array(96, 100)) {
-		$icon = @current($this->xml->xpath("//atom:author/atom:link[attribute::media:width='96']/@href"));
-                if (!$icon)
-                        $icon = @current($this->xml->xpath("//atom:author/atom:link[attribute::media:width='100']/@href"));
-		return $icon;
+	public function getIcon($tag="atom:author") {
+		$icons = $this->getIcons($tag);
+		if (count($icons)) {
+			$largest = max(array_keys($icons));
+			return $icons[$largest];
+		}
+		return;
+	}
 
+	public function getIcons($tag="atom:author") {
+		$icons = $this->xml->xpath("//$tag/atom:link[attribute::rel='avatar']");
+		$result = array();
+		foreach($icons as $icon) {
+			$attrs = $icon->attributes('http://purl.org/syndication/atommedia');
+			$result[(int)$attrs['width']] = (string)$icon['href'];
+		}
+		return $result;
 	}
 
 	public function isLocal() {
