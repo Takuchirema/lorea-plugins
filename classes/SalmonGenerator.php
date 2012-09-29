@@ -61,6 +61,24 @@ class SalmonGenerator
 	static function onActionDelete($event, $object_type, $relationship) {
 		SalmonGenerator::relationToSalmon($relationship, 'leave', 'river/relationship/member/create');
 	}
+	static function onFollowCreate($event, $object_type, $relationship) {
+		$subject = get_entity($relationship->guid_one);
+		$object = get_entity($relationship->guid_two);
+		if ($relationship->relationship == 'follow') {
+			// create friend request
+			SalmonGenerator::relationToSalmon($relationship, 'follow', 'river/relationship/friend/create');
+		}
+	}
+
+	static function onFollowDelete($event, $object_type, $relationship) {
+		$subject = get_entity($relationship->guid_one);
+		$object = get_entity($relationship->guid_two);
+		if ($relationship->relationship == 'follow') {
+			// create friend request
+			SalmonGenerator::relationToSalmon($relationship, 'unfollow', 'river/relationship/friend/create');
+		}
+	}
+
 	static function onFriendCreate($event, $object_type, $relationship) {
 		$subject = get_entity($relationship->guid_one);
 		$object = get_entity($relationship->guid_two);
