@@ -17,6 +17,5 @@ if ($user instanceof ElggUser) {
 	// public key
         echo '    <Link rel="magic-public-key" href="'.$key->echoKeyUrl().'" />'."\n";
 	// webfinger pointer to profile page
-        echo '    <Link rel="http://webfinger.net/rel/profile-page" type="text/html" href="'.$user->getURL().'" />'."\n";
 }
 ?>
