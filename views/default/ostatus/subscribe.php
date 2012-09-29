@@ -1,0 +1,2 @@
+<?php
+	$uri = $vars['uri'];
