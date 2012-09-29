@@ -16,6 +16,14 @@
 	</requires>
         <requires>
                 <type>plugin</type>
+                <name>elgg-activitystreams</name>
+        </requires>
+        <requires>
+                <type>plugin</type>
+                <name>elgg-push</name>
+        </requires>
+        <requires>
+                <type>plugin</type>
                 <name>elgg-salmon</name>
         </requires>
         <requires>
