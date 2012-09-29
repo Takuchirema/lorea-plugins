@@ -69,7 +69,10 @@ class FederatedNotification {
 	 * Load xml
 	 */
 	public function load($xml, $provenance) {
+		$xml->registerXPathNamespace('atom', 'http://www.w3.org/2005/Atom');
+		$xml->registerXPathNamespace('activity', 'http://activitystrea.ms/spec/1.0/');
 		$xml->registerXPathNamespace('me', 'http://salmon-protocol.org/ns/magic-env');
+		$xml->registerXPathNamespace('media','http://purl.org/syndication/atommedia');
 		$provenance_xml = @current($xml->xpath("me:provenance"));
 
 		if ($provenance_xml) {
@@ -99,6 +102,7 @@ class FederatedNotification {
 		// parse verb
 		$verbs = $entry->xpath("activity:verb");
 		$verb = $verbs?trim(array_pop($verbs)):false;
+		$verb = str_replace("http://activitystrea.ms/schema/1.0/", "", $verb);
 		if (!$verb) {
 				$verb = 'post';
 		}
@@ -113,7 +117,7 @@ class FederatedNotification {
 			if (is_array($body))
 				$body = @current($body);
 			if ($body)
-				$body = $body->asXML();
+				$body = elgg_strip_tags($body->asXML());
 		}
 		return $body;
 	}
@@ -143,6 +147,7 @@ class FederatedNotification {
 		if (!$object_type) {
 			$object_type = 'note';
 		}
+		$object_type = str_replace('http://activitystrea.ms/schema/1.0/', '', $object_type);
 		return $object_type;
 	}
 
@@ -164,10 +169,11 @@ class FederatedNotification {
 			$name = $this->xpath(array("atom:author/atom:name", "//atom:author/atom:name"));
 			// subject
 			$id = $this->xpath(array("atom:author/atom:id", "//atom:author/atom:id", "//atom:author/atom:uri"));
-			$link = $this->xpath(array("atom:author/atom:link[attribute::rel='alternate']/@href",
-						   "atom:link[attribute::rel='alternate']/@href",
+			$link = $id;
+			/*$link = $this->xpath(array("atom:author/atom:link[attribute::rel='alternate']/@href",
+						   "//atom:author/atom:link[attribute::rel='alternate']/@href",
 						   "//activity:subject/atom:link[attribute::rel='alternate']/@href"
-						), $id);
+						), $id);*/
 			$icon= $this->xpath(array("//atom:author/atom:link[attribute::rel='preview']/@href",
 						  "activity:subject/atom:link[attribute::media:width='48']/@href",
 						  "//activity:subject/atom:link[attribute::media:width='48']/@href"));
@@ -187,6 +193,7 @@ class FederatedNotification {
 			 // container
 			$id = @current($entry->xpath("activity:target/atom:id"));
 			$type = @current($entry->xpath("activity:target/activity:object-type"));
+			$type = str_replace('http://activitystrea.ms/schema/1.0/', '', $type);
 			$icon = @current($entry->xpath("activity:target/atom:link[attribute::rel='preview']/@href"));
 			$name = @current($entry->xpath("activity:target/atom:title"));
 			$link = @current($entry->xpath("activity:target/atom:link[attribute::rel='alternate']/@href"));
@@ -228,6 +235,22 @@ class FederatedNotification {
 				     'type' => trim($type));
 		}
 		return $this->object;
+	}
+
+	public function getSalmonEndpoint() {
+		return $this->xpath(array("//atom:link[attribute::rel='http://salmon-protocol.org/ns/salmon-replies']/@href"));
+	}
+
+	public function getHub() {
+		return $this->xpath(array("//atom:link[attribute::rel='hub']/@href"));
+	}
+
+	public function getIcon($size=array(96, 100)) {
+		$icon = @current($this->xml->xpath("//atom:author/atom:link[attribute::media:width='96']/@href"));
+                if (!$icon)
+                        $icon = @current($this->xml->xpath("//atom:author/atom:link[attribute::media:width='100']/@href"));
+		return $icon;
+
 	}
 
 	public function isLocal() {
