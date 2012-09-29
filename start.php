@@ -1,7 +1,7 @@
 <?php
 
 function xrds_hostmeta_page_handler($page) {
-	elgg_set_viewtype('xrds');
+	elgg_set_viewtype('xrd');
 	$body = elgg_view('host-meta');
 	echo elgg_view_page('', $body);
 }
