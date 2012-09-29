@@ -69,6 +69,7 @@ class FederatedNotification {
 		$xml->registerXPathNamespace('activity', 'http://activitystrea.ms/spec/1.0/');
 		$xml->registerXPathNamespace('me', 'http://salmon-protocol.org/ns/magic-env');
 		$xml->registerXPathNamespace('media','http://purl.org/syndication/atommedia');
+		$xml->registerXPathNamespace('poco','http://portablecontacts.net/spec/1.0');
 		$provenance_xml = @current($xml->xpath("me:provenance"));
 
 		if ($provenance_xml) {
@@ -162,7 +163,9 @@ class FederatedNotification {
 		if (!isset($this->author)) {
 			$entry = $this->xml;
 			// author name
-			$name = $this->xpath(array("atom:author/atom:name", "//atom:author/atom:name"));
+			$name = $this->xpath(array("atom:author/poco:displayName", "atom:author/atom:name", "//atom:author/atom:name"));
+			$description = $this->xpath(array("atom:author/poco:note"));
+			$webpage = $this->xpath(array("atom:author/poco:urls/poco:value"));
 			// subject
 			$id = $this->xpath(array("atom:author/atom:id", "//atom:author/atom:id", "//atom:author/atom:uri"));
 			$link = $id;
@@ -179,6 +182,8 @@ class FederatedNotification {
 				     'notification' => $this,
 				     'type' => 'person',
 				     'link' => $link,
+				     'description' => $description,
+				     'webpage' => $webpage,
 				     'icon' => $icon);
 		}
 		return $this->author;

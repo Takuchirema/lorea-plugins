@@ -22,6 +22,12 @@ class FederatedPerson {
 			$entity->save();
 			$entity->username = 'ostatus_'.$entity->getGUID();
 			$entity->name = $params['name'];
+			if ($params['description']) {
+				$entity->description = $params['description'];
+			}
+			if ($params['webpage']) {
+				$entity->webpage = $params['webpage'];
+			}
 			$entity->access_id = ACCESS_PUBLIC;
 			$entity->atom_id = $params['id'];
 			$entity->atom_link = $params['link'];
