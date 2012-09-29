@@ -7,13 +7,14 @@
 
 	$endpoint = SalmonDiscovery::getYadisEndpoint($uri,
                         "//xrd:Link[attribute::type='application/atom+xml']/@href");
-	if (push_get_subscription($endpoint))
-		echo "HAS SUBSCRIPTION";
+	/*if (push_get_subscription($endpoint))
+		echo "HAS SUBSCRIPTION";*/
 	$feed = OstatusProtocol::getFeed($uri);
 	$author = $feed->getAuthor();
 	$salmon_link = $feed->getSalmonEndpoint();
 	$hub = $feed->getHub();
 	$title = $feed->xpath(array('//atom:author/atom:title'));
+	$feed->getIcons();
 
 	$entity = FederatedObject::find($author['id']);
 	$following = false;

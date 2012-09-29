@@ -4,12 +4,13 @@
 	$atom_endpoint = $vars['endpoint'];
 	$icon = $vars['icon'];
 	$hub = $vars['hub'];
-	$title = $vars['title'];
 	$author = $vars['author'];
+	$title = $author['description'] . " " . $author['webpage'];
 	$webid = $author['id'];
 
 	$body = "<p><label>".elgg_echo("ostatus:subscribeto")."</label><br />";
-	$body .= $author['name'].":"."<img src='".$icon."'/><br/><b>".$title."</b><br/>";
+	$body .= $author['name'].":"."<img width='96' height='96' src='".$icon."'/><br/><b>".$title."</b><br/>";
+
 	//$body .= elgg_view('input/hidden', array('internalname' => 'atom_endpoint', 'value' => $atom_endpoint)); ???
 	$body .= '<input type="hidden" name="atom_endpoint" value="'.htmlspecialchars($atom_endpoint).'" />';
 
