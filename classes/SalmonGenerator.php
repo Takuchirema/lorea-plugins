@@ -62,8 +62,6 @@ class SalmonGenerator
 		SalmonGenerator::relationToSalmon($relationship, 'leave', 'river/relationship/member/create');
 	}
 	static function onFollowCreate($event, $object_type, $relationship) {
-		$subject = get_entity($relationship->guid_one);
-		$object = get_entity($relationship->guid_two);
 		if ($relationship->relationship == 'follow') {
 			// create friend request
 			SalmonGenerator::relationToSalmon($relationship, 'follow', 'river/relationship/friend/create');
@@ -71,8 +69,6 @@ class SalmonGenerator
 	}
 
 	static function onFollowDelete($event, $object_type, $relationship) {
-		$subject = get_entity($relationship->guid_one);
-		$object = get_entity($relationship->guid_two);
 		if ($relationship->relationship == 'follow') {
 			// create friend request
 			SalmonGenerator::relationToSalmon($relationship, 'unfollow', 'river/relationship/friend/create');
@@ -80,8 +76,6 @@ class SalmonGenerator
 	}
 
 	static function onFriendCreate($event, $object_type, $relationship) {
-		$subject = get_entity($relationship->guid_one);
-		$object = get_entity($relationship->guid_two);
 		if ($relationship->relationship == 'friendrequest') {
 			// create friend request
 			SalmonGenerator::relationToSalmon($relationship, 'request-friend', 'river/relationship/friend/create');
@@ -186,110 +180,4 @@ class SalmonGenerator
                 }
 
         }
-        function group_addtogroup($hook, $entity_type, $returnvalue, $params) {
-                SalmonGenerator::group_sendrequest('addtogroup');
-                return $returnvalue;
-        }
-        function group_killrequest($hook, $entity_type, $returnvalue, $params) {
-                SalmonGenerator::group_sendrequest('killrequest');
-                return $returnvalue;
-        }
-        function group_joinrequest($hook, $entity_type, $returnvalue, $params) {
-                SalmonGenerator::group_sendrequest('joinrequest');
-                return $returnvalue;
-        }
-        function group_sendrequest($verb) {
-                global $CONFIG;
-                if (!$subject = get_entity(get_input('user_guid', get_loggedin_userid())))
-                        return (false);
-                if (!$object = get_entity(get_input('group_guid', 0)))
-                        return (false);
-                if (!($subject->foreign || $object->foreign))
-                        return;
-                $time = time();
-                $viewtype = elgg_get_viewtype();
-                elgg_set_viewtype('atom');
-                $update = '<entry>'.elgg_view('activitystreams/entry',
-                        array('standalone'=>true,
-                                'entry_id'=>$CONFIG->wwwroot.$object->guid.$time,
-                                'verb'=>$verb,
-                                'title'=>$object->name,
-                                'body'=>$object->name,
-                                'annotation_id'=>null,
-                                'created'=>$time,
-                                'updated'=>$time,
-                                'subject'=>$subject,
-                                'container'=>$object,
-                                'entity'=>$object)).'</entry>';
-                elgg_set_viewtype($viewtype);
-                if ($subject->atom_id) { // remote controlling
-			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($subject);
-                        SalmonProtocol::sendUpdate($salmon_link, $update, $subject);
-                }
-                if ($object->foreign) {
-			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($object);
-                        SalmonProtocol::sendUpdate($salmon_link, $update, $subject);
-                }
-        }
-        function friend_sendrequest($verb, $inputpar) {
-                global $CONFIG;
-                if (!$friend = get_entity(get_input($inputpar, 0)))
-                        return (false);
-                if (!$friend->foreign)
-                        return;
-                $time = time();
-                $user = get_loggedin_user();
-                $viewtype = elgg_get_viewtype();
-                elgg_set_viewtype('atom');
-                $update = elgg_view('activitystreams/entry',
-                        array('standalone'=>true,
-                                'entry_id'=>$CONFIG->wwwroot.$friend->username.$time,
-                                'verb'=>$verb,
-                                'title'=>$friend->name,
-                                'body'=>$friend->name,
-                                'annotation_id'=>null,
-                                'created'=>$time,
-                                'updated'=>$time,
-                                'subject'=>$user,
-                                'container'=>$friend,
-                                'entity'=>$friend));
-                elgg_set_viewtype($viewtype);
-                if ($user->atom_id) {
-			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($user);
-                        SalmonProtocol::sendUpdate($salmon_link, $update, $user);
-                }
-		$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($friend);
-                SalmonProtocol::sendUpdate($salmon_link, $update, $user);
-        }
-        function add_friend($hook, $entity_type, $returnvalue, $params) {
-                SalmonGenerator::friend_sendrequest('requestfriendship', 'friend');
-                return $returnvalue;
-        }
-        function approve_friend($hook, $entity_type, $returnvalue, $params) {
-                SalmonGenerator::friend_sendrequest('approvefriendship', 'guid');
-                return $returnvalue;
-        }
-        function decline_friend($hook, $entity_type, $returnvalue, $params) {
-                SalmonGenerator::friend_sendrequest('declinefriendship', 'guid');
-                return $returnvalue;
-        }
-        function remove_friend($hook, $entity_type, $returnvalue, $params) {
-                SalmonGenerator::friend_sendrequest('removefriendship', 'friend');
-                return $returnvalue;
-        }
-        function flag_user($hook, $entity_type, $returnvalue, $params) {
-                $entity = get_entity(get_input('uid'));
-                if (!($entity->type == 'user' && $entity->foreign))
-                        return;
-                SalmonGenerator::friend_sendrequest('http://activitystrea.ms/schema/1.0/follow', 'uid');
-                return $returnvalue;
-        }
-        function unflag_user($hook, $entity_type, $returnvalue, $params) {
-                if (!($entity->type == 'user' && $entity->foreign))
-                        return;
-                SalmonGenerator::friend_sendrequest('http://ostatus.org/schema/1.0/unfollow', 'uid');
-                return $returnvalue;
-        }
-
-
 }
