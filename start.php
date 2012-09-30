@@ -80,6 +80,8 @@ function federated_objects_init() {
 	elgg_register_plugin_hook_handler('federated_objects:remove-friend', 'person', array('FederatedFriends', 'onRemoveFriend'));
 	elgg_register_plugin_hook_handler('federated_objects:request-friend', 'person', array('FederatedFriends', 'onRequestFriend'));
 	elgg_register_plugin_hook_handler('federated_objects:decline-friend', 'person', array('FederatedFriends', 'onDeclineFriend'));
+	elgg_register_plugin_hook_handler('federated_objects:follow', 'person', array('FederatedFriends', 'onFollow'));
+	elgg_register_plugin_hook_handler('federated_objects:unfollow', 'person', array('FederatedFriends', 'onUnfollow'));
 
 	// override atom id for foreign objects
 	elgg_register_plugin_hook_handler('activitystreams:id', 'entity', array('AtomRiverMapper', 'entity_id'));
