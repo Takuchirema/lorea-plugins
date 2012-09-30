@@ -18,13 +18,27 @@ class FederatedNotification {
 		$verb = $federated->getVerb();
 
 		// parse object type
-		$object_type = $federated->getObjectType();
+		if ($params['target_entity']) {
+			$entity = $params['target_entity'];
+			if ($entity->getType() == "user") {
+				$object_type = 'person';
+			}
+			elseif ($entity->getType() == "group") {
+				$object_type = 'group';
+			}
+			else {
+				$object_type = 'person';
+			}
+		} else {
+			$object_type = $federated->getObjectType();
+		}
 
 		$target = $federated->getObject();
 
 		// output
 		$params = array('notification' => $federated,
 				'salmon_link' => $salmon_link,
+				'target_entity' => $params['target_entity'],
 				'entry' => $entry);
 		trigger_plugin_hook('federated_objects:'.$verb, $object_type, $params);
 	}
@@ -100,6 +114,7 @@ class FederatedNotification {
 		$verbs = $entry->xpath("activity:verb");
 		$verb = $verbs?trim(array_pop($verbs)):false;
 		$verb = str_replace("http://activitystrea.ms/schema/1.0/", "", $verb);
+		$verb = str_replace("http://ostatus.org/schema/1.0/", "", $verb);
 		if (!$verb) {
 				$verb = 'post';
 		}
@@ -164,8 +179,6 @@ class FederatedNotification {
 			$entry = $this->xml;
 			// author name
 			$name = $this->xpath(array("atom:author/poco:displayName", "atom:author/atom:name", "//atom:author/atom:name"));
-			$description = $this->xpath(array("atom:author/poco:note"));
-			$webpage = $this->xpath(array("atom:author/poco:urls/poco:value"));
 			// subject
 			$id = $this->xpath(array("atom:author/atom:id", "//atom:author/atom:id", "//atom:author/atom:uri"));
 			$link = $id;
@@ -173,17 +186,18 @@ class FederatedNotification {
 						   "//atom:author/atom:link[attribute::rel='alternate']/@href",
 						   "//activity:subject/atom:link[attribute::rel='alternate']/@href"
 						), $id);*/
-			$icon= $this->xpath(array("//atom:author/atom:link[attribute::rel='preview']/@href",
-						  "activity:subject/atom:link[attribute::media:width='48']/@href",
-						  "//activity:subject/atom:link[attribute::media:width='48']/@href"));
+			$icon= $this->getIcon();
+			$type = @current($entry->xpath("atom:author/activity:object-type"));
+			$type = str_replace('http://activitystrea.ms/schema/1.0/', '', $type);
+			if (empty($type)) {
+				$type = 'person';
+			}
 			$this->author = array('name' => $name,
 				     'id' => $id,
 				     'entry' => $entry,
 				     'notification' => $this,
-				     'type' => 'person',
+				     'type' => $type,
 				     'link' => $link,
-				     'description' => $description,
-				     'webpage' => $webpage,
 				     'icon' => $icon);
 		}
 		return $this->author;
@@ -259,7 +273,7 @@ class FederatedNotification {
 	}
 
 	public function getIcons($tag="atom:author") {
-		$icons = $this->xml->xpath("//$tag/atom:link[attribute::rel='avatar']");
+		$icons = $this->xml->xpath("$tag/atom:link[attribute::rel='avatar']");
 		$result = array();
 		foreach($icons as $icon) {
 			$attrs = $icon->attributes('http://purl.org/syndication/atommedia');
