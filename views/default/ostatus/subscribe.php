@@ -4,7 +4,7 @@
 
 	$body = elgg_view('input/text', array('internalname' => 'uri', 'size' => '40'));
 	$body .= "<p>".elgg_echo("ostatus:subscribeto:enter:description")."</p>";
-	$body .= elgg_view("input/submit", array('value'=>'Confirm', 'internalname'=>'submit'));
+	$body .= elgg_view("input/submit", array('value'=>elgg_echo('search'), 'internalname'=>'submit'));
 
 ?>
 <label><?php echo $label; ?></label>
