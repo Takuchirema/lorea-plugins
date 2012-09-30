@@ -15,6 +15,7 @@ class SalmonEnvelope {
 		$data_type = @current($salmon_xml->xpath('//me:data/@type'));
 		$encoding = @current($salmon_xml->xpath('//me:encoding'));
 		$alg = @current($salmon_xml->xpath('//me:alg'));
+		$enc_data = $b64data.".".Base64url::encode($data_type).".".Base64url::encode($encoding).".".Base64url::encode($alg);
 		$sig_hash = Base64url::decode(@current($salmon_xml->xpath('//me:sig/@keyhash')));
 		$sig = Base64url::decode(@current($salmon_xml->xpath('//me:sig')));
 		$xml = @ new SimpleXMLElement($data, null, false, "atom");
@@ -34,21 +35,24 @@ class SalmonEnvelope {
 		}
 		if (!$id)
 			$id = @current($xml->xpath("//atom:author/atom:uri"));
-
 		if (!$key) {
 			$key = SalmonDiscovery::getRemoteKey($id, $sig_hash);
 		}
-		if (SalmonProtocol::checkSignature($b64data, $sig, $key)) {
+		if (SalmonProtocol::checkSignature($enc_data, $sig, $key)) {
 			$this->valid = true;
 		}
-		else {
-			//error_log("doesnt validate");
+		elseif (SalmonProtocol::checkSignature($b64data, $sig, $key)) {
+			// old style..
+			$this->valid = true;
 		}
 		return null;
 
 	}
 
-	function apply($entity=null) {
+	function apply($entity_guid=null) {
+		if ($entity_guid) {
+			$entity = get_entity($entity_guid);
+		}
 		$magicenv_raw = $this->raw;
 		$magicenv = $this->xml;
 
@@ -68,6 +72,7 @@ class SalmonEnvelope {
 			$text_provenance = $provenance->asXml();
 		}
 		else {
+			// can happen if the message is direct salmon 'to target'
 			error_log("salmon:no provenance!");
 		}
 		// XXX no salmon_link .. no good!
