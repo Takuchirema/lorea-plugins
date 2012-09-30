@@ -104,6 +104,41 @@ class FederatedFriends {
 			return false;
 		}
 	}
+	public static function onFollow($hook, $type, $return, $params) {
+		FederatedFriends::doRelationshipApply('follow', true, $params);
+	}
+	public static function onUnfollow($hook, $type, $return, $params) {
+		FederatedFriends::doRelationshipApply('follow', false, $params);
+	}
+	public static function doRelationshipApply($relationship, $add, $params) {
+		$notification = $params['notification'];
+		$entry = $params['entry'];
 
+		$author = $notification->getAuthor();
+		$object = $notification->getObject();
+
+		$user = FederatedObject::create($author, 'atom:author');
+
+		$friend = $params['target_entity'];
+
+		if (empty($friend) || empty($user)) {
+			if (empty($friend))
+				error_log("onUnfollow no friend!");
+			elseif (empty($user))
+				error_log("onUnfollow no user!");
+			return;
+		}
+		login($user);
+
+		if ($add) {
+			if (check_entity_relationship($user->guid, $relationship, $friend->guid)) {
+				remove_entity_relationship($user->guid, $relationship, $friend->guid);
+			}
+		} else {
+			if (!check_entity_relationship($user->guid, $relationship, $friend->guid)) {
+				add_entity_relationship($user->guid, $relationship, $friend->guid);
+			}
+		}
+	}
 }
 
