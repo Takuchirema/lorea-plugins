@@ -5,12 +5,11 @@
 
 	$uri = $vars['uri'];
 
-	$endpoint = SalmonDiscovery::getYadisEndpoint($uri,
-                        "//xrd:Link[attribute::type='application/atom+xml']/@href");
-	/*if (push_get_subscription($endpoint))
-		echo "HAS SUBSCRIPTION";*/
+
 	$feed = OstatusProtocol::getFeed($uri);
 	$author = $feed->getAuthor();
+	$endpoint = SalmonDiscovery::getYadisEndpoint($uri,
+                        "//xrd:Link[attribute::type='application/atom+xml']/@href", 'application/atom+xml');
 	$salmon_link = $feed->getSalmonEndpoint();
 	$hub = $feed->getHub();
 	$title = $feed->xpath(array('//atom:author/atom:title'));
@@ -29,12 +28,25 @@
 			'endpoint' => $endpoint,
 			'icon' => $feed->getIcon(),
 			'title' => $title,
+			'tag' => 'atom:author',
 			'hub' => $hub);
-	if ($following)
-		echo elgg_view_form('ostatus/unsubscribe', array(), $args);
-	else
-		echo elgg_view_form('ostatus/confirm', array(), $args);
-	//echo "<p><b>".$author['id']."::$salmon_link::$hub</b></p>";
 
-	//echo $xrds."XX".$bla."::".$salmon."::".$endpoint;
+	if ($following) {
+		$msg = "ostatus:unsubscribeto";
+	}
+	else {
+		$msg = "ostatus:subscribeto";
+	}
+	echo "<p><label>".elgg_echo("$msg:".$author['type'])."</label><br />";
+	echo elgg_view('ostatus/profile', $args);
+
+	if ($author['type'] == 'person') {
+		if ($following)
+			echo elgg_view_form('ostatus/unsubscribe', array(), $args);
+		else
+			echo elgg_view_form('ostatus/confirm', array(), $args);
+	}
+	else {
+		echo elgg_echo("ostatus:cantsubscribe");
+	}
 

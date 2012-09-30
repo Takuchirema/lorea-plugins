@@ -2,7 +2,7 @@
 class OstatusProtocol {
 	static function getFeed($webid) {
 		$endpoint = SalmonDiscovery::getYadisEndpoint($webid,
-                        "//xrd:Link[attribute::type='application/atom+xml']/@href");
+                        "//xrd:Link[attribute::type='application/atom+xml']/@href", "application/atom+xml");
 		$request = curl_init($endpoint);
 		curl_setopt($request, CURLOPT_FOLLOWLOCATION, TRUE);
 		curl_setopt($request, CURLOPT_RETURNTRANSFER, TRUE);
