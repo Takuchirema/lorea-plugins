@@ -1,8 +1,21 @@
 <?php
 
 class FederatedPerson {
+	public static function getPoco($notification, $tag, $args) {
+		$name = $notification->xpath(array("$tag/poco:displayName"));
+                $description = $notification->xpath(array("$tag/poco:note"));
+		error_log("DESC: $description $tag");
+                $webpage = $notification->xpath(array("$tag/poco:urls/poco:value"));
+                if ($name) {
+                        $args['name'] = $name;
+                }
+		$args['description'] = $description;
+		$args['webpage'] = $webpage;
+		return $args;
+	}
 	public static function create($params, $entity, $tag) {
 		$notification = $params['notification'];
+		$params = FederatedPerson::getPoco($notification, $tag, $params);
 		$icon = $notification->getIcon($tag);
 		if ($entity) {
 			if ($entity->foreign) {
