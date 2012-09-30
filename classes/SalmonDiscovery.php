@@ -45,7 +45,7 @@ class SalmonDiscovery
 	    return $uri;
 	}
 
-	static function getYadisEndpoint($webid, $pattern) {
+	static function getYadisEndpoint($webid, $pattern, $link_type=NULL) {
 	    require_once 'Auth/Yadis/Yadis.php';
 	    $fetcher = Auth_Yadis_Yadis::getHTTPFetcher();
 
@@ -54,20 +54,36 @@ class SalmonDiscovery
 	    $response = Auth_Yadis_Yadis::discover($xrds_url, $fetcher);
 	    $endpoint = false;
 	    if ($response->isXRDS() || !empty($response)) {
-			$xrds = new SimpleXMLElement($response->response_text,null,false,'xrd');
-			if ($xrds->getName() == 'XRDS') {
-				$xrds->registerXPathNamespace('xrds', 'xri://$xrds');
-				$xrds->registerXPathNamespace('xrd', 'xri://$xrd*($v*2.0)');
+			try {
+				$xrds = new SimpleXMLElement($response->response_text,null,false,'xrd');
+				if ($xrds->getName() == 'XRDS') {
+					$xrds->registerXPathNamespace('xrds', 'xri://$xrds');
+					$xrds->registerXPathNamespace('xrd', 'xri://$xrd*($v*2.0)');
+				}
+				else {
+					// statusnet way
+					$xrds->registerXPathNamespace('xrd', 'http://docs.oasis-open.org/ns/xri/xrd-1.0');
+				}
+				$endpoints = $xrds->xpath($pattern);
+				foreach($endpoints as $link) {
+					$endpoint = $link;
+				}
 			}
-			else {
-				// statusnet way
-				$xrds->registerXPathNamespace('xrd', 'http://docs.oasis-open.org/ns/xri/xrd-1.0');
-			}
-			$endpoints = $xrds->xpath($pattern);
-			foreach($endpoints as $link) {
-				$endpoint = $link;
+			catch(Exception $e) {
 			}
 	    }
+		if ($link_type && empty($endpoint)) {
+			$fetcher = new Auth_Yadis_ParanoidHTTPFetcher();
+			$res = $fetcher->get($webid);
+			$body = $res->body;
+			$pos = strpos($body, '<head>');
+			$pos2 = strpos($body, '</head>', $pos);
+			$head = substr($body, $pos, 7+$pos2-$pos);
+			$data = new SimpleXMLElement($head);
+			$atom = @current($data->xpath("//link[attribute::type='application/atom+xml']/@href"));
+			$endpoint = $atom;
+		}
+
 	    return $endpoint;
 	}
 
