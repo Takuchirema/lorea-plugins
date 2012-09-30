@@ -6,13 +6,12 @@ class SalmonProtocol {
 			$target_entity = null;
 			if (count($page) && $page[0] === "endpoint") {
 				$target_id = $page[1];
-				$target_entity = $page[2];
 			}
 			$raw = file_get_contents('php://input');
 
 			$envelope = new SalmonEnvelope($raw);
 			if ($envelope->valid) {
-				$envelope->apply($target_entity);
+				$envelope->apply($target_id);
 			}
 		}
 	}
@@ -50,7 +49,14 @@ class SalmonProtocol {
 	    <me:encoding>base64url</me:encoding>
 	    <me:alg>RSA-SHA256</me:alg>
 	    <me:sig keyhash='".$key->getHash()."'>";
-		$postdata .= $key->sign($encoded_update);
+
+		// prepare data for signing
+		$data_type = Base64url::encode("application/atom+xml");
+		$encoding = Base64url::encode("base64url");
+		$alg = Base64url::encode("RSA-SHA256");
+		$signed = "$encoded_update.$data_type.$encoding.$alg";
+
+		$postdata .= $key->sign($signed);
 		$postdata .= "</me:sig>";
 		$postdata .= "</me:provenance>";
 
