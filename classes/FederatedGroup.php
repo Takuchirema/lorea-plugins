@@ -8,6 +8,7 @@ class FederatedGroup {
 		$notification = $params['notification'];
 		$brief_description = @current($entry->xpath("$tag/atom:summary"));
 		$description = @current($entry->xpath("$tag/atom:content"));
+		$icon = $notification->getIcon($tag);
 		if ($entity) {
 			if ($entity->foreign) {
 				$access = elgg_set_ignore_access(true);
@@ -74,12 +75,14 @@ class FederatedGroup {
 		$object = $notification->getObject();
 
 		if ($author['type'] != 'person' || $object['type'] != 'group')
-			error_log("onGroupJoin with wrong parameters!!");
+			error_log("onGroupJoin with wrong parameters!! " . $author['type'] . $object['type']);
 
 		$id = $notification->getID();
 		$river_id = AtomRiverMapper::getRiverID($id);
 
-		if ($river_id || $notification->isLocal()) {
+		// we ignore river_id when we have a target entity to cope for what
+		// i think is a bug where identi.ca sends always the same id
+		if (($river_id && !($params['target_entity'])) || $notification->isLocal()) {
 			return;
 		}
 
@@ -87,7 +90,12 @@ class FederatedGroup {
 
 		$object['entry'] = $entry;
 		$object['notification'] = $notification;
-		$group = FederatedObject::create($object, 'activity:object');
+		if ($params['target_entity']) {
+			$group = $params['target_entity'];
+		}
+		else {
+			$group = FederatedObject::create($object, 'activity:object');
+		}
 
 		// join or request
 		login($user);
@@ -113,7 +121,6 @@ class FederatedGroup {
 			}
 		} else {
 			add_entity_relationship($user->guid, 'membership_request', $group->guid);
-			error_log("requested membership for group!");
 
 			// Notify group owner
 			$url = "{$CONFIG->url}groups/requests/$group->guid";

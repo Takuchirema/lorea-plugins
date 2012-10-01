@@ -12,6 +12,11 @@ class FederatedComment {
 		$comment_text = @current($entry->xpath("$tag/atom:content"));
 		$parent = get_entity($parent_guid);
 
+		// comments of thewire become thewire messages too
+		if ($parent->getSubtype() == 'thewire') {
+			return FederatedNote::create($params, $entity, $tag);
+		}
+
 		$annotation = create_annotation($parent_guid,
                                                                 'generic_comment',
                                                                 $comment_text,

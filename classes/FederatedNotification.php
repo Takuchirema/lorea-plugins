@@ -122,7 +122,7 @@ class FederatedNotification {
 	}
 	public function getBody() {
 		$entry = $this->xml;
-		$body = @current($entry->xpath("activity:object/atom:content"));
+		$body = $this->xpath(array("activity:object/atom:content", "atom:content"));
 		$body = elgg_strip_tags($body);
 		if (empty($body)) {
 			$body = $entry->xpath("atom:content");
@@ -136,10 +136,12 @@ class FederatedNotification {
 	
 	public function getParentGUID() {
 		$entry = $this->xml;
-		$parent_id = @current($entry->xpath("activity:object/thr:in-reply-to/atom:id"));
+		$parent_id = $this->xpath(array("activity:object/thr:in-reply-to/atom:id", "thr:in-reply-to/atom:id", "activity:object/thr:in-reply-to/@ref", "thr:in-reply-to/@ref"));
 		if ($parent_id) {
 			$parent = FederatedObject::find($parent_id);
-			$parent_guid = $parent->getGUID();
+			if ($parent) {
+				$parent_guid = $parent->getGUID();
+			}
 		}
 		return $parent_guid;
 	}
@@ -155,7 +157,7 @@ class FederatedNotification {
 	public function getObjectType() {
 		$entry = $this->xml;
 		// parse object type
-		$object_type = @trim(current($entry->xpath("activity:object/activity:object-type")));
+		$object_type = @trim($this->xpath(array("activity:object/activity:object-type", "activity:object-type")));
 		if (!$object_type) {
 			$object_type = 'note';
 		}
@@ -237,9 +239,11 @@ class FederatedNotification {
 			$entry = $this->xml;
 			$name = $this->xpath(array("activity:object/atom:title", "atom:title"));
 			$id = $this->xpath(array("activity:object/atom:id", "atom:id"));
-			$icon = @current($entry->xpath("activity:object/atom:link[attribute::rel='preview']/@href"));
-			$link = @current($entry->xpath("activity:object/atom:link[attribute::rel='alternate']/@href"));
+			$icon = $this->xpath(array("activity:object/atom:link[attribute::rel='preview']/@href", "atom:link[attribute::rel='preview']/@href"));
+			$link = $this->xpath(array("activity:object/atom:link[attribute::rel='alternate']/@href", "atom:link[attribute::rel='alternate']/@href"));
 			$tags = $entry->xpath("activity:object/atom:category/@term");
+			if (empty($tags))
+				$tags = $entry->xpath("atom:category/@term");
 			if ($tags)
 				$tags = string_to_tag_array(implode(", ", $tags));
 			$type = $this->getObjectType();

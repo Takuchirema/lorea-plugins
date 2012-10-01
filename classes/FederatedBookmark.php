@@ -8,8 +8,8 @@ class FederatedBookmark {
 		$access_id = ACCESS_PUBLIC;
 
 		// specific fields
-		$description = @current($entry->xpath("$tag/atom:summary"));
-		$address = @current($entry->xpath("$tag/atom:link[attribute::rel='related']/@href"));
+		$description = $notification->xpath(array("$tag/atom:summary", "atom:summary"));
+		$address = $notification->xpath(array("$tag/atom:link[attribute::rel='related']/@href", "atom:link[attribute::rel='related']/@href"));
 
 		if (empty($entity)) {
 			$access = elgg_set_ignore_access(true);

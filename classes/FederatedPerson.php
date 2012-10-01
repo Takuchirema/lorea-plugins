@@ -4,7 +4,6 @@ class FederatedPerson {
 	public static function getPoco($notification, $tag, $args) {
 		$name = $notification->xpath(array("$tag/poco:displayName"));
                 $description = $notification->xpath(array("$tag/poco:note"));
-		error_log("DESC: $description $tag");
                 $webpage = $notification->xpath(array("$tag/poco:urls/poco:value"));
                 if ($name) {
                         $args['name'] = $name;
@@ -72,14 +71,19 @@ class FederatedPerson {
 	    return $randomString;
 
 	}
-	public static function setIcon($entity, $icon) {
+	public static function setIcon($entity, $icon, $prefix='profile') {
 		$guid = $entity->guid;
 		$resized = file_get_contents($icon);
 
 		// save downloaded image
+		if ($entity instanceof ElggUser) 
+	                $owner = $guid;
+		else
+	                $owner = $entity->owner_guid;
+
 		$file = new ElggFile();
-                $file->owner_guid = $guid;
-                $file->setFilename("profile/{$guid}ostatus_master.jpg");
+                $file->setFilename("$prefix/{$guid}.jpg");
+		$file->owner_guid = $owner;
                 $file->open('write');
                 $file->write($resized);
                 $file->close();
@@ -95,8 +99,8 @@ class FederatedPerson {
 			if ($resized) {
 				//@todo Make these actual entities.  See exts #348.
 				$file = new ElggFile();
-				$file->owner_guid = $guid;
-				$file->setFilename("profile/{$guid}{$name}.jpg");
+				$file->owner_guid = $owner;
+				$file->setFilename("$prefix/{$guid}{$name}.jpg");
 				$file->open('write');
 				$file->write($resized);
 				$file->close();
@@ -113,7 +117,9 @@ class FederatedPerson {
 		$entity->y1 = 0;
 		$entity->y2 = 0;
 		$entity->icontime = time();
-		elgg_trigger_event('profileiconupdate', $entity->type, $entity);
+		if ($entity instanceof ElggUser) {
+			elgg_trigger_event('profileiconupdate', $entity->type, $entity);
+		}
 	}
 
 }
