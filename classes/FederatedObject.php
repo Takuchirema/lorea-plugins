@@ -18,9 +18,13 @@ class FederatedObject {
 	}
 	public static function findLocal($webid) {
 		$parts = explode('/', $webid);
+		if (strpos($webid, "/annotation/" !== FALSE)) {
+			return elgg_get_annotation_from_id($parts[4]);
+		}
 		return get_entity($parts[2]);
 	}
 	public static function findRemote($webid) {
+		// XXX missing finding remote annotations
 		$options = array('metadata_name' => 'atom_id',
 				 'metadata_value' => $webid,
 				 'owner_guid' => ELGG_ENTITIES_ANY_VALUE);
@@ -28,6 +32,11 @@ class FederatedObject {
                 if ($entities) {
                         return $entities[0];
                 }
+		// try to find an annotation if entity failed
+		$id = AtomRiverMapper::getAnnotationID($webid);
+		if ($id) {
+			return elgg_get_annotation_from_id($id);
+		}
 	}
 
 	public static function create($params, $tag, $find=true) {

@@ -58,4 +58,40 @@ class AtomRiverMapper {
 			return $entity->atom_id;
 		return $return;
 	}
+	public static function getAnnotationAtomID($annotation_id) {
+		global $CONFIG;
+		$prefix = $CONFIG->dbprefix;
+		$annotation_id = (int)$annotation_id;
+		$sql = "SELECT atom_id FROM {$prefix}annotation_atomid_mapping WHERE annotation_id=$annotation_id";
+		$data = get_data_row($sql);
+		if ($data)
+			return $data->atom_id;
+	}
+	public static function getAnnotationID($atom_id) {
+		global $CONFIG;
+		$prefix = $CONFIG->dbprefix;
+		$atom_id = sanitise_string($atom_id);
+		$sql = "SELECT annotation_id FROM {$prefix}annotation_atomid_mapping WHERE atom_id='$atom_id'";
+		$data = get_data_row($sql);
+		if ($data)
+			return $data->annotation_id;
+	}
+	public static function setAnnotationIDMapping($annotation_id, $atom_id) {
+		global $CONFIG;
+		$annotation_id = (int)$annotation_id;
+		$atom_id = sanitise_string($atom_id);
+		$prefix = $CONFIG->dbprefix;
+		$sql = "INSERT INTO {$prefix}annotation_atomid_mapping (annotation_id, atom_id) VALUES($annotation_id, '$atom_id')";
+		insert_data($sql);
+	}
+
+	public static function annotation_id($hook, $type, $return, $params) {
+		$annotation = $params['annotation'];
+		error_log("annotation_id:".$annotation->id);
+		$atom_id = AtomRiverMapper::getAnnotationAtomID($annotation->id);
+		if ($atom_id)
+			return $atom_id;
+		return $return;
+	}
+
 }

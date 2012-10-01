@@ -7,9 +7,18 @@ class FederatedComment {
 		login($owner);
 		$entry = $params['entry'];
 		$notification = $params['notification'];
-		$parent_guid = $notification->getParentGUID();
 
-		$comment_text = @current($entry->xpath("$tag/atom:content"));
+		$parent = $notification->getParent();
+		if ($parent instanceof ElggEntity) {
+			$parent_guid = $parent->getGUID();
+		}
+		else {
+			// annotation
+			$parent = get_entity($parent->entity_guid);
+			$parent_guid = $parent->getGUID();
+		}
+
+		$comment_text = $notification->xpath(array("$tag/atom:content", "atom:content"));
 		$parent = get_entity($parent_guid);
 
 		// comments of thewire become thewire messages too
@@ -23,6 +32,9 @@ class FederatedComment {
                                                                 "",
                                                                 $owner->guid,
                                                                 $parent->access_id);
+
+		AtomRiverMapper::setAnnotationIDMapping($annotation, $params['id']);
+
 		$id = add_to_river('river/annotation/generic_comment/create', 'comment', $owner->guid, $parent->guid, "", 0, $annotation);
 		AtomRiverMapper::setIDMapping($id, $notification->getID(), $notification->provenance);
 

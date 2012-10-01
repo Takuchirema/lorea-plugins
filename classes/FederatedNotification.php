@@ -135,16 +135,24 @@ class FederatedNotification {
 	}
 	
 	public function getParentGUID() {
-		$entry = $this->xml;
-		$parent_id = $this->xpath(array("activity:object/thr:in-reply-to/atom:id", "thr:in-reply-to/atom:id", "activity:object/thr:in-reply-to/@ref", "thr:in-reply-to/@ref"));
-		if ($parent_id) {
-			$parent = FederatedObject::find($parent_id);
-			if ($parent) {
+		$parent = $this->getParent();
+		if ($parent) {
+			if ($parent instanceof ElggEntity) {
 				$parent_guid = $parent->getGUID();
 			}
 		}
 		return $parent_guid;
 	}
+
+	public function getParent() {
+		$entry = $this->xml;
+		$parent_id = $this->xpath(array("activity:object/thr:in-reply-to/atom:id", "thr:in-reply-to/atom:id", "activity:object/thr:in-reply-to/@ref", "thr:in-reply-to/@ref"));
+		if ($parent_id) {
+			$parent = FederatedObject::find($parent_id);
+			return $parent;
+		}
+	}
+
 
 	public function getUpdated() {
 		return @current($this->xml->xpath("atom:updated"));
