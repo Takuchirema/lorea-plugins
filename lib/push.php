@@ -47,6 +47,15 @@ function push_delete_subscriptions($subscription_id) {
 }
 
 /*
+ * get subscription for given url
+ */
+function push_get_subscription($url) {
+        $subscription_id = sha1($url . get_site_secret());
+        $subscription = ElggPuSHSubscription::load('elgg_subs', $subscription_id);
+	return $subscription;
+}
+
+/*
  * push_create_subscription
  *
  * create the given subscription
