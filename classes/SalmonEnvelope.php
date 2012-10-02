@@ -34,7 +34,13 @@ class SalmonEnvelope {
 			}
 		}
 		if (!$id)
-			$id = @current($xml->xpath("//atom:author/atom:uri"));
+			$id = @current($xml->xpath("atom:author/atom:uri"));
+		if (!$id)
+			$id = @current($xml->xpath("/atom:feed/atom:author/atom:uri"));
+		if (!$id)
+			$id = @current($xml->xpath("atom:author/atom:id"));
+		if (!$id)
+			$id = @current($xml->xpath("/atom:feed/atom:author/atom:id"));
 		if (!$key) {
 			$key = SalmonDiscovery::getRemoteKey($id, $sig_hash);
 		}
