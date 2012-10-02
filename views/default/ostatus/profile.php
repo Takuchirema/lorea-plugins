@@ -11,8 +11,11 @@
 	$webid = $author['id'];
 
 	$body = "<p>";
-	$body .= "<h3>".$author['name'].":</h3> $title <div class='elgg-avatar'><img width='96' height='96' src='".$icon."'/></div><br/><b>".$title."</b><br/>";
+	$image .= "<div class='elgg-avatar'><img width='96' height='96' src='".$icon."'/></div>";
+	$body .= "<h3>".$author['name']."</h3> $title<br/><br/>";
 	$body .= elgg_view("output/url", array('href' => $webid, 'text' => $webid));
 	$body .= "</p>";
+
+	$body = elgg_view('page/components/image_block', array('body'=>$body, 'image'=>$image));
 
 	echo $body;
