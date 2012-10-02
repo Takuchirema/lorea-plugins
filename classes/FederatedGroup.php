@@ -14,6 +14,7 @@ class FederatedGroup {
 				$access = elgg_set_ignore_access(true);
 				$entity->atom_id = $params['id'];
 				$entity->atom_link = $params['link'];
+		//		FederatedPerson::setIcon($entity, $icon, 'groups');
 				elgg_set_ignore_access($access);
 			}
 			$group = $entity;
@@ -53,6 +54,7 @@ class FederatedGroup {
 			$group->atom_link = $params['link'];
 			$group->foreign = true;
 			$group->save();
+			FederatedPerson::setIcon($group, $icon, 'groups');
 			if ($owner) {
 				add_to_river('river/group/create', 'create', $owner->guid, $group->getGUID(), $group->access_id);
 				FederatedObject::search_tag_river($group, $owner, 'create', $notification);
