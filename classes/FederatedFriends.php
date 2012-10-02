@@ -131,13 +131,14 @@ class FederatedFriends {
 		login($user);
 
 		if ($add) {
-			if (check_entity_relationship($user->guid, $relationship, $friend->guid)) {
-				remove_entity_relationship($user->guid, $relationship, $friend->guid);
-			}
-		} else {
 			if (!check_entity_relationship($user->guid, $relationship, $friend->guid)) {
 				add_entity_relationship($user->guid, $relationship, $friend->guid);
 			}
+		} else {
+			if (check_entity_relationship($user->guid, $relationship, $friend->guid)) {
+				remove_entity_relationship($user->guid, $relationship, $friend->guid);
+			}
+
 		}
 	}
 }
