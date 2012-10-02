@@ -95,6 +95,9 @@ function ostatus_init() {
 	elgg_extend_view("user/default", "ostatus/user");
 	elgg_extend_view("page/elements/sidebar", "ostatus/sidebar");
 	elgg_extend_view('css/elgg', 'ostatus/css');
+	elgg_extend_view('extensions/xmlns', 'ostatus/xmlns');
+	elgg_extend_view('river/item', 'ostatus/river/item');
+	
 
 	// actions
 	$action_path = elgg_get_plugins_path() . 'elgg-ostatus/actions/ostatus';
