@@ -42,18 +42,21 @@ class SalmonGenerator
 	static function annotationToSalmon($annotation, $verb, $view) {
 		$subject = get_entity($annotation->owner_guid);
 		$object = get_entity($annotation->entity_guid);
+		$owner = get_entity($object->owner_guid);
 		$annotation_name = $annotation->name;
 
 		if ($object->foreign && !$subject->foreign) {
 			$item = SalmonGenerator::annotationToRiver($annotation, $verb, $view);
-			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($object);
+			$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($owner);
 			SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
 		}
 
 	}
 
 	static function onPostComment($event, $object_type, $annotation) {
-		SalmonGenerator::annotationToSalmon($annotation, 'comment', 'river/annotation/generic_comment/create');
+		if ($annotation->name == 'generic_comment') {
+			SalmonGenerator::annotationToSalmon($annotation, 'comment', 'river/annotation/generic_comment/create');
+		}
 	}
 	static function onActionCreate($event, $object_type, $relationship) {
 		SalmonGenerator::relationToSalmon($relationship, 'join', 'river/relationship/member/create');
@@ -122,7 +125,7 @@ class SalmonGenerator
 		        return $returnvalue;
 
 		// object creation
-		if (($item->action_type == "create" || $item->action_type == "reply") && in_array($object->getSubtype(), array('groupforumtopic', 'topicreply'))) {
+		if (in_array($item->action_type, array("create", "reply")) && in_array($object->getSubtype(), array('groupforumtopic', 'topicreply', 'bookmarks', 'event_calendar', 'file'))) {
 			$container = get_entity($object->container_guid);
 			if ($container->foreign && !$object->foreign) {
 				$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($container);
@@ -147,46 +150,6 @@ class SalmonGenerator
 				SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
 			}
 		}
-		elseif ($subject instanceof ElggUser && $item->action_type == "comment" && ($object->foreign || $container->foreign)) {
-			if ($object->foreign)
-				$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($container); // XXXX
-			else
-				$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($container);
-			SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
-		}
 		return $returnvalue;
 	}
-
-        function create_object($event, $object_type, $object) {
-                if ($event == 'create' && $object->getSubtype() === 'messages') {
-                        $fromId = $object->fromId;
-                        $toId = $object->toId;
-                        $fromEntity = get_entity($object->fromId);
-                        $toEntity = get_entity($object->toId);
-                        if ($toEntity->foreign && !$fromEntity->foreign && $fromEntity->guid == $object->owner_guid)
-                        {
-
-                        $viewtype = elgg_get_viewtype();
-                        elgg_set_viewtype('atom');
-                        $update = elgg_view('activitystreams/entry',
-                                array('standalone'=>true,
-                                        'entry_id'=>$object->getURL().$object->time_created,
-                                        'verb'=>'sendto',
-                                        'title'=>$object->title,
-                                        'body'=>$object->description,
-                                        'annotation_id'=>null,
-                                        'created'=>$object->time_created,
-                                        'updated'=>$object->time_created,
-                                        'subject'=>$fromEntity,
-                                        'container'=>$toEntity,
-                                        'entity'=>$object));
-                                elgg_set_viewtype($viewtype);
-                                // need the salmon link here
-                                $endpoint = SalmonDiscovery::getSalmonEndpointEntity($toEntity);
-                                if ($endpoint)
-                                        SalmonProtocol::postEnvelope($endpoint, $update, $fromEntity);
-                        }
-                }
-
-        }
 }
