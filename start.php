@@ -72,6 +72,8 @@ function federated_objects_init() {
 	elgg_register_plugin_hook_handler('federated_objects:post', 'note', array('FederatedNotification', 'postObjectCreator'));
 	elgg_register_plugin_hook_handler('federated_objects:post', 'comment', array('FederatedComment', 'onCreateComment'));
 	elgg_register_plugin_hook_handler('federated_objects:post', 'group', array('FederatedNotification', 'postObjectCreator'));
+	elgg_register_plugin_hook_handler('federated_objects:post', 'event', array('FederatedNotification', 'postObjectCreator'));
+	elgg_register_plugin_hook_handler('federated_objects:post', 'file', array('FederatedNotification', 'postObjectCreator'));
 	// Groups
 	elgg_register_plugin_hook_handler('federated_objects:join', 'group', array('FederatedGroup', 'onGroupJoin'));
 	elgg_register_plugin_hook_handler('federated_objects:leave', 'group', array('FederatedGroup', 'onGroupLeave'));
@@ -94,6 +96,8 @@ function federated_objects_init() {
 	FederatedObject::register_constructor('bookmark', array('FederatedBookmark', 'create'));
 	FederatedObject::register_constructor('group', array('FederatedGroup', 'create'));
 	FederatedObject::register_constructor('comment', array('FederatedComment', 'create'));
+	FederatedObject::register_constructor('event', array('FederatedEvent', 'create'));
+	FederatedObject::register_constructor('file', array('FederatedFile', 'create'));
 
 	// page handler
 	elgg_register_page_handler('federated-objects','federated_objects_page_handler');
@@ -111,6 +115,18 @@ function federated_objects_init() {
 	if (is_plugin_enabled('groups')) {
 		elgg_register_entity_url_handler('group', 'all', array('FederatedGroup', 'url'));
 	}
+	if (is_plugin_enabled('threads')) {
+		elgg_register_entity_url_handler('object', 'groupforumtopic', array('FederatedThread', 'url'));
+	}
+
+	if (is_plugin_enabled('event_calendar')) {
+		elgg_register_entity_url_handler('object', 'event_calendar', array('FederatedEvent', 'url'));
+	}
+
+	if (is_plugin_enabled('file')) {
+		elgg_register_entity_url_handler('object', 'file', array('FederatedFile', 'url'));
+	}
+
 
 	// add provenance to river items
 	elgg_extend_view('river/item', 'federated-objects/item');
