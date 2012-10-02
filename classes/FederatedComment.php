@@ -15,14 +15,18 @@ class FederatedComment {
 		else {
 			// annotation
 			$parent = get_entity($parent->entity_guid);
+			if (!$parent) {
+				error_log("cant find {$params['id']}");
+				return;
+			}
 			$parent_guid = $parent->getGUID();
 		}
 
-		$comment_text = $notification->xpath(array("$tag/atom:content", "atom:content"));
+		$comment_text = $notification->getBody();
 		$parent = get_entity($parent_guid);
 
 		// comments of thewire become thewire messages too
-		if ($parent->getSubtype() == 'thewire') {
+		if (in_array($parent->getSubtype(), array('thewire', 'groupforumtopic', 'topicreply'))) {
 			return FederatedNote::create($params, $entity, $tag);
 		}
 
@@ -47,6 +51,7 @@ class FederatedComment {
 
 		$author = $notification->getAuthor();
 		$object = $notification->getObject();
+		$attention = $notification->getAttention();
 
 		$id = $notification->getID();
 		$river_id = AtomRiverMapper::getRiverID($id);
@@ -57,16 +62,15 @@ class FederatedComment {
 
 		$author = FederatedObject::create($author, 'atom:author');
 
-		if ($target) {
-			$target['entry'] = $entry;
-			$target['notification'] = $notification;
+		if ($attention) {
+			$object['container_entity'] = $notification->getAttentionGroup();
+		}
+		elseif ($target) {
 			$container = FederatedObject::create($target, 'activity:target');
 			$object['container_entity'] = $container;
 		}
 
 		$object['owner_entity'] = $author;
-		$object['entry'] = $entry;
-		$object['notification'] = $notification;
 		$note = FederatedObject::create($object, 'activity:object', false);
 	}
 
