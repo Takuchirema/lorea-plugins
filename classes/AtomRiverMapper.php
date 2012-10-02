@@ -87,7 +87,6 @@ class AtomRiverMapper {
 
 	public static function annotation_id($hook, $type, $return, $params) {
 		$annotation = $params['annotation'];
-		error_log("annotation_id:".$annotation->id);
 		$atom_id = AtomRiverMapper::getAnnotationAtomID($annotation->id);
 		if ($atom_id)
 			return $atom_id;
