@@ -17,9 +17,14 @@
 
 	$entity = FederatedObject::find($author['id']);
 	$following = false;
-	if ($entity) {
+	if ($entity instanceof ElggGroup) {
+		if ($entity->isMember($user))
+			$following = true;
+	}
+	else {
 		if (check_entity_relationship($user->guid ,'follow', $entity->guid)) {
 			$following = true;
+			echo $entity->name;
 		}
 	}
 
@@ -40,7 +45,7 @@
 	echo "<p><label>".elgg_echo("$msg:".$author['type'])."</label><br />";
 	echo elgg_view('ostatus/profile', $args);
 
-	if ($author['type'] == 'person') {
+	if ($author['type'] == 'person' || $author['type'] == 'group') {
 		if ($following)
 			echo elgg_view_form('ostatus/unsubscribe', array(), $args);
 		else
