@@ -33,8 +33,6 @@ class FederatedNotification {
 			$object_type = $federated->getObjectType();
 		}
 
-		$target = $federated->getObject();
-
 		// output
 		$params = array('notification' => $federated,
 				'salmon_link' => $salmon_link,
@@ -56,6 +54,7 @@ class FederatedNotification {
 		$author = $notification->getAuthor();
 		$object = $notification->getObject();
 		$target = $notification->getTarget();
+		$attention = $notification->getAttention();
 
 		$id = $notification->getID();
 		$river_id = AtomRiverMapper::getRiverID($id);
@@ -66,8 +65,11 @@ class FederatedNotification {
 
 		$author = FederatedObject::create($author, 'atom:author');
 
-		if ($target) {
-			$container = FederatedObject::create($target, 'activity:target');
+		if ($attention) {
+			$object['container_entity'] = $notification->getAttentionGroup();
+		}
+		elseif ($target) {
+			$container = FederatedObject::create($target, $notification->getContainerTag());
 			$object['container_entity'] = $container;
 		}
 
@@ -84,6 +86,7 @@ class FederatedNotification {
 		$xml->registerXPathNamespace('me', 'http://salmon-protocol.org/ns/magic-env');
 		$xml->registerXPathNamespace('media','http://purl.org/syndication/atommedia');
 		$xml->registerXPathNamespace('poco','http://portablecontacts.net/spec/1.0');
+		$xml->registerXPathNamespace('ostatus','http://ostatus.org/schema/1.0');
 		$provenance_xml = @current($xml->xpath("me:provenance"));
 
 		if ($provenance_xml) {
@@ -122,16 +125,16 @@ class FederatedNotification {
 	}
 	public function getBody() {
 		$entry = $this->xml;
-		$body = $this->xpath(array("activity:object/atom:content", "atom:content"));
-		$body = elgg_strip_tags($body);
 		if (empty($body)) {
-			$body = $entry->xpath("atom:content");
+			$body = $entry->xpath("activity:object/atom:content");
+			if (empty($body))
+				$body = $entry->xpath("atom:content");
 			if (is_array($body))
 				$body = @current($body);
 			if ($body)
 				$body = elgg_strip_tags($body->asXML());
 		}
-		return $body;
+		return htmlspecialchars_decode($body);
 	}
 	
 	public function getParentGUID() {
@@ -188,16 +191,16 @@ class FederatedNotification {
 		if (!isset($this->author)) {
 			$entry = $this->xml;
 			// author name
-			$name = $this->xpath(array("atom:author/poco:displayName", "atom:author/atom:name", "//atom:author/atom:name"));
+			$name = $this->xpath(array("atom:author/poco:displayName", "atom:author/atom:name", "/atom:feed/atom:author/atom:name"));
 			// subject
-			$id = $this->xpath(array("atom:author/atom:id", "//atom:author/atom:id", "//atom:author/atom:uri"));
+			$id = $this->xpath(array("atom:author/atom:id", "atom:author/atom:uri", "/atom:feed/atom:author/atom:id", "/atom:feed/atom:author/atom:uri"));
 			$link = $id;
 			/*$link = $this->xpath(array("atom:author/atom:link[attribute::rel='alternate']/@href",
 						   "//atom:author/atom:link[attribute::rel='alternate']/@href",
 						   "//activity:subject/atom:link[attribute::rel='alternate']/@href"
 						), $id);*/
 			$icon= $this->getIcon();
-			$type = @current($entry->xpath("atom:author/activity:object-type"));
+			$type = $this->xpath(array("atom:author/activity:object-type", "/atom:feed/atom:author/activity:object-type"));
 			$type = str_replace('http://activitystrea.ms/schema/1.0/', '', $type);
 			if (empty($type)) {
 				$type = 'person';
@@ -213,17 +216,52 @@ class FederatedNotification {
 		return $this->author;
 	}
 
+	public function getContainerTag() {
+		$root_author_type = $this->xpath(array('/atom:feed/atom:author/activity:object-type'));
+		if ($root_author_type == 'http://activitystrea.ms/schema/1.0/group') {
+			 // container is the root author for the feed
+			$tag = '/atom:feed/atom:author';
+		} else {
+			 // container is an activity:target node
+			$tag = 'activity:target';
+		}
+		return $tag;
+	}
+
+	public function getAttention() {
+		$attention = @current($this->xml->xpath("atom:link[attribute::rel='ostatus:attention']/@href"));
+		if (!$attention)
+			$attention = @current($this->xml->xpath("atom:link[attribute::rel='attention']/@href"));
+		return $attention;
+	}
+
+	public function getAttentionGroup() {
+		$attentions = $this->xml->xpath("atom:link[attribute::rel='ostatus:attention']/@href");
+		if (empty($attentions))
+			$attentions = $this->xml->xpath("atom:link[attribute::rel='attention']/@href");
+		foreach($attentions as $attention) {
+			$container = FederatedObject::find($attention);
+	                if ($container && $container->getType() == 'group') {
+				return $container;
+			}
+		}
+	}
+
+
 	public function getTarget() {
 		if (!isset($this->target)) {
 			$entry = $this->xml;
-			 // container
-			$id = @current($entry->xpath("activity:target/atom:id"));
-			$type = @current($entry->xpath("activity:target/activity:object-type"));
+			$tag = $this->getContainerTag();
+
+			$id = @current($entry->xpath("$tag/atom:id"));
+			$type = @current($entry->xpath("$tag/activity:object-type"));
 			$type = str_replace('http://activitystrea.ms/schema/1.0/', '', $type);
-			$icon = @current($entry->xpath("activity:target/atom:link[attribute::rel='preview']/@href"));
-			$name = @current($entry->xpath("activity:target/atom:title"));
-			$link = @current($entry->xpath("activity:target/atom:link[attribute::rel='alternate']/@href"));
-			$tags = $entry->xpath("activity:target/atom:category/@term");
+			$icon = $this->getIcon($tag);
+			$name = @current($entry->xpath("$tag/atom:title"));
+			$link = @current($entry->xpath("$tag/atom:link[attribute::rel='alternate']/@href"));
+			$tags = $entry->xpath("$tag/atom:category/@term");
+			if (empty($tags))
+				$tags = $entry->xpath("atom:category/@term");
 			if ($tags)
 				$tags = string_to_tag_array(implode(", ", $tags));
 			if (empty($id) && empty($type)) {
