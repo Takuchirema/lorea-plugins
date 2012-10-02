@@ -18,7 +18,10 @@ class FederatedNotification {
 		$verb = $federated->getVerb();
 
 		// parse object type
-		if ($params['target_entity']) {
+		$object_type = $federated->getObjectType();
+
+		// target entity gets resolved as container except for comments.
+		if ($params['target_entity'] && !in_array($object_type, array('comment'))) {
 			$entity = $params['target_entity'];
 			if ($entity->getType() == "user") {
 				$object_type = 'person';
@@ -29,8 +32,6 @@ class FederatedNotification {
 			else {
 				$object_type = 'person';
 			}
-		} else {
-			$object_type = $federated->getObjectType();
 		}
 
 		// output
