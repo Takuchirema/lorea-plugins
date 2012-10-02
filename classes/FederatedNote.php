@@ -8,7 +8,12 @@ class FederatedNote {
 		$access_id = ACCESS_PUBLIC;
 		$method = 'ostatus';
 
-		$body = $notification->getBody();
+		$body = strip_tags($notification->getBody());
+
+		if (isset($params['container_entity'])) {
+			// group notes become threads for now
+			return FederatedThread::create($params, $entity, $tag);
+		}
 
 		if ($entity) {
 			$note = $entity;
