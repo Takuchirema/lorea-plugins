@@ -102,12 +102,12 @@ class SalmonGenerator
 		}
 	}
 	static function onRiverUpdate($event, $object_type, $item) {
-		$object_guid = $item->object_guid;
 		$subject_guid = $item->subject_guid;
 
 		$access_id = $item->access_id;
 
-		$object = get_entity($object_guid);
+		$object = ActivityStreams::getObject($item);
+		$object_guid = $item->guid;
 		$subject = get_entity($subject_guid);
 
 		$hub_url = elgg_get_plugin_setting('hub', 'elgg-push');
@@ -120,6 +120,15 @@ class SalmonGenerator
 
 		if ($object->access_id != ACCESS_PUBLIC || $subject->access_id != ACCESS_PUBLIC)
 		        return $returnvalue;
+
+		// object creation
+		if (($item->action_type == "create" || $item->action_type == "reply") && in_array($object->getSubtype(), array('groupforumtopic', 'topicreply'))) {
+			$container = get_entity($object->container_guid);
+			if ($container->foreign && !$object->foreign) {
+				$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($container);
+				SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
+			}
+		}
 
 		return $returnvalue; // XXX check and enable one by one
 
