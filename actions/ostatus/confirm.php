@@ -9,8 +9,9 @@
 	$hub = get_input("hub");
 
 	$subscription = push_get_subscription($endpoint);
-	if ($subscription)
+	if ($subscription->status === 'subscribed') {
 		$has_subscription = "yes";
+	}
 	else {
 		push_subscribeto($endpoint);
 		$has_subscription = "no";
@@ -22,9 +23,18 @@
 	$entity = FederatedObject::create($author, 'atom:author');
 	$entity->salmon_link = $salmon_link;
 
-	if (!check_entity_relationship($user->guid ,'follow', $entity->guid)) {
-                add_entity_relationship($user->guid ,'follow', $entity->guid);
-		error_log("FOLLOW! $endpoint $salmon_link $webid $hub $has_subscription");
+	if ($entity instanceof ElggGroup) {
+		// assume the group is public
+		if (!check_entity_relationship($user->guid ,'member', $entity->guid)) {
+			if (groups_join_group($entity, $user)) {
+ //                               FederatedObject::search_tag_river($entity, $user, 'join', $notification);
+                        }
+		}
+	}
+	else {
+		if (!check_entity_relationship($user->guid ,'follow', $entity->guid)) {
+			add_entity_relationship($user->guid ,'follow', $entity->guid);
+		}
+
 	}
 
-	error_log("CONFIRM! $endpoint $salmon_link $webid $hub $has_subscription");
