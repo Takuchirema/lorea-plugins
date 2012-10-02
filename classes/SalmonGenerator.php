@@ -110,7 +110,6 @@ class SalmonGenerator
 		$access_id = $item->access_id;
 
 		$object = ActivityStreams::getObject($item);
-		$object_guid = $item->guid;
 		$subject = get_entity($subject_guid);
 
 		$hub_url = elgg_get_plugin_setting('hub', 'elgg-push');
@@ -132,6 +131,15 @@ class SalmonGenerator
 				SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
 			}
 		}
+		elseif ($subject instanceof ElggUser && $item->action_type == "comment") {
+			if (($container->foreign || $object->foreign) && !$subject->foreign) {
+				if ($container->foreign)
+					$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($container);
+				else
+					$salmon_link = SalmonDiscovery::getSalmonEndpointEntity(get_entity($object->owner_guid));
+				SalmonProtocol::sendUpdate($salmon_link, $item, $object, $subject);
+			}
+ 	        }
 
 		return $returnvalue; // XXX check and enable one by one
 
