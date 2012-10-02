@@ -14,16 +14,30 @@
 	$entity = FederatedObject::create($author, 'atom:author');
 	$entity->salmon_link = $salmon_link;
 
-	if (check_entity_relationship($user->guid ,'follow', $entity->guid)) {
-                remove_entity_relationship($user->guid ,'follow', $entity->guid);
-		$options = array('relationship' => 'follow',
+
+	if ($entity instanceof ElggGroup) {
+		// assume the group is public
+		$entity->leave($user);
+		$options = array('relationship' => 'member',
 				 'relationship_guid' => $entity->guid,
 				 'inverse_relationship' => TRUE);
-
-		// check if this was the last follow and unsubscribe push if it is
-		$remaining = elgg_get_entities_from_relationship($options);
-		if (empty($remaining) && push_get_subscription($endpoint)) {
-			push_unsubscribeto($endpoint);
-		}
 	}
+	else {
+		if (check_entity_relationship($user->guid ,'follow', $entity->guid)) {
+			remove_entity_relationship($user->guid ,'follow', $entity->guid);
+			$options = array('relationship' => 'follow',
+					 'relationship_guid' => $entity->guid,
+					 'inverse_relationship' => TRUE);
+
+		}
+
+	}
+	// check if this was the last follow and unsubscribe push if it is
+	$remaining = elgg_get_entities_from_relationship($options);
+	if (empty($remaining) && push_get_subscription($endpoint)) {
+		push_unsubscribeto($endpoint);
+	}
+
+
+
 
