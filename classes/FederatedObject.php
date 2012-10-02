@@ -21,7 +21,12 @@ class FederatedObject {
 		if (strpos($webid, "/annotation/" !== FALSE)) {
 			return elgg_get_annotation_from_id($parts[4]);
 		}
-		return get_entity($parts[2]);
+		$entity_id = $parts[2];
+		if (is_numeric($entity_id)) {
+			return get_entity($parts[2]);
+		} else {
+			return get_user_by_username($parts[2]);
+		}
 	}
 	public static function findRemote($webid) {
 		// XXX missing finding remote annotations
