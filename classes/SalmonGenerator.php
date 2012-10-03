@@ -124,7 +124,7 @@ class SalmonGenerator
 		        return $returnvalue;
 
 		// object creation
-		if (in_array($item->action_type, array("create", "reply")) && in_array($object->getSubtype(), array('groupforumtopic', 'topicreply', 'bookmarks', 'event_calendar', 'file'))) {
+		if (in_array($item->action_type, array("create", "reply")) && in_array($object->getSubtype(), array('groupforumtopic', 'topicreply', 'bookmarks', 'event_calendar', 'file', 'blog', 'page', 'page_top'))) {
 			$container = get_entity($object->container_guid);
 			if ($container->foreign && !$object->foreign) {
 				$salmon_link = SalmonDiscovery::getSalmonEndpointEntity($container);
