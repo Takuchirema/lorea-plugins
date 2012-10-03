@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+    <field key="version" value="1.8" />
+    <field key="description" value="Allow to star items and provide a overview of such. (The plugin formerly known as flagged)" />
+    <field key="website" value="https://lorea.org" />
+    <field key="author" value="Lorea" />
+    <field key="licence" value="GNU Public License version 2" />
+    <field key="elgg_version" value="2012071100" />
+</plugin_manifest>
