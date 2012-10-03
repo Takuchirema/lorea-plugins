@@ -74,6 +74,8 @@ function federated_objects_init() {
 	elgg_register_plugin_hook_handler('federated_objects:post', 'group', array('FederatedNotification', 'postObjectCreator'));
 	elgg_register_plugin_hook_handler('federated_objects:post', 'event', array('FederatedNotification', 'postObjectCreator'));
 	elgg_register_plugin_hook_handler('federated_objects:post', 'file', array('FederatedNotification', 'postObjectCreator'));
+	elgg_register_plugin_hook_handler('federated_objects:post', 'article', array('FederatedNotification', 'postObjectCreator'));
+	elgg_register_plugin_hook_handler('federated_objects:post', 'page', array('FederatedNotification', 'postObjectCreator'));
 	// Groups
 	elgg_register_plugin_hook_handler('federated_objects:join', 'group', array('FederatedGroup', 'onGroupJoin'));
 	elgg_register_plugin_hook_handler('federated_objects:leave', 'group', array('FederatedGroup', 'onGroupLeave'));
@@ -98,6 +100,8 @@ function federated_objects_init() {
 	FederatedObject::register_constructor('comment', array('FederatedComment', 'create'));
 	FederatedObject::register_constructor('event', array('FederatedEvent', 'create'));
 	FederatedObject::register_constructor('file', array('FederatedFile', 'create'));
+	FederatedObject::register_constructor('article', array('FederatedArticle', 'create'));
+	FederatedObject::register_constructor('page', array('FederatedPage', 'create'));
 
 	// page handler
 	elgg_register_page_handler('federated-objects','federated_objects_page_handler');
@@ -125,6 +129,15 @@ function federated_objects_init() {
 
 	if (is_plugin_enabled('file')) {
 		elgg_register_entity_url_handler('object', 'file', array('FederatedFile', 'url'));
+	}
+
+	if (is_plugin_enabled('blog')) {
+		elgg_register_entity_url_handler('object', 'blog', array('FederatedArticle', 'url'));
+	}
+
+	if (is_plugin_enabled('pages')) {
+		elgg_register_entity_url_handler('object', 'page', array('FederatedPage', 'url'));
+		elgg_register_entity_url_handler('object', 'page_top', array('FederatedPage', 'url'));
 	}
 
 

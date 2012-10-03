@@ -174,6 +174,7 @@ class FederatedNotification {
 			$object_type = 'note';
 		}
 		$object_type = str_replace('http://activitystrea.ms/schema/1.0/', '', $object_type);
+		$object_type = str_replace('http://elgg.org/ns/schema/1.0/', '', $object_type);
 		return $object_type;
 	}
 
