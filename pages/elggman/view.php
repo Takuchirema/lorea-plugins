@@ -11,7 +11,12 @@ $user = elgg_get_page_owner_entity();
 
 elgg_set_page_owner_guid($group->guid);
 
-elgg_push_breadcrumb(elgg_echo('elggman'), "elggman/owner/$user->username");
+if (elgg_is_logged_in() && elgg_is_active_plugin('notifications')) {
+	elgg_push_breadcrumb(elgg_echo('elggman'), "notifications/group/$user->username");
+}
+else {
+	elgg_push_breadcrumb(elgg_echo('elggman'));
+}
 elgg_push_breadcrumb($group->name);
 
 $title = elgg_echo('elggman:owner', array($group->name));
