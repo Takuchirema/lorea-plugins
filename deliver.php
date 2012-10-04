@@ -6,14 +6,19 @@ if (PHP_SAPI != 'cli') {
 }
 
 // get command parameters
-$user = $argv[1];
-$sender = $argv[2];
-$network = $argv[3];
-$secret = $argv[4];
+$size = $argv[1];
+$user = $argv[2];
+$sender = $argv[3];
+$network = $argv[4];
+$secret = $argv[5];
 
 // get stdinput
-$stdin = fopen("php://stdin", "r");
-$data = stream_get_contents($stdin);
+$data = "";
+$stdin = fopen("php://stdin", "rb");
+while(strlen($data) < $size) {
+	$data .= stream_get_contents($stdin);
+	//$data .= fread($stdin, $size - strlen($data));
+}
 fclose($stdin);
 
 // send post to network

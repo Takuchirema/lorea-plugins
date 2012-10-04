@@ -28,7 +28,7 @@ elgg_destination_recipient_limit = 1</pre></code>
 ### /etc/postfix/master.cf:
 add the following line at the end of your master.cf file
 
-<code>elgg   unix  -       n       n       -       -       pipe  flags=FDX user=www-data argv=<b>/srv/elgg/mod/elggman/deliver.php</b> ${user} ${sender} <b>http://net.example.org</b> <b>api_key</b></code>
+<code>elgg   unix  -       n       n       -       -       pipe  flags=FDX user=www-data argv=<b>/srv/elgg/mod/elggman/deliver.php</b> ${size} ${user} ${sender} <b>http://net.example.org</b> <b>api_key</b></code>
 
 <b>network</b>: url to reach your network, like http://red.delvj.org/
 <b>api_key</b>: secret key you need to get from your elgg install
