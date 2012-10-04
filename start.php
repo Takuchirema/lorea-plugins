@@ -21,6 +21,7 @@ function elggman_init() {
 	// Extend CSS
 	elgg_extend_view('css/elgg', 'elggman/css');
 	
+	elgg_extend_view('groups/sidebar/members', 'elggman/sidebar/info');
 	elgg_extend_view('discussion/sidebar', 'elggman/sidebar/info');
 
 	// Register a page handler, so we can have nice URLs
