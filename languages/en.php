@@ -5,6 +5,7 @@
 
 $english = array(
 	'elggman' => "Mailing list",
+	'elggman:mailname' => "Mailing list domain",
 	'elggman:subscribe' => "Subscribe",
 	'elggman:unsubscribe' => "Unsubscribe",
 	'elggman:subscribe:info' => "You'll receive forum posts in your mailbox and you'll be able to reply writing a message.",
@@ -29,6 +30,12 @@ or send a message to
 	'elggman:members' => "Mailing list members",
 	'elggman:obfuscated' => "Send my email obfuscated on mails (%s@%s)",
 	'elggman:starred' => "Receive mails only from starred threads",
+	'notification:method:mailshot' => 'Mailing list',
+	'elggman:dependency_fail' => 'You need to install php-mail-mimedecode before using this plugin.',
+	// api key
+	'elggman:api_key' => "Mail server api key",
+	'elggman:api_key:description' => "Configure your mail server to use this api key when sending to elgg.",
+	
 		
 );
 
