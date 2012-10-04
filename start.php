@@ -7,6 +7,9 @@
 
 elgg_register_event_handler('init', 'system', 'elggman_init');
 
+function elggman_dummy($from, $to, $subject, $topic, $params = array()) {
+}
+
 /**
  * Elggman plugin initialization functions.
  */
@@ -24,6 +27,8 @@ function elggman_init() {
 	elgg_register_page_handler('elggman', 'elggman_page_handler');
 	
 	elgg_register_event_handler('create', 'object', 'elggman_notifications');
+	// threaded topicreply's
+	elgg_register_event_handler('create', 'top', 'elggman_notifications');
 	
 	// Register granular notification for this object type
 	//register_notification_object('object', 'groupforumtopic', elgg_echo('elggman:newupload'));
@@ -36,6 +41,11 @@ function elggman_init() {
 	elgg_register_action("elggman/subscribe", "$action_path/subscribe.php");
 	elgg_register_action("elggman/unsubscribe", "$action_path/unsubscribe.php");
 	elgg_register_action("elggman/subscription/edit", "$action_path/subscription/edit.php");
+
+	$current_page = current_page_url();
+	if (!strpos($current_page, 'notifications/personal')) {
+		register_notification_handler('mailshot', 'elggman_dummy');
+	}
 }
 
 /**
@@ -65,16 +75,50 @@ function elggman_page_handler($page) {
 			set_input('guid', $page[1]);
 			include "$pages_dir/edit.php";
 			break;
+		case 'receive':
+			include "$pages_dir/receive.php";
+			break;
 		default:
 			return false;
 	}
 	return true;
 }
 
+function elggman_send_email($from, $to, $subject, $body, $params) {
+	 // return TRUE/FALSE to stop elgg_send_email() from sending
+        $mail_params = array(
+                                                        'to' => $to,
+                                                        'from' => $from,
+                                                        'subject' => $subject,
+                                                        'body' => $body,
+                                                        'params' => $params
+                                        );
+
+        $result = elgg_trigger_plugin_hook('email', 'system', $mail_params, NULL);
+        if ($result !== NULL) {
+                return $result;
+        }
+
+	$headers = $params['headers'];
+	$body = preg_replace("/^From/", ">From", $body); // Change lines starting with From to >From
+
+	// Sanitise subject by stripping line endings
+        $subject = preg_replace("/(\r\n|\r|\n)/", " ", $subject);
+        if (is_callable('mb_encode_mimeheader')) {
+                $subject = mb_encode_mimeheader($subject, "UTF-8", "B");
+        }
+
+	return mail($to, $subject, wordwrap($body), $headers);
+}
+
 function elggman_notifications($event, $object_type, $object) {
+	if ($object_type == 'top') {
+		$object = get_entity($object->guid_one);
+		$is_reply = true;
+	}
+
 	if (elgg_instanceof($object, 'object', 'groupforumtopic')
-			|| elgg_instanceof($object, 'object', 'topicreply')) {
-		
+			|| (elgg_instanceof($object, 'object', 'topicreply') && $object_type == 'top')) {
 		$user  = $object->getOwnerEntity();
 		$group = $object->getContainerEntity();
 		
@@ -90,7 +134,7 @@ function elggman_notifications($event, $object_type, $object) {
 		
 		$subject = "[$group->name] $top->title";
 		
-		if ($parent) {
+		if ($is_reply) {
 			$subject = "Re: $subject";
 		}
 		
@@ -103,19 +147,19 @@ function elggman_notifications($event, $object_type, $object) {
 			
 		$headers = elgg_view('page/elements/header', array(
 			'From' => $from,
+			'To' => $mailing_list_email,
 			'Sender' => $mailing_list_email,
 			'Reply-To' => $mailing_list_email,
-			'List-Id' => $mailing_list_email,
+			'List-Id' => str_replace('@', '.', $mailing_list_email),
 			'List-Post' => "<mailto:{$mailing_list_email}>",
 			'Precedence' => "list",
 			'Message-Id' => "{$object->guid}.{$mailing_list_email}",
-			'In-Reply-To' => $parent ? "{$parent->guid}.{$mailing_list_email}" : false,
+			'In-Reply-To' => $is_reply ? "{$parent->guid}.{$mailing_list_email}" : false,
 			));
 		
-		var_dump($headers);exit();
 		foreach (elggman_get_subscriptors($group->guid) as $subscriptor) {
 			$to = $subscriptor->email;
-			elgg_send_email($from, $to, $subject, $message);
+			elggman_send_email($from, $to, $subject, $message, array('headers' => $headers));
 		}
 	}
 }
@@ -129,9 +173,13 @@ function elggman_get_subscriptors($group_guid) {
 				'type' => 'user',
 				'relationship' => 'notifymailshot',
 				'relationship_guid' => $group_guid,
-				'inverse_relationship' => true,
+				'inverse_relationship' => TRUE,
 				'limit' => 0,
 				));
+}
+
+function elggman_apikey() {
+	return sha1(get_site_secret().'elggman');
 }
 
 function elggman_get_user_email($user, $group) {
