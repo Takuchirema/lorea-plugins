@@ -33,4 +33,4 @@ if (!$unsubscribed) {
 system_message(elgg_echo("elggman:unsubscribed"));
 
 // Forward to the group profile
-forward($group->getURL());
+forward("discussion/owner/".$group->getGUID());

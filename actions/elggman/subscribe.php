@@ -49,7 +49,7 @@ notify_user($user->getGUID(), $group->owner_guid,
 		elgg_echo('elggman:welcome:body', array(
 			$user->name,
 			$group->name,
-			"discussion/owner/$group_guid",
+			elgg_normalize_url("discussion/owner/$group_guid"),
 			elggman_get_group_mailinglist($group))
 		));
 
