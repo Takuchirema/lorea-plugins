@@ -5,7 +5,7 @@
  * @package Elggman
  */
 
-if(!elgg_is_logged_in()) {
+if(!elgg_is_logged_in() || !elgg_get_plugin_setting('mailname', 'elggman')) {
 	return true;
 }
 
