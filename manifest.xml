@@ -14,5 +14,8 @@
 		<type>elgg_release</type>
 		<version>1.8</version>
 	</requires>
-	<activate_on_install>true</activate_on_install>
+	<requires>
+                <type>php_extension</type>
+                <name>curl</name>
+        </requires>
 </plugin_manifest>
