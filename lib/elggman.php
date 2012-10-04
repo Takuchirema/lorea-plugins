@@ -12,8 +12,8 @@ function incoming_mail($sender, $list, $data, $secret) {
 	// check user and group are valid
 	$group = get_group_from_group_alias($list);
 	$user = current(get_user_by_email($sender));
-	if (!$group || !$users) {
-		error_log('no group or user for email!');
+	if (!$group || !$user) {
+		error_log("no group or user for email! $user->name $group->name");
 		return;
 	}
 
@@ -57,6 +57,8 @@ function incoming_mail($sender, $list, $data, $secret) {
 			return;
 		}
 		$reply_guid = threads_reply($parent_guid, $body, $subject);
+		$reply = get_entity($reply_guid);
+		$reply->message_id = $message_id;
 		add_to_river('river/annotation/group_topic_post/reply', 'reply', $user->guid, $topic->guid, "", 0, $reply_guid);
 	}
 	else {
