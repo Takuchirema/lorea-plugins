@@ -38,6 +38,7 @@ or send a message to
 	'elggman:api_key:description' => "Configure your mail server to use this api key when sending to elgg.",
 	// moderation
 	'elggman:moderate' => "Moderate",
+	'elggman:moderation' => "Moderation",
 	'elggman:moderation:accept' => "Accept",
 	'elggman:moderation:accept_all' => "Accept all",
 	'elggman:moderation:drop' => "Drop",
@@ -52,7 +53,7 @@ or send a message to
 	'elggman:manage' => "Manage",
 	'elggman:whitelist' => "Whitelist",
 	'elggman:whitelist:nocontent' => "There are no whitelist elements",
-	'elggman:whitelist:messages' => "Whitelist elements",
+	'elggman:whitelist:messages' => "Whitelist emails",
 	'elggman:whitelist:add' => "Add",
 	'elggman:whitelist:add:ok' => "Email added to whitelist",
 	'elggman:whitelist:add:duplicate' => "Email already present in whitelist",
@@ -61,13 +62,20 @@ or send a message to
 	'elggman:blacklist' => "Blacklist",
 	'elggman:blacklist:nocontent' => "There are no blacklist elements",
 	'elggman:blacklist:nocontent' => "There are no blacklist elements",
-	'elggman:blacklist:messages' => "Blacklist elements",
+	'elggman:blacklist:messages' => "Blacklist emails",
 	'elggman:blacklist:add' => "Add",
 	'elggman:blacklist:add:ok' => "Email added to blacklist",
 	'elggman:blacklist:add:duplicate' => "Email already present in blacklist",
 	'elggman:blacklist:delete:ok' => "Email deleted from blacklist",
 	'elggman:blacklist:delete:fail' => "Error deleting email from blacklist",
 	'elggman:forwarded' => "Mail from an external address (%s) accepted by moderation",
+	// settings
+	'elggman:group_settings' => "Settings",
+	'elggman:moderation:allow' => "Allow messages external to the group or network",
+	'elggman:settings:save' => "Save settings",
+	'elggman:uploaded:file' => "File uploaded from mailing list",
+	'elggman:attachments' => "Attachments",
+	
 
 		
 );

@@ -15,10 +15,28 @@ $secret = $argv[5];
 // get stdinput
 $data = "";
 $stdin = fopen("php://stdin", "rb");
+$last = 0;
+$counter = 0;
 while(strlen($data) < $size) {
 	$data .= stream_get_contents($stdin);
+	$total = strlen($data);
+	$total2 = count($data);
+	if ($last == $total) {
+		$counter += 1;
+		if ($counter  == 1000) {
+			#file_put_contents("/tmp/foo", "stalled at $total $total2");
+			break;
+		}
+	}
+	else {
+		$counter = 0;
+		$last = $total;
+	}
+
 	//$data .= fread($stdin, $size - strlen($data));
 }
+$total = strlen($data);
+$total2 = count($data);
 fclose($stdin);
 
 // send post to network

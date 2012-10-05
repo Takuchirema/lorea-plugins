@@ -24,6 +24,10 @@ function elggman_message_accept($entity) {
 }
 
 function elggman_moderated_message($group, $headers, $subject, $body, $data, $sender) {
+	if (empty($group->elggman_moderate)) {
+		// external messages not allowed
+		return;
+	}
 	$in_blacklist = elggman_email_in_filter($group, $sender, 'blacklist');
 	if ($in_blacklist) {
 		// drop
@@ -53,6 +57,92 @@ function elggman_moderated_message($group, $headers, $subject, $body, $data, $se
 	}
 }
 
+function elggman_create_file($group, $owner, $body, $filename, $mime_type) {
+	login($owner);
+
+	$name_parts = explode('.', $filename);
+	$extension = $filename;
+	if (count($name_parts) > 1) {
+		$extension = $name_parts[count($name_parts)-1];
+	}
+
+	$filestorename = elgg_strtolower(time().$filename);
+
+	$access_id = $group->access_id;;
+	$file = new FilePluginFile();
+	$file->subtype = "file";
+	$file->title = $filename;
+	$file->owner_guid = $owner->guid;
+	$file->description = elgg_echo('elggman:uploaded:file');
+	$file->access_id = $access_id;
+	$file->container_guid = $group->getGUID();
+	$file->originalfilename = $filename;
+	$file->setFilename("file/".$filestorename);
+	$file->open('write');
+	$file->write($body);
+	$file->close();
+	$mime_type = ElggFile::detectMimeType($file->getFilenameOnFilestore(), $mime_type);
+	$file->setMimeType($mime_type);
+	$file->simpletype = file_get_simple_type($mime_type);
+	$file->save();
+	elggman_create_thumbnails($file, $filename, $mime_type);
+	return $file;
+}
+
+function elggman_extract_multipart_text($result, $group) {
+	foreach($result->parts as $part) {
+		if ($part->ctype_primary == 'text' && $part->ctype_secondary == 'plain') 
+		{
+			return $part;
+		}
+	}
+	return $result;
+}
+
+function elggman_extract_attachments($result, $group, $owner) {
+	$first_text_found = false;
+	$files = array();
+	if ($result->ctype_primary != 'multipart') {
+		return;
+	}
+	foreach($result->parts as $part) {
+		$mime_type = "$part->ctype_primary/$part->ctype_secondary";
+		if ($mime_type == 'text/plain' && !$first_text_found) {
+			$first_text_found = true;
+			continue;
+		}
+		foreach($part->ctype_parameters as $key => $value) {
+			if ($key == 'name' && !empty($value)) {
+				$filename = $value;
+			}
+		}
+		foreach($part->d_parameters as $key => $value) {
+			if ($key == 'filename' && !empty($value)) {
+				$filename = $value;
+			}
+		}
+		$file = elggman_create_file($group, $owner, $part->body, $filename, $mime_type);
+		if ($file) {
+			$files[] = $file;
+		}
+	}
+	return $files;
+}
+
+function elggman_extract_body($result, $group) {
+	if ($result->ctype_primary == 'multipart') {
+		$part = elggman_extract_multipart_text($result, $group);
+		$body = htmlspecialchars_decode($part->body);
+	}
+	elseif ($result->ctype_primary == 'text' && $result->ctype_secondary == 'plain') {
+		$body = htmlspecialchars_decode($result->body);
+	}
+	else {
+		error_log("unknown message type: $result->ctype_primary $result->ctype_secondary");
+	}
+	return $body;
+}
+
 function elggman_incoming_mail($sender, $list, $data, $secret, $accepted=false) {
 	require_once 'Mail/mimeDecode.php';
 
@@ -79,10 +169,10 @@ function elggman_incoming_mail($sender, $list, $data, $secret, $accepted=false) 
 
 	$decoder = new Mail_mimeDecode($data);
 	$result = $decoder->decode($params);
-
-	// get message parameters
 	$subject = htmlspecialchars_decode($result->headers['subject']);
-	$body = htmlspecialchars_decode($result->body);
+
+	$body = elggman_extract_body($result, $group);
+	// get message parameters
 	if ((!$user || !$group->isMember($user)) && !$accepted) {
 		elggman_moderated_message($group, $headers, $subject, $body, $data, $sender);
 		return;
@@ -97,6 +187,17 @@ function elggman_incoming_mail($sender, $list, $data, $secret, $accepted=false) 
 		$forwarded_for = $sender;
 	}
 
+	if ($part !== $result) {
+		$files = elggman_extract_attachments($result, $group, $user);
+		if (count($files)) {
+			$attachments = "\n";
+			$attachments .= elgg_echo("elggman:attachments").":";
+			foreach($files as $file) {
+				$attachments .= "[$file->originalfilename]: " . $file->getURL(). "\n";
+			}
+			$body .= $attachments;
+		}
+	}
 	$message_id = htmlspecialchars_decode($result->headers['message-id']);
 	$in_reply_to = htmlspecialchars_decode($result->headers['in-reply-to']);
 
@@ -145,3 +246,45 @@ function elggman_incoming_mail($sender, $list, $data, $secret, $accepted=false) 
 	}
 	return true;
 }
+
+function elggman_create_thumbnails($file, $filestorename, $mime_type) {
+	$prefix = 'files/';
+        if ($file->simpletype == "image") {
+                $file->icontime = time();
+
+                $thumbnail = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 60, 60, true);
+                if ($thumbnail) {
+                        $thumb = new ElggFile();
+                        $thumb->setMimeType($mime_type);
+
+                        $thumb->setFilename($prefix."thumb".$filestorename);
+                        $thumb->open("write");
+                        $thumb->write($thumbnail);
+                        $thumb->close();
+
+                        $file->thumbnail = $prefix."thumb".$filestorename;
+                        unset($thumbnail);
+                }
+
+                $thumbsmall = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 153, 153, true);
+                if ($thumbsmall) {
+                        $thumb->setFilename($prefix."smallthumb".$filestorename);
+                        $thumb->open("write");
+                        $thumb->write($thumbsmall);
+                        $thumb->close();
+                        $file->smallthumb = $prefix."smallthumb".$filestorename;
+                        unset($thumbsmall);
+                }
+
+                $thumblarge = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 600, 600, false);
+                if ($thumblarge) {
+                        $thumb->setFilename($prefix."largethumb".$filestorename);
+                        $thumb->open("write");
+                        $thumb->write($thumblarge);
+                        $thumb->close();
+                        $file->largethumb = $prefix."largethumb".$filestorename;
+                        unset($thumblarge);
+                }
+	}
+}
+
