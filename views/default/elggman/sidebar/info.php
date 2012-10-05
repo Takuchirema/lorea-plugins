@@ -40,7 +40,7 @@ if (can_edit_entity($group_guid, $user_guid)) {
 	$content .= elgg_view('output/url', array(
 		'text' => elgg_echo('elggman:management:options'),
 		'href' => "elggman/manage/$group_guid",
-		'class' => 'elgg-button',
+		'class' => 'elgg-button mts mbs',
 		'is_trusted' => true,
 	));
 }
