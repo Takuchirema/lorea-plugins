@@ -5,7 +5,7 @@ function incoming_mail($sender, $list, $data, $secret) {
 
 	// check secret
 	if ($secret != elggman_apikey()) {
-		error_log('incorrect api key on the mail server');
+		error_log('elggman: incorrect api key on the mail server');
 		return;
 	}
 
@@ -13,10 +13,9 @@ function incoming_mail($sender, $list, $data, $secret) {
 	$group = get_group_from_group_alias($list);
 	$user = current(get_user_by_email($sender));
 	if (!$group || !$user) {
-		error_log("no group or user for email! $user->name $group->name");
+		error_log("elggman: no group or user for email! $user->name $group->name $sender");
 		return;
 	}
-
 	elgg_load_library('elgg:threads');
 
 	// decode email
@@ -34,7 +33,8 @@ function incoming_mail($sender, $list, $data, $secret) {
 	$message_id = htmlspecialchars_decode($result->headers['message-id']);
 	$in_reply_to = htmlspecialchars_decode($result->headers['in-reply-to']);
 
-	$message_id = trim($message_id, '<>');
+	$message_id = trim($message_id, ' <>');
+	$in_reply_to = trim($in_reply_to, ' <>');
 
 	login($user);
 
@@ -53,7 +53,7 @@ function incoming_mail($sender, $list, $data, $secret) {
 			$parent_guid = $parent->guid;
 		}
 		if (!$parent_guid) {
-			error_log('no parent');
+			error_log("elggman: cant find parent $in_reply_to");
 			return;
 		}
 		$reply_guid = threads_reply($parent_guid, $body, $subject);
