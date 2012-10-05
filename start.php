@@ -100,7 +100,6 @@ function elggman_send_email($from, $to, $subject, $body, $params) {
                 return $result;
         }
 
-	$headers = $params['headers'];
 	$body = preg_replace("/^From/", ">From", $body); // Change lines starting with From to >From
 
 	// Sanitise subject by stripping line endings
@@ -109,7 +108,7 @@ function elggman_send_email($from, $to, $subject, $body, $params) {
                 $subject = mb_encode_mimeheader($subject, "UTF-8", "B");
         }
 
-	return mail($to, $subject, wordwrap($body), $headers);
+	return mail($to, $subject, wordwrap($body), $params['headers']);
 }
 
 function elggman_notifications($event, $object_type, $object) {
@@ -124,7 +123,10 @@ function elggman_notifications($event, $object_type, $object) {
 		$group = $object->getContainerEntity();
 		
 		$from = elggman_get_user_email($user, $group);
+		$from_header = "$user->name <$from>";
 		$mailing_list_email = elggman_get_group_mailinglist($group);
+		$mailing_list_header = "$group->name <$mailing_list_email>";
+		$archive_url = elgg_normalize_url('discussion/owner/'.$group->guid);
 		if(!$mailing_list_email) {
 			return;
 		}
@@ -146,20 +148,26 @@ function elggman_notifications($event, $object_type, $object) {
 			'mailing_list' => $group,
 			));
 			
-		$headers = elgg_view('page/elements/header', array(
-			'From' => $from,
-			'To' => $mailing_list_email,
-			'Sender' => $mailing_list_email,
+		$headers = array(
+			'From' => $from_header,
+			'To' => $mailing_list_header,
 			'Reply-To' => $mailing_list_email,
-			'List-Id' => str_replace('@', '.', $mailing_list_email),
+			'List-Id' => '<'.str_replace('@', '.', $mailing_list_email).'>',
+			'List-Archive' => "<$archive_url>",
 			'List-Post' => "<mailto:{$mailing_list_email}>",
 			'Precedence' => "list",
-			'Message-Id' => "{$object->guid}.{$mailing_list_email}",
-			'In-Reply-To' => $is_reply ? "{$parent->guid}.{$mailing_list_email}" : false,
-			));
-		
+			'Message-ID' => "<{$object->guid}.{$mailing_list_email}>",
+			'In-Reply-To' => $is_reply ? "<{$parent->guid}.{$mailing_list_email}>" : false,
+			);
+		if ($object->tags) {
+			$tags = implode(',', $object->tags);
+			$headers['Keywords'] = $tags;
+		}
 		foreach (elggman_get_subscriptors($group->guid) as $subscriptor) {
 			$to = $subscriptor->email;
+			$headers['Resent-To'] = $to;
+			$headers = elgg_view('page/elements/header', $headers);
+	
 			elggman_send_email($from, $to, $subject, $message, array('headers' => $headers));
 		}
 	}
