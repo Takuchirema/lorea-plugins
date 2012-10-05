@@ -7,4 +7,4 @@ $user = get_input('user');
 $secret = get_input('secret');
 $data = get_input('data');
 
-incoming_mail($sender, $user, $data, $secret);
+elggman_incoming_mail($sender, $user, $data, $secret);

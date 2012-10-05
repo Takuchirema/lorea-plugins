@@ -10,6 +10,24 @@ elgg_register_event_handler('init', 'system', 'elggman_init');
 function elggman_dummy($from, $to, $subject, $topic, $params = array()) {
 }
 
+function elggman_annotation_menu_setup($hook, $type, $return, $params) {
+	$annotation = $params['annotation'];
+	$name = $annotation->name;
+	if (in_array($name, array('whitelist', 'blacklist'))) {
+		$id = $annotation->id;
+		$owner = get_entity($annotation->owner_guid);
+		$options = array(
+			'name' => 'delete',
+			'text' => elgg_echo('delete'),
+			'href' => "action/elggman/whitelist/delete?id=$id&filter=$name",
+			'is_action' => true,
+			'priority' => 1000,
+		);
+		$return[] = ElggMenuItem::factory($options);
+	}
+	return $return;
+}
+
 /**
  * Elggman plugin initialization functions.
  */
@@ -36,12 +54,19 @@ function elggman_init() {
 
 	// Listen to notification events and supply a more useful message
 	//elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'file_notify_message');
+	elgg_register_plugin_hook_handler('register', 'menu:annotation', 'elggman_annotation_menu_setup', 400);
 
 	// Register actions
 	$action_path = elgg_get_plugins_path() . 'elggman/actions/elggman';
 	elgg_register_action("elggman/subscribe", "$action_path/subscribe.php");
 	elgg_register_action("elggman/unsubscribe", "$action_path/unsubscribe.php");
 	elgg_register_action("elggman/subscription/edit", "$action_path/subscription/edit.php");
+	elgg_register_action("elggman/whitelist/add", "$action_path/whitelist/add.php");
+	elgg_register_action("elggman/whitelist/delete", "$action_path/whitelist/delete.php");
+	// moderation actions
+	foreach(array('accept', 'drop', 'accept_all', 'drop_all') as $action) {
+		elgg_register_action("elggman/moderation/$action", "$action_path/moderation/$action.php");
+	}
 
 	$current_page = current_page_url();
 	if (!strpos($current_page, 'notifications/personal')) {
@@ -78,6 +103,14 @@ function elggman_page_handler($page) {
 			break;
 		case 'receive':
 			include "$pages_dir/receive.php";
+			break;
+		case 'moderate':
+		case 'manage':
+		case 'whitelist':
+		case 'blacklist':
+			set_input('guid', $page[1]);
+			set_input('page', $page_type);
+			include "$pages_dir/manage.php";
 			break;
 		default:
 			return false;
@@ -122,8 +155,14 @@ function elggman_notifications($event, $object_type, $object) {
 		$user  = $object->getOwnerEntity();
 		$group = $object->getContainerEntity();
 		
-		$from = elggman_get_user_email($user, $group);
-		$from_header = "$user->name <$from>";
+		if ($object->forwarded_for) {
+			$from = $object->forwarded_for;
+			$from_header = $object->forwarded_for;
+		}
+		else {
+			$from = elggman_get_user_email($user, $group);
+			$from_header = "$user->name <$from>";
+		}
 		$mailing_list_email = elggman_get_group_mailinglist($group);
 		$mailing_list_header = "$group->name <$mailing_list_email>";
 		$archive_url = elgg_normalize_url('discussion/owner/'.$group->guid);

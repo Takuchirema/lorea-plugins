@@ -14,6 +14,7 @@ $group_guid = elgg_get_page_owner_guid();
 
 $content = '<p>' . elgg_echo('elggman:subscribe:info') . '</p>';
 
+// show subscription options
 if(!elggman_is_user_subscribed($user_guid, $group_guid)) {
 	$content .= elgg_view('output/url', array(
 		'text' => elgg_echo('elggman:subscribe'),
@@ -33,4 +34,15 @@ if(!elggman_is_user_subscribed($user_guid, $group_guid)) {
 		'is_trusted' => true,
 	));
 }
+
+// show management options
+if (can_edit_entity($group_guid, $user_guid)) {
+	$content .= elgg_view('output/url', array(
+		'text' => elgg_echo('elggman:management:options'),
+		'href' => "elggman/manage/$group_guid",
+		'class' => 'elgg-button',
+		'is_trusted' => true,
+	));
+}
+
 echo elgg_view_module('aside', elgg_echo('elggman'), $content);
