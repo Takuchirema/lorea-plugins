@@ -83,7 +83,7 @@ function email_revalidate_user_settings_save() {
 				register_error(elgg_echo('registration:dupeemail'));
 			}
 		} else {
-			// no change
+			unset($user->new_email);
 			return null;
 		}
 	} else {
