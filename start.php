@@ -115,7 +115,7 @@ function email_revalidate_request_validation($user_guid) {
 		// Send validation email
 		$subject = elgg_echo('email:validate:subject', array($user->name, $site->name));
 		$body = elgg_echo('email:validate:body', array($user->name, $site->name, $link, $site->name, $site->url));
-		$result = notify_user($user->guid, $site->guid, $subject, $body, NULL, 'email');
+		$result = elgg_send_email($site->email, $user->new_email, $subject, $body);
 
 		if ($result) {
 			system_message(elgg_echo('email:revalidate:ok'));
