@@ -27,13 +27,13 @@ function email_revalidate_page_handler($page) {
 	if (isset($page[0]) && $page[0] == 'confirm') {
 		$code = sanitise_string(get_input('c', FALSE));
 		$user_guid = get_input('u', FALSE);
-		$user = get_entity($user_guid);
 
-		if ($code && $user) {
+		if ($code && $user_guid) {
 			if (email_revalidate_email($user_guid, $code)) {
 				system_message(elgg_echo('email:confirm:success'));
 
 				try {
+					$user = get_user($user_guid);
 					login($user);
 				} catch(LoginException $e){
 					register_error($e->getMessage());
