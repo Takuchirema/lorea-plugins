@@ -135,13 +135,18 @@ function email_revalidate_request_validation($user_guid) {
  * @return bool
  */
 function email_revalidate_email($user_guid, $code) {
+	$prev_access = elgg_set_ignore_access();
+
+	$result = false;
 	$user = get_entity($user_guid);
 
 	if ($code == uservalidationbyemail_generate_code($user_guid, $user->new_email)) {
 		$user->email = $user->new_email;
 		unset($user->new_email);
-		return $user->save();
+		$result = $user->save();
 	}
 
-	return false;
+	elgg_set_ignore_access($prev_access);
+
+	return $result;
 }
