@@ -8,8 +8,10 @@
 // Get engine
 require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 
+
 // Get file GUID
-$file_guid = (int) get_input('guid', 0);
+$guid = (int) get_input('guid', 0);
+
 
 // Get file thumbnail size
 $size = get_input('size', 'small');
@@ -23,23 +25,28 @@ if (!$microtheme || $microtheme->getSubtype() != "microtheme") {
 // Get file thumbnail
 switch ($size) {
 	case "small":
-		$thumbfile = $microtheme->thumbnail;
+		$thumbfile = 'small';
 		break;
 	case "medium":
-		$thumbfile = $microtheme->smallthumb;
+		$thumbfile = 'medium';
+		break;
+	case "master":
+		$thumbfile = '_master.jpg';
 		break;
 	case "large":
 	default:
-		$thumbfile = $microtheme->largethumb;
+		$thumbfile = 'large';
 		break;
 }
+
+$prefix = "microthemes/banner_{$guid}$thumbfile";
 
 // Grab the file
 if ($thumbfile && !empty($thumbfile)) {
 	$readfile = new ElggFile();
 	$readfile->owner_guid = $microtheme->owner_guid;
-	$readfile->setFilename($thumbfile);
-	$mime = $microtheme->getMimeType();
+	$readfile->setFilename($prefix);
+	$mime = $readfile->getMimeType();
 	$contents = $readfile->grabFile();
 
 	// caching images for 10 days

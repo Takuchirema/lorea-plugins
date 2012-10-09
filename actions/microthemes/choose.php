@@ -4,12 +4,13 @@
 	$guid = get_input('guid');
 	$user = get_entity($assign_to);
 	// XXX check permissions
-	if ($entity = get_entity($guid) && $user) {
+	if ($entity = get_entity($guid) && $user && $user->canEdit()) {
 		$user->microtheme = $guid;
-		forward("pg/microthemes/view?assign_to=".$assign_to);
+	}
+	else {
+		register_error(elgg_echo("microthemes:delete:failed"));
 	}
 	
-	register_error(elgg_echo("bookmarks:delete:failed"));
-	forward("pg/microthemes/view?assign_to=".$assign_to);
+	forward(REFERRER);
 
 ?>

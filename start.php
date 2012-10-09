@@ -48,7 +48,69 @@ function microthemes_init(){
 		'contexts' => array('profile_edit'),
 	));
 	
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'microthemes_entity_menu_setup', 1000);
+
 	elgg_extend_view("page/elements/head", "microthemes/metatags");
+
+	$variables = array(
+		'height' => 'text',
+		'margin' => 'text',
+	);
+	elgg_set_config('microtheme', $variables);
+
+}
+
+function microthemes_url_override($entity) {
+	$owner = elgg_get_page_owner_entity();
+
+	$site_url = elgg_get_site_url();
+	return $site_url . "microthemes/view/" . "$owner->guid/$entity->guid";
+	
+}
+
+function microthemes_entity_menu_setup($hook, $type, $return, $params) {
+	if (elgg_in_context('widgets')) {
+                return $return;
+        }
+
+        $entity = $params['entity'];
+	if (!$entity->getSubtype() == 'microtheme') {
+		return $return;
+	}
+	$owner = elgg_get_page_owner_entity();
+
+	if ($owner->microtheme == $entity->guid) {
+		$options = array(
+				'name' => 'clear',
+				'text' => elgg_echo('microthemes:clear'),
+				'href' => "action/microthemes/clear?guid=$entity->guid&assign_to=$owner->guid",
+				'is_action' => true
+			);
+	}
+	else {
+		$options = array(
+				'name' => 'choose',
+				'text' => elgg_echo('microthemes:choose'),
+				'href' => "action/microthemes/choose?guid=$entity->guid&assign_to=$owner->guid",
+				'is_action' => true
+			);
+
+	}
+
+        $return[] = ElggMenuItem::factory($options);
+
+        // likes count
+        if ($entity->canEdit()) {
+                $options = array(
+                        'name' => 'edit',
+                        'text' => elgg_echo('microthemes:edit'),
+                        'href' => "microthemes/edit/$entity->guid?assign_to=$owner->guid",
+                        'priority' =>50,
+                );
+                $return[] = ElggMenuItem::factory($options);
+        }
+
+        return $return;
 }
 
 /**
@@ -70,17 +132,23 @@ function microthemes_page_handler($page) {
 	$page_base = elgg_get_plugins_path() . "microthemes/pages/microthemes";
 	switch ($page[0]) {
 		case 'css':
+			elgg_set_page_owner_guid($page[1]);
 			include("$page_base/css.php");
 			break;
 		case 'add':
+			elgg_set_page_owner_guid($page[1]);
+			set_input('assign_to', $page[1]);
 			include("$page_base/new.php");
 			break;
 		case 'edit':
-			set_input('object_guid', $page[1]);
+			set_input('guid', $page[1]);
+			$entity = get_entity($page[1]);
+			elgg_set_page_owner_guid($entity->container_guid);
 			include("$page_base/edit.php");
 			break;
 		case 'owner':
 		case 'group':
+			elgg_set_page_owner_guid($page[1]);
 			set_input('assign_to', $page[1]);
 			include("$page_base/view.php");
 			break;
@@ -88,6 +156,8 @@ function microthemes_page_handler($page) {
 			if (!get_input('assign_to')) {
 				set_input('assign_to', elgg_get_logged_in_user_guid());
 			}
+			set_input('guid', $page[2]);
+			elgg_set_page_owner_guid($page[1]);
 			include("$page_base/view.php");
 			break;
 	}
@@ -98,7 +168,7 @@ function microthemes_page_handler($page) {
 function microthemes_icon_url_override($hook, $entity_type, $returnvalue, $params) {
 	$entity = $params['entity'];
 	if ($entity->getSubtype() == 'microtheme') {
-		return elgg_get_site_url() . 'mod/microthemes/thumbnail.php?guid=' . $entity->guid;
+		return elgg_get_site_url() . 'mod/microthemes/thumbnail.php?guid=' . $entity->guid . '&last_updated=' . $entity->time_updated;
 	}
 	return $returnvalue;
 }
@@ -110,7 +180,7 @@ function microthemes_pagesetup() {
 			'name' => 'choose_profile_microtheme',
 			'href' => "microthemes/owner/" . $owner->username,
 			'text' => elgg_echo('microthemes:profile:edit'),
-			'contexts' => array('profile_edit'),
+			'contexts' => array('profile_edit', 'settings'),
 		));
 		elgg_register_menu_item('page', array(
 			'name' => 'microthemes',

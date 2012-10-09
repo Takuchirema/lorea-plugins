@@ -4,11 +4,12 @@
 	$user = get_entity($assign_to);
 	// XXX check permissions
 	if ($user && $user->canEdit()) {
-		$user->clearMetaData('microtheme');
-		forward("pg/microthemes/view?assign_to=".$assign_to);
+		$user->deleteMetadata('microtheme');
+	}
+	else {
+		register_error(elgg_echo("microthemes:clear:failed"));
 	}
 	
-	register_error(elgg_echo("bookmarks:clear:failed"));
-	forward("pg/microthemes/view?assign_to=".$assign_to);
+	forward(REFERRER);
 
 ?>

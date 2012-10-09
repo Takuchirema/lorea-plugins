@@ -11,6 +11,36 @@ $access_id = (int) get_input("access_id");
 $guid = (int) get_input('guid');
 $tags = get_input("tags");
 
+$topbar_color = get_input('topbar_color');
+$background_color = get_input('background_color');
+
+$repeat = get_input('repeat');
+$alignment = get_input('alignment');
+
+// get auto variables
+$input = array();
+$variables = elgg_get_config('microtheme');
+
+foreach ($variables as $name => $field) {
+	$input[$name] = get_input($name);
+}
+
+
+try {
+	$vars['height'] = (int)$vars['height'];
+}
+catch (Except $e) {
+	$vars['height'] = 120;
+}
+
+try {
+	$vars['margin'] = (int)$vars['margin'];
+}
+catch (Except $e) {
+	$vars['margin'] = 120;
+}
+
+
 elgg_make_sticky_form('microtheme');
 
 // check if upload failed
@@ -56,10 +86,27 @@ if ($new) {
 }
 
 $theme->title = $title;
-$theme->access_id = $access_id;
+$theme->access_id = ACCESS_PUBLIC;
+
+if ($repeat && in_array('repeatx', $repeat))
+	$theme->repeatx = 1;
+else
+	$theme->repeatx = 0;
+if ($repeat && in_array('repeaty', $repeat))
+	$theme->repeaty = 1;
+else
+	$theme->repeaty = 0;
+$theme->bg_color = $background_color;
+$theme->bg_alignment = $alignment;
+$theme->height = $input['height'];
+$theme->topbar_color = $topbar_color;
+//$theme->hidesitename
+//$theme->translucid_page
+
 
 $tags = explode(",", $tags);
 $theme->tags = $tags;
+$theme->save();
 
 // if we have a background upload, process it
 if (isset($_FILES['background_image']['name']) && !empty($_FILES['background_image']['name'])) {
@@ -82,32 +129,32 @@ if (isset($_FILES['background_image']['name']) && !empty($_FILES['background_ima
 		$thumb = new ElggFile();
 		$thumb->setMimeType($_FILES['upload']['type']);
 
-		$thumb->setFilename($prefix."thumb".$filestorename);
+		$thumb->setFilename($prefix."medium");
 		$thumb->open("write");
 		$thumb->write($thumbnail);
 		$thumb->close();
 
-		$theme->thumbnail = $prefix."thumb".$filestorename;
+		$theme->thumbnail = $prefix."medium";
 		unset($thumbnail);
 	}
 
 	$thumbsmall = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 153, 153, true);
 	if ($thumbsmall) {
-		$thumb->setFilename($prefix."smallthumb".$filestorename);
+		$thumb->setFilename($prefix."small");
 		$thumb->open("write");
 		$thumb->write($thumbsmall);
 		$thumb->close();
-		$theme->smallthumb = $prefix."smallthumb".$filestorename;
+		$theme->smallthumb = $prefix."small";
 		unset($thumbsmall);
 	}
 
 	$thumblarge = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 600, 600, false);
 	if ($thumblarge) {
-		$thumb->setFilename($prefix."largethumb".$filestorename);
+		$thumb->setFilename($prefix."large");
 		$thumb->open("write");
 		$thumb->write($thumblarge);
 		$thumb->close();
-		$theme->largethumb = $prefix."largethumb".$filestorename;
+		$theme->largethumb = $prefix."large";
 		unset($thumblarge);
 	}
 } else {

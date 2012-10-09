@@ -39,8 +39,9 @@ if (elgg_in_context('widgets')) {
 	$metadata = '';
 }
 
-if ($full && !elgg_in_context('gallery')) {
+$owner = elgg_get_page_owner_entity();
 
+if ($full && !elgg_in_context('gallery')) {
 	$params = array(
 		'entity' => $microtheme,
 		'metadata' => $metadata,
@@ -49,8 +50,11 @@ if ($full && !elgg_in_context('gallery')) {
 	$params = $params + $vars;
 	$summary = elgg_view('object/elements/summary', $params);
 
-	$text = elgg_view('output/longtext', array('value' => $microtheme->description));
-	$body = "$text $extra";
+	foreach(array('height', 'margin', 'bg_color', 'topbar_color', 'repeatx', 'repeaty', 'bg_alignment') as $name) {
+		$body .= "<label><b>".elgg_echo("microthemes:".$name).":</b></label> ";
+		$body .= elgg_view('output/text', array('value' => $microtheme->$name));
+		$body .= "<br />\n";
+	}
 
 	echo elgg_view('object/elements/full', array(
 		'entity' => $microtheme,

@@ -13,22 +13,45 @@ if (!$owner) {
 	forward('profile/' . elgg_get_logged_in_user_entity()->name);
 }
 
-elgg_register_title_button();
+elgg_push_breadcrumb(elgg_echo('microthemes'));
+
+$guid = get_input('guid');
+$microtheme = get_entity($guid);
+
+if ($microtheme) {
+	// single entity view
+	set_input('microtheme_guid', $microtheme->guid);
+	$title = $microtheme->title;
+	$content = elgg_view_entity($microtheme, true);
+	elgg_push_breadcrumb($owner->name, 'microthemes/owner/' . $owner->guid);
+	elgg_push_breadcrumb($microtheme->title);
+}
+else {
+	// list view
+	elgg_register_title_button();
+
+	elgg_push_breadcrumb($owner->name);
+
+	if ($owner instanceof ElggUser) {
+		$title = elgg_echo("microthemes:user", array($owner->name));
+	} else {
+		$title = elgg_echo("microthemes:group", array($owner->name));
+	}
+
+	// List files
+	$content = elgg_list_entities(array(
+		'types' => 'object',
+		'subtypes' => 'microtheme',
+		'full_view' => false,
+		#'list_type' => 'gallery',
+	));
+	if (!$content) {
+		$content = elgg_echo("microthemes:none");
+	}
+}
+
 
 $params = array();
-
-$title = elgg_echo("microthemes:user", array($owner->name));
-
-// List files
-$content = elgg_list_entities(array(
-	'types' => 'object',
-	'subtypes' => 'microtheme',
-	'full_view' => false,
-	'list_type' => 'gallery',
-));
-if (!$content) {
-	$content = elgg_echo("microthemes:none");
-}
 
 $sidebar = elgg_view('microthemes/sidebar');
 

@@ -11,6 +11,7 @@ gatekeeper();
 group_gatekeeper();
 
 $title = elgg_echo('microthemes:add');
+$assign_to = (int) get_input('assign_to');
 
 // set up breadcrumbs
 elgg_push_breadcrumb(elgg_echo('Microthems'));
@@ -23,7 +24,7 @@ elgg_push_breadcrumb($title);
 
 // create form
 $form_vars = array('enctype' => 'multipart/form-data');
-$body_vars = array();
+$body_vars = array('assign_to' => $assign_to);
 $content = elgg_view_form('microthemes/edit', $form_vars, $body_vars);
 
 $body = elgg_view_layout('content', array(
