@@ -11,6 +11,8 @@ $access_id = (int) get_input("access_id");
 $guid = (int) get_input('guid');
 $tags = get_input("tags");
 
+$assign_to = get_input("assign_to");
+
 $topbar_color = get_input('topbar_color');
 $background_color = get_input('background_color');
 
@@ -27,17 +29,17 @@ foreach ($variables as $name => $field) {
 
 
 try {
-	$vars['height'] = (int)$vars['height'];
+	$input['height'] = (int)$input['height'];
 }
 catch (Except $e) {
-	$vars['height'] = 120;
+	$input['height'] = 120;
 }
 
 try {
-	$vars['margin'] = (int)$vars['margin'];
+	$input['margin'] = (int)$input['margin'];
 }
 catch (Except $e) {
-	$vars['margin'] = 120;
+	$input['margin'] = 120;
 }
 
 
@@ -99,6 +101,7 @@ else
 $theme->bg_color = $background_color;
 $theme->bg_alignment = $alignment;
 $theme->height = $input['height'];
+$theme->margin = $input['margin'];
 $theme->topbar_color = $topbar_color;
 //$theme->hidesitename
 //$theme->translucid_page
@@ -138,7 +141,7 @@ if (isset($_FILES['background_image']['name']) && !empty($_FILES['background_ima
 		unset($thumbnail);
 	}
 
-	$thumbsmall = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 153, 153, true);
+	$thumbsmall = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 150, 150, true);
 	if ($thumbsmall) {
 		$thumb->setFilename($prefix."small");
 		$thumb->open("write");
@@ -174,4 +177,4 @@ if ($guid) {
 } else {
 	register_error(elgg_echo("microthemes:nosave"));
 }
-forward($theme->getURL());
+forward('microthemes/owner/' . $assign_to);

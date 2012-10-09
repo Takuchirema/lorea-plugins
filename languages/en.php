@@ -17,6 +17,9 @@ $english = array(
 	'microthemes:edit' => 'Edit',
 	'microthemes:choose' => 'Choose',
 	'microthemes:clear' => 'Clear',
+	'microthemes:edit:tooltip' => 'Edit this theme',
+	'microthemes:choose:tooltip' => 'Choose this as theme',
+	'microthemes:clear:tooltip' => 'Unset this theme as your theme',
 
 	// properties
 	'microthemes:topbar_color' => 'Topbar color',

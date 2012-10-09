@@ -43,7 +43,7 @@ function microthemes_init(){
 	
 	elgg_register_menu_item('page', array(
 		'name' => 'choose_profile_microtheme',
-		'href' => "microthemes/owner/" . elgg_get_page_owner_entity()->username,
+		'href' => "microthemes/owner/" . elgg_get_page_owner_entity()->guid,
 		'text' => elgg_echo('microthemes:profile:edit'),
 		'contexts' => array('profile_edit'),
 	));
@@ -83,6 +83,7 @@ function microthemes_entity_menu_setup($hook, $type, $return, $params) {
 		$options = array(
 				'name' => 'clear',
 				'text' => elgg_echo('microthemes:clear'),
+				'title' => elgg_echo('microthemes:clear:tooltip'),
 				'href' => "action/microthemes/clear?guid=$entity->guid&assign_to=$owner->guid",
 				'is_action' => true
 			);
@@ -91,6 +92,7 @@ function microthemes_entity_menu_setup($hook, $type, $return, $params) {
 		$options = array(
 				'name' => 'choose',
 				'text' => elgg_echo('microthemes:choose'),
+				'title' => elgg_echo('microthemes:choose:tooltip'),
 				'href' => "action/microthemes/choose?guid=$entity->guid&assign_to=$owner->guid",
 				'is_action' => true
 			);
@@ -104,6 +106,7 @@ function microthemes_entity_menu_setup($hook, $type, $return, $params) {
                 $options = array(
                         'name' => 'edit',
                         'text' => elgg_echo('microthemes:edit'),
+                        'title' => elgg_echo('microthemes:edit:tooltip'),
                         'href' => "microthemes/edit/$entity->guid?assign_to=$owner->guid",
                         'priority' =>50,
                 );
@@ -146,8 +149,8 @@ function microthemes_page_handler($page) {
 			elgg_set_page_owner_guid($entity->container_guid);
 			include("$page_base/edit.php");
 			break;
-		case 'owner':
 		case 'group':
+		case 'owner':
 			elgg_set_page_owner_guid($page[1]);
 			set_input('assign_to', $page[1]);
 			include("$page_base/view.php");
@@ -175,26 +178,28 @@ function microthemes_icon_url_override($hook, $entity_type, $returnvalue, $param
 
 function microthemes_pagesetup() {
 	$owner = elgg_get_page_owner_entity();
-	if ($owner && $owner->canEdit()) {
+	if ($owner && $owner->canEdit() && $owner instanceof ElggGroup) {
 		elgg_register_menu_item('page', array(
 			'name' => 'choose_profile_microtheme',
-			'href' => "microthemes/owner/" . $owner->username,
+			'href' => "microthemes/owner/" . $owner->guid,
 			'text' => elgg_echo('microthemes:profile:edit'),
 			'contexts' => array('profile_edit', 'settings'),
 		));
-		elgg_register_menu_item('page', array(
-			'name' => 'microthemes',
-			'text' => elgg_echo('microthemes:group:edit'),
-			'href' => "microthemes/group/" . $owner->guid,
-			'context' => array('groups'),
-		));
+		// need to check for groups context like this otherwise the item appears on the main page for the group.
+		if (elgg_get_context() == 'groups') {
+			elgg_register_menu_item('page', array(
+				'name' => 'microthemes',
+				'text' => elgg_echo('microthemes:group:edit'),
+				'href' => "microthemes/group/" . $owner->guid,
+			));
+		}
 	}
 }
 
 function microthemes_user_hover_menu($hook, $type, $return, $params) {
 	$user = $params['entity'];
 	if ($user->canEdit()) {
-		$url = "microthemes/owner/$user->username";
+		$url = "microthemes/owner/$user->guid";
 		$item = new ElggMenuItem('microthemes:profile:edit', elgg_echo('microthemes:profile:edit'), $url);
 		$item->setSection('action');
 		$return[] = $item;

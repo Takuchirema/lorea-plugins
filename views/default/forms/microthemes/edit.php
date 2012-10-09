@@ -41,7 +41,10 @@ if ($entity) {
 		$align = 'left';
 }
 else {
-	$input['height'] = '10';
+	$input['height'] = '50';
+	$input['margin'] = '50';
+	array_push($values, 'repeatx');
+	array_push($values, 'repeaty');
 	$align = 'left';
 	$bg_color = '#EEE';
 	$topbar_color = '#333';

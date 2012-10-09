@@ -27,6 +27,10 @@ if ($microtheme) {
 	elgg_push_breadcrumb($microtheme->title);
 }
 else {
+	/*if (is_plugin_enabled('file')) {
+		file_register_toggle(); <-- gallery toggle
+	}*/
+
 	// list view
 	elgg_register_title_button();
 

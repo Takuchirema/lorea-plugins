@@ -37,9 +37,10 @@ if ($microtheme->height) {
 	$height = $microtheme->height;
 }
 
+
 $margin = 50;
 if ($microtheme->margin) {
-	$height = $microtheme->margin;
+	$margin = $microtheme->margin;
 }
 
 

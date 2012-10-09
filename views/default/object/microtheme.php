@@ -21,7 +21,12 @@ $owner_link = elgg_view('output/url', array(
 ));
 $author_text = elgg_echo('byline', array($owner_link));
 
-$microtheme_icon = elgg_view_entity_icon($microtheme, 'small');
+if ($microtheme->smallthumb) {
+	$microtheme_icon = elgg_view_entity_icon($microtheme, 'medium');
+}
+else {
+	$microtheme_icon = "<div style='background-color:black; width:150px; height:150px;'></div>";
+}
 
 $date = elgg_view_friendly_time($microtheme->time_created);
 
@@ -67,7 +72,7 @@ if ($full && !elgg_in_context('gallery')) {
 } elseif (elgg_in_context('gallery')) {
 	echo '<div class="microtheme-gallery-item">';
 	echo "<h3>" . $microtheme->title . "</h3>";
-	echo elgg_view_entity_icon($microtheme, 'medium');
+	echo $microtheme_icon;
 	echo "<p class='subtitle'>$author_text $date</p>";
 	echo '</div>';
 } else {
