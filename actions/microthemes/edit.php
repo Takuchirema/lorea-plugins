@@ -36,10 +36,18 @@ catch (Except $e) {
 }
 
 try {
+	$input['bg_y'] = (int)$input['bg_y'];
+}
+catch (Except $e) {
+	$input['bg_y'] = 110;
+}
+
+
+try {
 	$input['margin'] = (int)$input['margin'];
 }
 catch (Except $e) {
-	$input['margin'] = 120;
+	$input['margin'] = 50;
 }
 
 
@@ -102,6 +110,7 @@ $theme->bg_color = $background_color;
 $theme->bg_alignment = $alignment;
 $theme->height = $input['height'];
 $theme->margin = $input['margin'];
+$theme->bg_y = $input['bg_y'];
 $theme->topbar_color = $topbar_color;
 //$theme->hidesitename
 //$theme->translucid_page

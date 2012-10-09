@@ -24,6 +24,7 @@ $english = array(
 	// properties
 	'microthemes:topbar_color' => 'Topbar color',
 	'microthemes:bg_color' => 'Background color',
+	'microthemes:bg_y' => 'Background position offset',
 	'microthemes:height' => 'Header height',
 	'microthemes:margin' => 'Margin at the sides',
 	'microthemes:background:upload' => 'Background file',

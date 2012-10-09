@@ -43,6 +43,7 @@ if ($entity) {
 else {
 	$input['height'] = '50';
 	$input['margin'] = '50';
+	$input['bg_y'] = '110';
 	array_push($values, 'repeatx');
 	array_push($values, 'repeaty');
 	$align = 'left';
@@ -77,8 +78,8 @@ if ($guid) {
 <?php
 	$form_body = '<p><label>'.elgg_echo('microthemes:repeatx').' </label><br />';
         $form_body .= elgg_view("input/checkboxes", array(
-                        'options' => array(elgg_echo('microthemes:repeaty')=>'repeatx',
-                        elgg_echo('microthemes:background:repetition:y')=>'repeaty'),
+                        'options' => array(elgg_echo('microthemes:repeatx')=>'repeatx',
+                        elgg_echo('microthemes:repeaty')=>'repeaty'),
                         'internalname'=>'repeat',
                         'value' => $values));
         $form_body .= '</p>';

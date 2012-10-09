@@ -32,6 +32,12 @@ else {
 		$bgopts .= ' no-repeat';
 }
 
+$bg_y = 110;
+if ($microtheme->bg_y) {
+	$bg_y = $microtheme->bg_y;
+}
+
+
 $height = 50;
 if ($microtheme->height) {
 	$height = $microtheme->height;
@@ -61,6 +67,7 @@ if ($microtheme->topbar_color) {
 body {
 	background-color: <?php echo $color; ?>;
 	background: <?php echo $color; ?> url(<?php echo $image_url; ?>) <?php echo $bgopts; ?>;
+	background-position: 0 <?php echo $bg_y; ?>px;
 }
 
 .elgg-page-body {
@@ -78,6 +85,10 @@ body {
 	border-radius:0 0 1px 1px;
 	border: 6px solid #AAA;
 	
+}
+
+.elgg-sidebar {
+	opacity: 0.9;
 }
 
 <?php

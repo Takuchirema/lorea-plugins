@@ -55,6 +55,7 @@ function microthemes_init(){
 	$variables = array(
 		'height' => 'text',
 		'margin' => 'text',
+		'bg_y' => 'text',
 	);
 	elgg_set_config('microtheme', $variables);
 
