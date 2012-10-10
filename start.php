@@ -19,6 +19,7 @@ function favorites_page_handler($page) {
 function favorites_init(){
 
     elgg_register_page_handler('favorites','favorites_page_handler');
+    elgg_extend_view("js/elgg", "js/favorites");
 
     if ( elgg_is_logged_in() ) {
         elgg_register_menu_item(
@@ -30,7 +31,6 @@ function favorites_init(){
             )
         );
     }
-    // elgg_extend_view("js/initialise_elgg", "favorites/metatags");
 
     $plugin_path = elgg_get_plugins_path();
 
