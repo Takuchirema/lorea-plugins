@@ -8,18 +8,18 @@
 */
 
 $es = array(
-    'favorites:items' => 'Favorita',
-    'favorites:menu' => 'Favorita',
-    'favorites:groups' => 'Grupos Favoritas',
-    'favorites:add' => 'Click to mark as Favorite',
-    'favorites:remove' => 'Click to remove from Favorites',
-    'favorites:widget:title' => 'Favorita',
-    'favorites:widget:description' => 'Shows the recent Favorites',
-    'favorites:removed' => 'Item removed from Favorites',
-    'favorites:removefailed' => 'Could not remove item from Favorites',
-    'favorites:added' => 'Item added to Favorites',
-    'favorites:addfailed' => 'Could not add item to Favorites',
-    'favorites:numbertodisplay' => 'Select the number of Favorites to display'
+    'favorites:items' => 'Favoritos',
+    'favorites:menu' => 'Favoritos',
+    'favorites:groups' => 'Grupos Favoritos',
+    'favorites:add' => 'Clickea para agregar un elemento favorito',
+    'favorites:remove' => 'Clickea para remover de los favoritos',
+    'favorites:widget:title' => 'Favoritos',
+    'favorites:widget:description' => 'Mostra los elementos favoritos recientes',
+    'favorites:removed' => 'Elemento eliminado de los favoritos',
+    'favorites:removefailed' => 'No se pudo remover el elemento de los favoritos',
+    'favorites:added' => 'Elemento agregado a los favoritos',
+    'favorites:addfailed' => 'No se pudo agregar el elemento a los favoritos',
+    'favorites:numbertodisplay' => 'Selecciona el número de elementos a mostrar'
 );
 	
 add_translation("es",$es);
