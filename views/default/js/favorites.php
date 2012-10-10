@@ -10,11 +10,10 @@ elgg.favorites.init = function() {
 };
 
 elgg.favorites.add = function(event) {
-	event.preventDefault();
-
-	var $link = $(this);
+    event.preventDefault();
+    var $link = $(this);
     var $actionParam = $link.attr("href").split("/").pop();
-	var $postGuid = $link.attr("href").match(/guid=([^&]+)/)[1];
+    var $postGuid = $link.attr("href").match(/guid=([^&]+)/)[1];
 
     elgg.action('favorites/add', {
         data: {
@@ -31,11 +30,10 @@ elgg.favorites.add = function(event) {
 };
 
 elgg.favorites.remove = function(event) {
-	event.preventDefault();
-
-	var $link = $(this);
+    event.preventDefault();
+    var $link = $(this);
     var $actionParam = $link.attr("href").split("/").pop();
-	var $postGuid = $link.attr("href").match(/guid=([^&]+)/)[1];
+    var $postGuid = $link.attr("href").match(/guid=([^&]+)/)[1];
 
     elgg.action('favorites/remove', {
         data: {
