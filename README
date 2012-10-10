@@ -1,1 +1,8 @@
 Favorites Plugin
+Oct 2012 - occam@lorea.org
+
+This is a rewrite of the flagged items plugin for elgg 1.7
+
+For better compability the database relationship type "flags_content" remains
+the same.
+
