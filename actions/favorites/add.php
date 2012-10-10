@@ -12,10 +12,7 @@
             register_error(elgg_echo('favorites:addfailed'));
         }
     }
-    // AJAX request
-    if (elgg_is_xhr()) {
-        return;
-    } else {
+    if (!elgg_is_xhr()) {
 	    forward($_SERVER['HTTP_REFERER']);
     }
 ?>
