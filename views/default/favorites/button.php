@@ -27,6 +27,7 @@ if (!check_entity_relationship($fav_user_guid ,'flags_content', $fav_entity_guid
         'href' => $fav_url,
         'text' => elgg_view_icon('star-empty'),
         'title' => elgg_echo('favorites:add'),
+        'class' => 'favorites-add',
         'is_action' => true,
         'is_trusted' => true,
     );
@@ -39,6 +40,7 @@ if (!check_entity_relationship($fav_user_guid ,'flags_content', $fav_entity_guid
         'href' => $fav_url,
         'text' => elgg_view_icon('star'),
         'title' => elgg_echo('favorites:remove'),
+        'class' => 'favorites-remove',
         'is_action' => true,
         'is_trusted' => true,
     );
