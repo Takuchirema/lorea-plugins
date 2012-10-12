@@ -1,18 +1,16 @@
 <?php
-$ca = array (
-  'suicide:suicide' => '%s s\'ha suïcidat digitalment',
-  'suicide:nocares' => ', a ningú li importa.',
-  'suicide:autist' => ', va passar sense pena ni glòria.',
-  'suicide:lonely' => ', no tenia massa amistats.',
-  'suicide:normal' => '. Rest In Bits.',
-  'suicide:popular' => '. Se\'l trobarà en falta (o no).',
-  'suicide:respected' => ', havia nascut com a líder.',
-  'suicide:godlike' => '. Per què ens has deixat?',
-  'suicide:success' => 'T\'has suïcidat correctament, et trobarem a faltar!',
-  'suicide:fail' => 'Ha passat alguna cosa amb el procés de suïcidi. Siusplau comunica-ho als administradors/es de la xarxa.',
-  'suicide:submit' => 'Suïcidi ',
-  'suicide:confirm' => 'Segur que ho vols fer? no hi ha marxa enrere! Això també esborrarà tots els objectes que et pertanyen, els que siguin de un grup s\'assignaran al/la propietari/a del grup.',
+$language = array (
+  'suicide:success' => 'Has suïcidat el teu compte correctament. Et trobarem a faltar!',
+  'suicide:fail' => 'Alguna cosa ha succeït mentre esborràvem el teu compte. Si us plau avisa les administradores i elles ho corregiran per tu. Disculpa\'ns!',
+  'suicide:submit' => 'Suïcidar :-(',
+  'suicide:suicide' => '%s ha fet un suïcidi digital',
+  'suicide:confirm' => 'Estàs segur? No hi ha marxa enrere!!! Això esborrarà tots els teus objectes i donarà aquells de grups als propietaris del grup.',
+  'suicide:nocares' => ', a ningú li importa',
+  'suicide:autist' => ', va preferir una vida solitària',
+  'suicide:lonely' => ', no tenia gaires amigues',
+  'suicide:normal' => '. Descansa En Bits',
+  'suicide:popular' => ', la trobarem a faltar',
+  'suicide:respected' => ', era una líder',
+  'suicide:godlike' => '. Per què ens vas deixar?',
 );
-
-add_translation("ca", $ca);
-
+add_translation("ca", $language);
