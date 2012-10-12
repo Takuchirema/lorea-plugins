@@ -1,3 +1,2 @@
 <?php
-
-echo "<code>{$vars['value']}</code>";
+return false;
