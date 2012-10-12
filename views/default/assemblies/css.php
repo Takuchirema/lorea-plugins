@@ -25,16 +25,3 @@
 .group-submodule-box:last-child > .group-submodule-box-inner {
 	margin-right: 0;
 }
-
-div.crud-children > h3 {
-	font-size: 1.5em;
-	margin-bottom: 0.2em;
-}
-div.crud-children > h4 {
-	font-size: 1.4em;
-	padding: 0.5em;
-}
-
-div.crud-children > .elgg-list {
-	margin-left: 2em;
-}
