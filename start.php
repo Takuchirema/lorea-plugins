@@ -75,7 +75,7 @@ function microthemes_entity_menu_setup($hook, $type, $return, $params) {
         }
 
         $entity = $params['entity'];
-	if (!$entity->getSubtype() == 'microtheme') {
+	if ($entity->getSubtype() != 'microtheme') {
 		return $return;
 	}
 	$owner = elgg_get_page_owner_entity();
