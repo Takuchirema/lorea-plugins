@@ -85,7 +85,7 @@ function group_alias_page_handler($page) {
 }
 
 function group_alias_fields_setup($hook, $type, $return, $params) {
-	return array_merge(array('alias' => 'group_alias'), $return);
+	return array_merge($return, array('alias' => 'group_alias'));
 }
 
 /**
