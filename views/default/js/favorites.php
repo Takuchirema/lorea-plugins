@@ -1,5 +1,7 @@
 <?php
-$site_url = elgg_get_site_url();
+/**
+ * Favorites JS. 
+ */
 ?>
 
 elgg.provide('elgg.favorites');
@@ -20,7 +22,7 @@ elgg.favorites.add = function(event) {
             guid: $postGuid
         },
         success: function(json) {
-            $link.attr('href', '<?php echo $site_url; ?>action/favorites/remove/' + $actionParam);
+            $link.attr('href', elgg.config.wwwroot + 'action/favorites/remove/' + $actionParam);
             $link.attr('class', '.elgg-menu-item-favorite .favorites-remove');
             $link.children('span').attr('class','elgg-icon elgg-icon-star');
             $link.unbind('click');
@@ -40,7 +42,7 @@ elgg.favorites.remove = function(event) {
             guid: $postGuid
         },
         success: function(json) {
-            $link.attr("href", '<?php echo $site_url; ?>action/favorites/add/' + $actionParam);
+            $link.attr("href", elgg.config.wwwroot + 'action/favorites/add/' + $actionParam);
             $link.attr('class', '.elgg-menu-item-favorite .favorites-add');
             $link.children('span').attr('class','elgg-icon elgg-icon-star-empty');
             $link.unbind('click');
