@@ -15,4 +15,3 @@
     if (!elgg_is_xhr()) {
 	    forward($_SERVER['HTTP_REFERER']);
     }
-?>

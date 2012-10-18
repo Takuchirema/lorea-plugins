@@ -1,29 +1,21 @@
 <?php
 /**
-* @package 
-* @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-* @author lorea
-* @copyright lorea
-* @link http://lorea.org
-*
-* Nie wieder Deutschland
-*/
+ * Nie wieder Deutschland
+ */
 
 $german = array(
     'favorites:items' => 'Favoriten',
     'favorites:menu' => 'Favoriten',
     'favorites:groups' => 'Gruppen',
-    'favorites:add' => 'Zu den Favoriten hinzufügen',
+    'favorites:add' => 'Zu den Favoriten hinzufï¿½gen',
     'favorites:remove' => 'Aus den Favoriten entfernen',
     'favorites:widget:title' => 'Favoriten',
     'favorites:widget:description' => 'Auflistung der aktuellen Favoriten',
     'favorites:removed' => 'Das Element wurde aus den Favoriten entfernt',
     'favorites:removefailed' => 'Das Element konnte nicht aus den Favoriten enfernt werden',
-    'favorites:added' => 'Das Element wurde zu den Favoriten hinzugefügt',
-    'favorites:addfailed' => 'Das Element konnte nicht zu den Favoriten hinzugefügt werden',
+    'favorites:added' => 'Das Element wurde zu den Favoriten hinzugefï¿½gt',
+    'favorites:addfailed' => 'Das Element konnte nicht zu den Favoriten hinzugefï¿½gt werden',
     'favorites:numbertodisplay' => 'Anzahl der Favoriten zur Anzeige'
 );
 	
-add_translation("de",$german);
-
-?>
+add_translation("de", $german);

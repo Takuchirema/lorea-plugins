@@ -34,5 +34,3 @@ echo elgg_view_entity_list(
     $fav_options['view_type_toggle'], 
     $fav_options['pagination']
 );
-     
-?>

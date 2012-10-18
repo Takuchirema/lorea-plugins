@@ -1,13 +1,9 @@
 <?php
 /**
-* Elgg Lorea Favorites Plugin
-* 
-* @package
-* @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-* @author lorea
-* @copyright lorea
-* @link http://lorea.org
-*/
+ * Elgg Lorea Favorites Plugin
+ * 
+ * @package ElggFavorites
+ */
 
 if (!isset($vars['entity'])) {
 	return true;
@@ -48,4 +44,3 @@ if (!check_entity_relationship($fav_user_guid ,'flags_content', $fav_entity_guid
 }
 
 echo $fav_button;
-?>

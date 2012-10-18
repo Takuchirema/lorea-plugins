@@ -1,13 +1,7 @@
 <?php
 /**
-* Elgg Lorea Favorites Plugin
-* 
-* @package
-* @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-* @author lorea
-* @copyright lorea
-* @link http://lorea.org
-*/
+ * Elgg Lorea Favorites Plugin
+ */
 
 elgg_register_event_handler('init','system','favorites_init');
 
@@ -77,5 +71,3 @@ function favorites_entity_menu_setup($hook, $type, $return, $params) {
     }
 	return $return;
 }
-
-?>

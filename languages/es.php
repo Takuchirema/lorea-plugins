@@ -1,11 +1,7 @@
 <?php
 /**
-* @package 
-* @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-* @author lorea
-* @copyright lorea
-* @link http://lorea.org
-*/
+ * Spanish favorites translations
+ */
 
 $es = array(
     'favorites:items' => 'Favoritos',
@@ -23,5 +19,3 @@ $es = array(
 );
 	
 add_translation("es",$es);
-
-?>
