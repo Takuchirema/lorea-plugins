@@ -7,6 +7,7 @@ $english = array(
     'favorites:items' => 'Favorites',
     'favorites:menu' => 'Favorites',
     'favorites:groups' => 'Favorite Groups',
+	'favorites:users' => 'Favorite Inhabitants',
     'favorites:add' => 'Click to mark as Favorite',
     'favorites:remove' => 'Click to remove from Favorites',
     'favorites:widget:title' => 'Favorites',

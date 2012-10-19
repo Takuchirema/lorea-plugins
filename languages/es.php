@@ -7,6 +7,7 @@ $es = array(
     'favorites:items' => 'Favoritos',
     'favorites:menu' => 'Favoritos',
     'favorites:groups' => 'Grupos Favoritos',
+	'favorites:users' => 'Habitantes favoritos',
     'favorites:add' => 'Clickea para agregar un elemento favorito',
     'favorites:remove' => 'Clickea para remover de los favoritos',
     'favorites:widget:title' => 'Favoritos',

@@ -5,11 +5,6 @@
 
 elgg_register_event_handler('init','system','favorites_init');
 
-function favorites_page_handler($page) {
-    include(elgg_get_plugins_path() . 'favorites/views/default/favorites/view.php');
-    return TRUE;
-}
-
 function favorites_init(){
 
     elgg_register_page_handler('favorites','favorites_page_handler');
@@ -50,6 +45,20 @@ function favorites_init(){
     );
 }
 
+function favorites_page_handler($page) {
+	echo elgg_view_page(
+		elgg_echo("favorites:items"),
+		elgg_view_layout(
+			'one_sidebar', 
+			array(
+				'title' => elgg_echo("favorites:items"),
+				'content' => elgg_view('favorites/view'),
+				'sidebar' => elgg_view('favorites/sidebar'),
+			)
+		)
+	);
+	return true;
+}
 
 function favorites_entity_menu_setup($hook, $type, $return, $params) {
 	if (elgg_in_context('widgets')) {
