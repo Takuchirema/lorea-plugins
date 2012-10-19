@@ -69,6 +69,7 @@ function microthemes_init(){
 */
 function microthemes_create_thumbnails($microtheme, $file) {
 	$microtheme->icontime = time();
+	$prefix = "microthemes/banner_".$microtheme->guid;
 		
 	$thumbnail = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 60, 60, true);
 	if ($thumbnail) {
