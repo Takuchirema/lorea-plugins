@@ -59,7 +59,59 @@ function microthemes_init(){
 	);
 	elgg_set_config('microtheme', $variables);
 
+	elgg_register_event_handler('upgrade', 'system', 'microthemes_run_upgrades');
+
 }
+
+/*
+ $microtheme: microtheme entity
+ $file: $file with master file
+*/
+function microthemes_create_thumbnails($microtheme, $file) {
+	$microtheme->icontime = time();
+		
+	$thumbnail = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 60, 60, true);
+	if ($thumbnail) {
+		$thumb = new ElggFile();
+		$thumb->setMimeType($_FILES['upload']['type']);
+
+		$thumb->setFilename($prefix."medium");
+		$thumb->open("write");
+		$thumb->write($thumbnail);
+		$thumb->close();
+
+		$microtheme->thumbnail = $prefix."medium";
+		unset($thumbnail);
+	}
+
+	$thumbsmall = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 150, 150, true);
+	if ($thumbsmall) {
+		$thumb->setFilename($prefix."small");
+		$thumb->open("write");
+		$thumb->write($thumbsmall);
+		$thumb->close();
+		$microtheme->smallthumb = $prefix."small";
+		unset($thumbsmall);
+	}
+
+	$thumblarge = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 600, 600, false);
+	if ($thumblarge) {
+		$thumb->setFilename($prefix."large");
+		$thumb->open("write");
+		$thumb->write($thumblarge);
+		$thumb->close();
+		$microtheme->largethumb = $prefix."large";
+		unset($thumblarge);
+	}
+}
+
+function microthemes_run_upgrades() {
+	if (include_once(elgg_get_plugins_path() . 'upgrade-tools/lib/upgrade_tools.php')) {
+		upgrade_module_run('microthemes');
+	}
+
+}
+
 
 function microthemes_url_override($entity) {
 	$owner = elgg_get_page_owner_entity();

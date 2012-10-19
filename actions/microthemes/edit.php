@@ -134,41 +134,7 @@ if (isset($_FILES['background_image']['name']) && !empty($_FILES['background_ima
 
 	$guid = $theme->save();
 
-	$theme->icontime = time();
-		
-	$thumbnail = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 60, 60, true);
-	if ($thumbnail) {
-		$thumb = new ElggFile();
-		$thumb->setMimeType($_FILES['upload']['type']);
-
-		$thumb->setFilename($prefix."medium");
-		$thumb->open("write");
-		$thumb->write($thumbnail);
-		$thumb->close();
-
-		$theme->thumbnail = $prefix."medium";
-		unset($thumbnail);
-	}
-
-	$thumbsmall = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 150, 150, true);
-	if ($thumbsmall) {
-		$thumb->setFilename($prefix."small");
-		$thumb->open("write");
-		$thumb->write($thumbsmall);
-		$thumb->close();
-		$theme->smallthumb = $prefix."small";
-		unset($thumbsmall);
-	}
-
-	$thumblarge = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 600, 600, false);
-	if ($thumblarge) {
-		$thumb->setFilename($prefix."large");
-		$thumb->open("write");
-		$thumb->write($thumblarge);
-		$thumb->close();
-		$theme->largethumb = $prefix."large";
-		unset($thumblarge);
-	}
+	microthemes_create_thumbnails($theme, $file);
 } else {
 	// not saving a file but still need to save the entity to push attributes to database
 	$theme->save();
