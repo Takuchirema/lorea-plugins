@@ -96,16 +96,16 @@ function federated_objects_init() {
 	elgg_register_page_handler('federated-objects','federated_objects_page_handler');
 
 	// override object urls
-	if (is_plugin_enabled('profile')) {
+	if (elgg_is_active_plugin('profile')) {
 		elgg_register_entity_url_handler('user', 'all', array('FederatedPerson', 'url'));
 	}
-	if (is_plugin_enabled('thewire')) {
+	if (elgg_is_active_plugin('thewire')) {
 		elgg_register_entity_url_handler('object', 'thewire', array('FederatedNote', 'url'));
 	}
-	if (is_plugin_enabled('bookmarks')) {
+	if (elgg_is_active_plugin('bookmarks')) {
 		elgg_register_entity_url_handler('object', 'bookmarks', array('FederatedBookmark', 'url'));
 	}
-	if (is_plugin_enabled('groups')) {
+	if (elgg_is_active_plugin('groups')) {
 		elgg_register_entity_url_handler('group', 'all', array('FederatedGroup', 'url'));
 	}
 
