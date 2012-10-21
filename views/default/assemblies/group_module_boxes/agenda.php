@@ -15,8 +15,8 @@ if (!empty($assembly)) {
 	echo "</ul>";
 
 	echo "<hr /><p>".elgg_view('output/url', array(
-		'href' => "decission/add/$assembly->guid",
-		'text' => ucfirst(elgg_echo('decission:add'))."</p>",
+		'href' => "decision/add/$assembly->guid",
+		'text' => ucfirst(elgg_echo('decision:add'))."</p>",
 	));
 
 

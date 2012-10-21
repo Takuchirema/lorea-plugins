@@ -7,7 +7,7 @@
    $user = elgg_get_logged_in_user_entity();
 
    if (!$entity->canEdit()) {
-	register_error(elgg_echo("proposals:decission:cantlink"));
+	register_error(elgg_echo("proposals:decision:cantlink"));
         forward(REFERER);
    }
 
@@ -15,11 +15,11 @@
 
    if (!empty($next_assembly)) {
    	$entity->parent_guid = $next_assembly->guid;
-        system_message(elgg_echo("proposals:decission:linked"));
+        system_message(elgg_echo("proposals:decision:linked"));
         forward($next_assembly->getURL());
    }
    else {
-        register_error(elgg_echo("proposals:decission:nonext"));
+        register_error(elgg_echo("proposals:decision:nonext"));
         forward(REFERER);
    }
 

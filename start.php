@@ -27,7 +27,7 @@ function assemblies_init() {
 	elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'assemblies_notify_message');
 
 	// handler for link to assembly menu item
-	elgg_register_plugin_hook_handler('crud:decission:view_buttons', 'view_buttons', 'assemblies_decission_view_buttons');
+	elgg_register_plugin_hook_handler('crud:decision:view_buttons', 'view_buttons', 'assemblies_decision_view_buttons');
 
 	// Add group option
 	add_group_tool_option('assemblies', elgg_echo('assemblies:enableassemblies'), false);
@@ -70,7 +70,7 @@ function assemblies_init() {
 	);
 	
 	$crud = crud_register_type('assembly', $variables, 'ElggAssembly');
-	$crud->children_type = 'decission';
+	$crud->children_type = 'decision';
 	$crud->children_categories = 'category';
 	$crud->module = 'assemblies';
 	$crud->list_order = 'date';
@@ -106,7 +106,7 @@ function assemblies_init() {
 	);
 	
 	if (elgg_is_active_plugin('crud')) {
-		$crud = crud_register_type('decission', $variables);
+		$crud = crud_register_type('decision', $variables);
 		#$crud->children_type = 'agenda_point';
 		$crud->module = 'assemblies';
 		$crud->embed = 'firstchild';
@@ -170,15 +170,15 @@ function assemblies_ecml_views_hook($hook, $entity_type, $return_value, $params)
 }
 
 /**
- * Show button to link decission to next assembly
+ * Show button to link decision to next assembly
  */
-function assemblies_decission_view_buttons($hook, $type, $return, $params) {
+function assemblies_decision_view_buttons($hook, $type, $return, $params) {
     $entity = $params['entity'];
     if (empty($entity->parent_guid)) {
         elgg_register_menu_item('title', array(
                                 'name' => 'link',
                                 'href' => "action/assemblies/link?guid=$entity->guid",
-                                'text' => elgg_echo("assemblies:decission:link"),
+                                'text' => elgg_echo("assemblies:decision:link"),
                                 'is_action' => true,
                                 'link_class' => 'elgg-button elgg-button-action',
                         ));
