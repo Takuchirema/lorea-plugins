@@ -4,6 +4,11 @@ class PuSH {
 	public static function updateRiverEventHandler($event, $object_type, $item) {
 		global $CONFIG;
 
+		$hub_url = elgg_get_plugin_setting('hub', 'elgg-push');
+		if (!$hub_url) {
+			return true;
+		}
+
 		$object_guid = $item->object_guid;
 		$subject_guid = $item->subject_guid;
 
@@ -46,8 +51,6 @@ class PuSH {
 		// notify network endpoint
 		$topic_urls[] = $CONFIG->wwwroot . "activity/all?view=atom";
 		$topic_urls[] = $CONFIG->wwwroot . "activity/all?view=rss";
-
-		$hub_url = elgg_get_plugin_setting('hub', 'elgg-push');
 
 		$p = new PuSHPublisher($hub_url);
 
