@@ -12,9 +12,9 @@ elgg_register_event_handler('init', 'system', 'group_alias_init');
  *
  */
 function group_alias_init() {
-
-	// Register tests
-	elgg_register_plugin_hook_handler('unit_test', 'system', 'group_alias_test');
+	
+	// Default CONFIG
+	elgg_set_config('changeable_group_alias', true);
 
 	// Register a page handler, so we can have nice URLs
 	elgg_register_page_handler('g', 'group_alias_page_handler');
@@ -32,6 +32,9 @@ function group_alias_init() {
 	// Extend the main css view
 	elgg_extend_view('css/elgg', 'group_alias/css');
 	elgg_extend_view('js/elgg', 'group_alias/js');
+	
+	// Register tests
+	elgg_register_plugin_hook_handler('unit_test', 'system', 'group_alias_test');
 
 }
 
@@ -41,13 +44,12 @@ function group_alias_test($hook, $type, $value, $params) {
 }
 
 function get_group_from_group_alias($alias){
-	$g = elgg_get_entities_from_metadata(array(
+	return current(elgg_get_entities_from_metadata(array(
 		'type' => 'group',
 		'metadata_name' => 'alias',
 		'metadata_value' => $alias,
 		'limit' => 1,
-	));
-	return $g[0];
+	)));
 }
 
 /**
