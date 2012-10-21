@@ -532,4 +532,4 @@ function groups_prepare_form_vars($group = null) {
 
 		$values['entity'] = $group;
 	}
-
+}
