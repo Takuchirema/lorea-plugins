@@ -1,7 +1,11 @@
 <label class="subgroups-add-autocomplete" style="display:none">
 <?php
 	echo elgg_echo('subgroups:add:label'); echo '<br />';
-	echo elgg_view('input/autocomplete', array('name' => 'othergroup', 'class' => 'mvm'));
+	echo elgg_view('input/autocomplete', array(
+		'name' => 'othergroup',
+		'match_on' => 'groups',
+		'class' => 'mvm',
+	));
 ?>
 </label>
 <label class="subgroups-add-url">
