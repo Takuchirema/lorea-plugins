@@ -260,6 +260,7 @@ function groups_handle_profile_page($guid) {
 	if (!$group) {
 		forward('groups/all');
 	}
+	elgg_push_context('group_profile');
 
 	elgg_push_breadcrumb($group->name);
 
