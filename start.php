@@ -64,22 +64,21 @@ function ostatus_user_hover_menu($hook, $type, $return, $params) {
 	$logged = get_loggedin_user();
 
         if (elgg_is_logged_in() && elgg_get_logged_in_user_guid() != $user->guid) {
-		if ($user->foreign && $user->atom_id) {
-			$url = "ostatus/subscribe?uri={$user->atom_id}";
-			if (check_entity_relationship($logged->guid, 'follow', $user->guid)) {
-				$text = elgg_echo('ostatus:follow:remove');
-				$name = 'remove_follow';
-			}
-			else {
-				$text = elgg_echo('ostatus:follow:add');
-				$name = 'add_follow';
-			}
-
-			//$url = elgg_add_action_tokens_to_url($url);
-			$item = new ElggMenuItem($name, $text, $url);
-			$item->setSection('action');
-			$return[] = $item;
+		$id = $user->getURL();
+		$url = "ostatus/subscribe?uri={$id}";
+		if (check_entity_relationship($logged->guid, 'follow', $user->guid)) {
+			$text = elgg_echo('ostatus:follow:remove');
+			$name = 'remove_follow';
 		}
+		else {
+			$text = elgg_echo('ostatus:follow:add');
+			$name = 'add_follow';
+		}
+
+		// $url = elgg_add_action_tokens_to_url($url);
+		$item = new ElggMenuItem($name, $text, $url);
+		$item->setSection('action');
+		$return[] = $item;
         }
 
         return $return;

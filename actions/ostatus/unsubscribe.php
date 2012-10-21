@@ -8,11 +8,18 @@
 	$webid = get_input("webid");
 	$hub = get_input("hub");
 
-	$feed = OstatusProtocol::getFeed($webid);
-	$author = $feed->getAuthor();
+	if (FederatedObject::isLocalID($webid)) {
+		$entity = FederatedObject::find($webid);
+		$is_local = true;
+	}
+	else {
+		$feed = OstatusProtocol::getFeed($webid);
+		$author = $feed->getAuthor();
 
-	$entity = FederatedObject::create($author, 'atom:author');
-	$entity->salmon_link = $salmon_link;
+		$entity = FederatedObject::create($author, 'atom:author');
+		$entity->salmon_link = $salmon_link;
+		$is_local = false;
+	}
 
 
 	if ($entity instanceof ElggGroup) {
@@ -32,10 +39,12 @@
 		}
 
 	}
-	// check if this was the last follow and unsubscribe push if it is
-	$remaining = elgg_get_entities_from_relationship($options);
-	if (empty($remaining) && push_get_subscription($endpoint)) {
-		push_unsubscribeto($endpoint);
+	if (!$is_local) {
+		// check if this was the last follow and unsubscribe push if it is
+		$remaining = elgg_get_entities_from_relationship($options);
+		if (empty($remaining) && push_get_subscription($endpoint)) {
+			push_unsubscribeto($endpoint);
+		}
 	}
 
 

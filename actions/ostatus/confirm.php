@@ -8,20 +8,26 @@
 	$webid = get_input("webid");
 	$hub = get_input("hub");
 
-	$subscription = push_get_subscription($endpoint);
-	if ($subscription->status === 'subscribed') {
-		$has_subscription = "yes";
+	if (FederatedObject::isLocalID($webid)) {
+		$entity = FederatedObject::find($webid);
 	}
 	else {
-		push_subscribeto($endpoint);
-		$has_subscription = "no";
+		$subscription = push_get_subscription($endpoint);
+		if ($subscription->status === 'subscribed') {
+			$has_subscription = "yes";
+		}
+		else {
+			push_subscribeto($endpoint);
+			$has_subscription = "no";
+		}
+		$feed = OstatusProtocol::getFeed($webid);
+		$author = $feed->getAuthor();
+
+		$entity = FederatedObject::create($author, 'atom:author');
+		$entity->salmon_link = $salmon_link;
+
 	}
 
-	$feed = OstatusProtocol::getFeed($webid);
-	$author = $feed->getAuthor();
-
-	$entity = FederatedObject::create($author, 'atom:author');
-	$entity->salmon_link = $salmon_link;
 
 	if ($entity instanceof ElggGroup) {
 		// assume the group is public

@@ -6,11 +6,16 @@
 	$uri = $vars['uri'];
 
 	if (FederatedObject::isLocalID($uri)) {
-		$id = $webid;
+		$id = $uri;
 		$entity = FederatedObject::find($id);
 		$icon = $entity->getIcon();
 
 		$is_local = true;
+		$name = $entity->name;
+		$type = $entity->getType();
+		if ($entity instanceof ElggUser) {
+			$type = 'person';
+		}
 	} else {
 		$feed = OstatusProtocol::getFeed($uri);
 		$author = $feed->getAuthor();
@@ -26,9 +31,10 @@
 
 		$is_local = false;
 		$entity = FederatedObject::find($id);
+		$name = $author['name'];
+		$type = $author['type'];
 	}
 
-	echo $entity->name;
 
 	$following = false;
 	if ($entity instanceof ElggGroup) {
@@ -38,7 +44,6 @@
 	else {
 		if (check_entity_relationship($user->guid ,'follow', $entity->guid)) {
 			$following = true;
-			echo $entity->name;
 		}
 	}
 
@@ -56,7 +61,6 @@
 	else {
 		$msg = "ostatus:subscribeto";
 	}
-	$type = $entity->getType();
 	echo "<p><label>".elgg_echo("$msg:".$type)."</label><br />";
 	if ($is_local) {
 		$args['entity'] = $entity;
