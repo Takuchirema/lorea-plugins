@@ -41,13 +41,7 @@ function microthemes_init(){
 	elgg_register_simplecache_view('css/input/color_picker');
 	elgg_register_css('elgg.input.colorpicker', $colorpicker_css);
 	
-	elgg_register_menu_item('page', array(
-		'name' => 'choose_profile_microtheme',
-		'href' => "microthemes/owner/" . elgg_get_page_owner_entity()->guid,
-		'text' => elgg_echo('microthemes:profile:edit'),
-		'contexts' => array('profile_edit'),
-	));
-	
+
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'microthemes_entity_menu_setup', 1000);
 
 	elgg_extend_view("page/elements/head", "microthemes/metatags");
@@ -230,6 +224,13 @@ function microthemes_icon_url_override($hook, $entity_type, $returnvalue, $param
 
 function microthemes_pagesetup() {
 	$owner = elgg_get_page_owner_entity();
+	elgg_register_menu_item('page', array(
+		'name' => 'choose_profile_microtheme',
+		'href' => "microthemes/owner/" . $owner->guid,
+		'text' => elgg_echo('microthemes:profile:edit'),
+		'contexts' => array('profile_edit'),
+	));
+	
 	if ($owner && $owner->canEdit() && $owner instanceof ElggGroup) {
 		elgg_register_menu_item('page', array(
 			'name' => 'choose_profile_microtheme',
