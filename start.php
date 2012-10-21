@@ -87,7 +87,7 @@ function group_alias_page_handler($page) {
 }
 
 function group_alias_fields_setup($hook, $type, $return, $params) {
-	return array_merge(array('alias' => 'group_alias'), $return);
+	return array_merge($return, array('alias' => 'group_alias'));
 }
 
 /**
@@ -118,7 +118,7 @@ function group_alias_update_from_name($group) {
 	$alias = preg_replace("/-/", "_", $alias);
 	// If alias is taken
 	$g = get_group_from_group_alias($alias);
-	if ($g->getGUID() != $group->guid){
+	if (elgg_instanceof($g, 'group') && $g->getGUID() != $group->guid){
 		$alias .= $group->guid;
 	}
 	$group->alias = $alias;
