@@ -21,6 +21,7 @@ class FederatedPerson {
 				$access = elgg_set_ignore_access(true);
 				$entity->atom_id = $params['id'];
 				$entity->atom_link = $params['link'];
+				//FederatedPerson::setIcon($entity, $icon);
 				elgg_set_ignore_access($access);
 			}
 		}
@@ -71,6 +72,15 @@ class FederatedPerson {
 	    return $randomString;
 
 	}
+	function endsWith($FullStr, $EndStr)
+	{
+		// Get the length of the end string
+		$StrLen = strlen($EndStr);
+		// Look at the end of FullStr for the substring the size of EndStr
+		$FullStrEnd = substr($FullStr, strlen($FullStr) - $StrLen);
+		// If it matches, it does end with EndStr
+		return $FullStrEnd == $EndStr;
+	}
 	public static function setIcon($entity, $icon, $prefix='profile') {
 		$guid = $entity->guid;
 		$resized = file_get_contents($icon);
@@ -82,7 +92,11 @@ class FederatedPerson {
 	                $owner = $entity->owner_guid;
 
 		$file = new ElggFile();
-                $file->setFilename("$prefix/{$guid}.jpg");
+		if (FederatedPerson::endsWith($icon, ".gif")) {
+                	$file->setFilename("$prefix/{$guid}.gif");
+		} else {
+                	$file->setFilename("$prefix/{$guid}.png");
+		}
 		$file->owner_guid = $owner;
                 $file->open('write');
                 $file->write($resized);
