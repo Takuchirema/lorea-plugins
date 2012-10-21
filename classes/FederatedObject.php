@@ -17,15 +17,22 @@ class FederatedObject {
 		}
 	}
 	public static function findLocal($webid) {
-		$parts = explode('/', $webid);
-		if (strpos($webid, "/annotation/" !== FALSE)) {
-			return elgg_get_annotation_from_id($parts[4]);
-		}
-		$entity_id = $parts[2];
-		if (is_numeric($entity_id)) {
-			return get_entity($parts[2]);
+		if (strpos($webid, '@') !== FALSE) {
+			$parts = explode('@', $webid);
+			$entity_id = $parts[0];
 		} else {
-			return get_user_by_username($parts[2]);
+			$parts = explode('/', $webid);
+			if (strpos($webid, "/annotation/" !== FALSE)) {
+				return elgg_get_annotation_from_id($parts[4]);
+			}
+			$entity_id = $parts[2];
+		}
+		if (is_numeric($entity_id)) {
+			error_log("FINMD ENTITY $entity_id");
+			return get_entity($entity_id);
+		} else {
+			error_log("FINMD ENTITY $entity_id");
+			return get_user_by_username($entity_id);
 		}
 	}
 	public static function findRemote($webid) {
@@ -61,10 +68,18 @@ class FederatedObject {
 			return true;
 		}
 
-		// check if id starts with tag:host,
 		$host = parse_url($site_url, PHP_URL_HOST);
-		if (strpos($webid, "tag:$host,") === 0) {
-			return true;
+		if (strpos($webid, '@') !== FALSE) {
+			$parts = explode('@', $webid);
+			if ($host == $parts[1]) {
+				return true;
+			}
+		}
+		else {
+			// check if id starts with tag:host,
+			if (strpos($webid, "tag:$host,") === 0) {
+				return true;
+			}
 		}
 		return false;
 	}
