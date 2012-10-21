@@ -30,7 +30,7 @@ class SalmonProtocol {
 				    false,
 				    'atom');
 		elgg_set_viewtype($viewtype);
-		$update = "<entry xmlns='http://www.w3.org/2005/Atom' xmlns:thr='http://purl.org/syndication/thread/1.0' xmlns:georss='http://www.georss.org/georss' xmlns:activity='http://activitystrea.ms/spec/1.0/' xmlns:media='http://purl.org/syndication/atommedia' xmlns:poco='http://portablecontacts.net/spec/1.0' xmlns:context='http://activitystrea.ms/context/" . elgg_view('extensions/xmlns') .">$update</entry>";
+		$update = "<entry xmlns='http://www.w3.org/2005/Atom' xmlns:thr='http://purl.org/syndication/thread/1.0' xmlns:georss='http://www.georss.org/georss' xmlns:activity='http://activitystrea.ms/spec/1.0/' xmlns:media='http://purl.org/syndication/atommedia' xmlns:poco='http://portablecontacts.net/spec/1.0' xmlns:context='http://activitystrea.ms/context/' " . elgg_view('extensions/xmlns') .">$update</entry>";
 		SalmonProtocol::postEnvelope($salmon_link, $update, $subject);
 	}
 
