@@ -12,7 +12,9 @@ function groups_handle_all_page() {
 	elgg_pop_breadcrumb();
 	elgg_push_breadcrumb(elgg_echo('groups'));
 
-	elgg_register_title_button();
+	if (elgg_get_plugin_setting('limited_groups', 'groups') != 'yes' || elgg_is_admin_logged_in()) {
+		elgg_register_title_button();
+	}
 
 	$selected_tab = get_input('filter', 'newest');
 
@@ -108,7 +110,11 @@ function groups_handle_owned_page() {
 
 	$page_owner = elgg_get_page_owner_entity();
 
-	$title = elgg_echo('groups:owned');
+	if ($page_owner->guid == elgg_get_logged_in_user_guid()) {
+		$title = elgg_echo('groups:owned');
+	} else {
+		$title = elgg_echo('groups:owned:user', array($page_owner->name));
+	}
 	elgg_push_breadcrumb($title);
 
 	elgg_register_title_button();
@@ -139,7 +145,11 @@ function groups_handle_mine_page() {
 
 	$page_owner = elgg_get_page_owner_entity();
 
-	$title = elgg_echo('groups:yours');
+	if ($page_owner->guid == elgg_get_logged_in_user_guid()) {
+		$title = elgg_echo('groups:yours');
+	} else {
+		$title = elgg_echo('groups:user', array($page_owner->name));
+	}
 	elgg_push_breadcrumb($title);
 
 	elgg_register_title_button();
@@ -178,7 +188,11 @@ function groups_handle_edit_page($page, $guid = 0) {
 		elgg_set_page_owner_guid(elgg_get_logged_in_user_guid());
 		$title = elgg_echo('groups:add');
 		elgg_push_breadcrumb($title);
-		$content = elgg_view('groups/edit');
+		if (elgg_get_plugin_setting('limited_groups', 'groups') != 'yes' || elgg_is_admin_logged_in()) {
+			$content = elgg_view('groups/edit');
+		} else {
+			$content = elgg_echo('groups:cantcreate');
+		}
 	} else {
 		$title = elgg_echo("groups:edit");
 		$group = get_entity($guid);
@@ -240,12 +254,16 @@ function groups_handle_profile_page($guid) {
 	global $autofeed;
 	$autofeed = true;
 
+	elgg_push_context('group_profile');
+
 	$group = get_entity($guid);
 	if (!$group) {
 		forward('groups/all');
 	}
 
 	elgg_push_breadcrumb($group->name);
+
+	groups_register_profile_buttons($group);
 
 	$content = elgg_view('groups/profile/layout', array('entity' => $group));
 	if (group_gatekeeper(false)) {
@@ -257,8 +275,6 @@ function groups_handle_profile_page($guid) {
 	} else {
 		$sidebar = '';
 	}
-
-	groups_register_profile_buttons($group);
 
 	$params = array(
 		'content' => $content,
@@ -532,4 +548,16 @@ function groups_prepare_form_vars($group = null) {
 
 		$values['entity'] = $group;
 	}
+
+	// get any sticky form settings
+	if (elgg_is_sticky_form('groups')) {
+		$sticky_values = elgg_get_sticky_values('groups');
+		foreach ($sticky_values as $key => $value) {
+			$values[$key] = $value;
+		}
+	}
+
+	elgg_clear_sticky_form('groups');
+
+	return $values;
 }
