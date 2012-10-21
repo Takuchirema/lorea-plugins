@@ -4,8 +4,7 @@
 	$atom_endpoint = $vars['endpoint'];
 	$hub = $vars['hub'];
 	$author = $vars['author'];
-	$icon = $author['icon'];
-	$webid = $author['id'];
+	$webid = $vars['webid'];
 	$tag = $vars['tag'];
 
 	$body .= '<input type="hidden" name="atom_endpoint" value="'.htmlspecialchars($atom_endpoint).'" />';
