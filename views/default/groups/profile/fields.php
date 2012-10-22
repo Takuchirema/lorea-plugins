@@ -26,13 +26,16 @@ if (is_array($profile_fields) && count($profile_fields) > 0) {
 			$options['tag_names'] = $key;
 		}
 
-		echo "<div class=\"{$even_odd}\">";
-		echo "<b>";
-		echo elgg_echo("groups:$key");
-		echo ": </b>";
-		echo elgg_view("output/$valtype", $options);
-		echo "</div>";
+		if ($output = elgg_view("output/$valtype", $options)) {
 
-		$even_odd = ($even_odd == 'even') ? 'odd' : 'even';
+			echo "<div class=\"{$even_odd}\">";
+			echo "<b>";
+			echo elgg_echo("groups:$key");
+			echo ": </b>";
+			echo $output;
+			echo "</div>";
+
+			$even_odd = ($even_odd == 'even') ? 'odd' : 'even';
+		}
 	}
 }
