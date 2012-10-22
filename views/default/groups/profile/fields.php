@@ -11,8 +11,8 @@ if (is_array($profile_fields) && count($profile_fields) > 0) {
 
 	$even_odd = 'odd';
 	foreach ($profile_fields as $key => $valtype) {
-		// do not show the name
-		if ($key == 'name') {
+		// do not show the name or hidden values
+		if ($key == 'name' || $valtype == 'hidden') {
 			continue;
 		}
 

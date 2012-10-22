@@ -113,16 +113,6 @@ if ($new_group_flag) {
 
 $group->save();
 
-// group saved so clear sticky form
-//elgg_clear_sticky_form('groups');
-
-// group creator needs to be member of new group and river entry created
-if ($new_group_flag) {
-	elgg_set_page_owner_guid($group->guid);
-	$group->join($user);
-	add_to_river('river/group/create', 'create', $user->guid, $group->guid);
-}
-
 // Invisible group support
 // @todo this requires save to be called to create the acl for the group. This
 // is an odd requirement and should be removed. Either the acl creation happens
