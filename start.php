@@ -119,23 +119,23 @@ function federated_objects_init() {
 	if (elgg_is_active_plugin('groups')) {
 		elgg_register_entity_url_handler('group', 'all', array('FederatedGroup', 'url'));
 	}
-	if (is_plugin_enabled('threads')) {
+	if (elgg_is_active_plugin('threads')) {
 		elgg_register_entity_url_handler('object', 'groupforumtopic', array('FederatedThread', 'url'));
 	}
 
-	if (is_plugin_enabled('event_calendar')) {
+	if (elgg_is_active_plugin('event_calendar')) {
 		elgg_register_entity_url_handler('object', 'event_calendar', array('FederatedEvent', 'url'));
 	}
 
-	if (is_plugin_enabled('file')) {
+	if (elgg_is_active_plugin('file')) {
 		elgg_register_entity_url_handler('object', 'file', array('FederatedFile', 'url'));
 	}
 
-	if (is_plugin_enabled('blog')) {
+	if (elgg_is_active_plugin('blog')) {
 		elgg_register_entity_url_handler('object', 'blog', array('FederatedArticle', 'url'));
 	}
 
-	if (is_plugin_enabled('pages')) {
+	if (elgg_is_active_plugin('pages')) {
 		elgg_register_entity_url_handler('object', 'page', array('FederatedPage', 'url'));
 		elgg_register_entity_url_handler('object', 'page_top', array('FederatedPage', 'url'));
 	}
