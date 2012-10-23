@@ -15,6 +15,10 @@ function group_alias_init() {
 	
 	// Default CONFIG
 	elgg_set_config('changeable_group_alias', true);
+	
+	// Register group alias library
+	$library_path = elgg_get_plugins_path() . 'group_alias/lib/group_alias.php';
+	elgg_register_library('elgg:group_alias', $library_path);
 
 	// Register a page handler, so we can have nice URLs
 	elgg_register_page_handler('g', 'group_alias_page_handler');

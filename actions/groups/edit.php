@@ -34,8 +34,9 @@ foreach ($CONFIG->group as $shortname => $valuetype) {
 	
 	if ($shortname == 'alias') {
 		if($CONFIG->changeable_group_alias || !get_input('group_guid')) {
+			elgg_load_library('elgg:group_alias');
 			try {
-				validate_username($input['alias']);
+				group_alias_validate($input['alias']);
 				if(get_group_from_group_alias($input['alias'])) {
 					throw new Exception(elgg_echo('groups:alias:already_taken'));
 				}
