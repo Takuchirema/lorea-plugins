@@ -13,9 +13,6 @@ elgg_register_event_handler('init', 'system', 'group_alias_init');
  */
 function group_alias_init() {
 	
-	// Default CONFIG
-	elgg_set_config('changeable_group_alias', true);
-	
 	// Register group alias library
 	$library_path = elgg_get_plugins_path() . 'group_alias/lib/group_alias.php';
 	elgg_register_library('elgg:group_alias', $library_path);
