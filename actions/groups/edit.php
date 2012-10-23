@@ -37,7 +37,8 @@ foreach ($CONFIG->group as $shortname => $valuetype) {
 			elgg_load_library('elgg:group_alias');
 			try {
 				group_alias_validate($input['alias']);
-				if(get_group_from_group_alias($input['alias'])) {
+				$existing_group = get_group_from_group_alias($input['alias']);
+				if ($existing_group && $existing_group->guid != get_input('group_guid')) {
 					throw new Exception(elgg_echo('groups:alias:already_taken'));
 				}
 			} catch(Exception $e) {
