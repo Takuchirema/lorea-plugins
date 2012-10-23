@@ -69,6 +69,7 @@ function elggpg_send_email_handler($hook, $type, $return, $params) {
 	$to = $params['to'];
 	$subject = $params['subject'];
 	$body = $params['body'];
+	$headers = $params['headers'];
 	
 	$receiver = current(get_user_by_email($to));
 	
@@ -106,11 +107,12 @@ function elggpg_send_email_handler($hook, $type, $return, $params) {
 		}
 	}
 
-	$headers = "From: $from{$header_eol}"
-		. "Content-Type: text/plain; charset=UTF-8; format=flowed{$header_eol}"
-		. "MIME-Version: 1.0{$header_eol}"
-		. "Content-Transfer-Encoding: 8bit{$header_eol}";
-
+	if (empty($headers)) {
+		$headers = "From: $from{$header_eol}"
+			. "Content-Type: text/plain; charset=UTF-8; format=flowed{$header_eol}"
+			. "MIME-Version: 1.0{$header_eol}"
+			. "Content-Transfer-Encoding: 8bit{$header_eol}";
+	}
 
 	// Sanitise subject by stripping line endings
 	$subject = preg_replace("/(\r\n|\r|\n)/", " ", $subject);
