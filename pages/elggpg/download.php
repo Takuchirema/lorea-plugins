@@ -6,7 +6,7 @@
  */
 
 $user = get_user_by_username(get_input('username'));
-if (!elgg_is_logged_in() || !$user) {
+if (!elgg_is_logged_in() || !$user || !$user->isFriend()) {
 	forward();
 }
 
