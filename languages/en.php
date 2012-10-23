@@ -31,7 +31,7 @@
 		'elggpg:notifications' => "Encrypted notifications",
 		'elggpg:notifications:enabled' => "Encrypted notifications are <strong>enabled</strong>. You will recieve encrypted all e-mails you receive from this site.",
 		'elggpg:notifications:disabled' => "Encrypted notifications are <strong>disabled</strong>. You won't recieve encrypted e-mails from this site.",
-		'elggpg:notifications:settings' => "Click here to manage your encryptation settings.",
+		'elggpg:notifications:settings' => "Click here to manage your encryption settings.",
 		'elggpg:upload:unchanged'=>'Same public key uploaded',
 		'elggpg:upload:imported'=>'Imported public key %s',
 		'elggpg:email:encrypted'=>'Receive encrypted email notifications',
