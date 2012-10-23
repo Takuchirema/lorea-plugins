@@ -120,14 +120,12 @@ if (isset($entity)) {
 	));
 }
 
-if (elgg_get_page_owner_guid()) {
-	echo elgg_view('input/hidden', array(
-		'name' => 'container_guid',
-		'value' => isset($vars['entity']) ?
-						$entity->getContainerGUID() :
-						elgg_get_page_owner_guid(),
-	));
-}
+echo elgg_view('input/hidden', array(
+	'name' => 'container_guid',
+	'value' => isset($vars['entity']) ?
+					$entity->getContainerGUID() :
+					get_input('container_guid'),
+));
 
 echo elgg_view('input/submit', array('value' => elgg_echo('save')));
 

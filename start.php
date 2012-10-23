@@ -115,7 +115,7 @@ function subgroups_page_handler($page){
 			elgg_push_breadcrumb($group->name, $group->getURL());
 			elgg_push_breadcrumb(elgg_echo('subgroups:new'));
 			
-			elgg_set_page_owner_guid($group->guid);
+			set_input('container_guid', $group->guid);
 			
 			$body = elgg_view_layout('content', array(
 				'content' => elgg_view('groups/edit'),
