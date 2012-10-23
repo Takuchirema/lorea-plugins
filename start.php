@@ -126,7 +126,7 @@ function elggman_send_email($from, $to, $subject, $body, $params) {
                                                         'from' => $from,
                                                         'subject' => $subject,
                                                         'body' => $body,
-                                                        'params' => $params
+                                                        'headers' => $params['headers']
                                         );
 
         $result = elgg_trigger_plugin_hook('email', 'system', $mail_params, NULL);
@@ -150,7 +150,6 @@ function elggman_notifications($event, $object_type, $object) {
 		$object = get_entity($object->guid_one);
 		$is_reply = true;
 	}
-
 	if (elgg_instanceof($object, 'object', 'groupforumtopic')
 			|| (elgg_instanceof($object, 'object', 'topicreply') && $object_type == 'top')) {
 		$user  = $object->getOwnerEntity();
