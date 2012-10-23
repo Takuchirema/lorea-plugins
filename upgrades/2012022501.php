@@ -18,6 +18,8 @@ if (2012022501 < $local_version) {
 	return;
 }
 
+global $MIGRATED;
+$MIGRATED = 0;
 /**
  * Sets the opengpg_publickey for users having a public key
  *
@@ -26,18 +28,24 @@ if (2012022501 < $local_version) {
  */
 function elggpg_2012022501($user) {
 	// it is necessary to load the gpg library to make sure gpg path is set.
+	global $MIGRATED;
+	$MIGRATED += 1;
+	if ($MIGRATED % 100 == 0) {
+		error_log(" * elggpg $user->guid");
+	}
 	elgg_load_library('elggpg');
 	$user_fp = current(elgg_get_metadata(array(
                 'guid' => $user->guid,
                 'metadata_name' => 'openpgp_publickey',
         )));
-	if (!$user_fp) {
-		$gnupg = new gnupg();
+	$gnupg = new gnupg();
+	if (!$user_fp && $user->email) {
 		try {
 			$info = $gnupg->keyinfo($user->email);
 			$fingerprint = $info[0]['subkeys'][0]['fingerprint'];
 			if ($fingerprint) {
 				create_metadata($user->guid, "openpgp_publickey", $fingerprint, 'text', $user->guid, ACCESS_LOGGEDIN);
+				error_log("   fingerprint $user->email $fingerprint");
 			}
 		}
 		catch (Exception $e) {
