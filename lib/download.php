@@ -23,6 +23,10 @@ function push_notification($raw, $domain, $subscriber_id) {
  */
 function push_import_atom_activitystreams($data, $obj=null) {
 	$xml = @ new SimpleXMLElement($data);
+	if (empty($xml)) {
+		error_log("CANT PARSE XML");
+		return array();
+	}
 	$xml->registerXPathNamespace('atom', 'http://www.w3.org/2005/Atom');
 	$xml->registerXPathNamespace('activity', 'http://activitystrea.ms/spec/1.0/');
 	$subject_text = @current($xml->xpath("//activity:subject/atom:summary"));
@@ -35,10 +39,14 @@ function push_import_atom_activitystreams($data, $obj=null) {
 		$salmon_link = @current($xml->xpath("//atom:link[attribute::rel='salmon']/@href"));
 	$entries = $xml->xpath("//atom:entry");
 	$entries = array_reverse($entries);
+	if (empty($entries)) {
+		error_log("NO ENTRIES");
+		return array();
+	}
         foreach($entries as $entry) {
                 $entry->registerXPathNamespace('atom', 'http://www.w3.org/2005/Atom');
                 $entry->registerXPathNamespace('activity', 'http://activitystrea.ms/spec/1.0/');
-		$params = array('entry'=>$entry, 'subscriber'=>$obj,'salmon_link'=>$salmon_link);
+		$params = array('entry'=>$entry, 'salmon_link'=>$salmon_link);
                 trigger_plugin_hook('push:notification', 'atom', $params);
         }
 	return $entries;
