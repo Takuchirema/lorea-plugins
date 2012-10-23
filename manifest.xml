@@ -18,5 +18,10 @@
 		<type>php_extension</type>
 		<name>gnupg</name>
 	</requires>
+	<requires>
+		<type>priority</type>
+		<priority>after</priority>
+		<plugin>messages</plugin>
+	</requires>
 	<activate_on_install>true</activate_on_install>
 </plugin_manifest>

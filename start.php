@@ -39,6 +39,9 @@ function elggpg_init() {
 	// add a GPG link to owner blocks
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'elggpg_owner_block_menu');
 
+	// upgrade
+	elgg_register_event_handler('upgrade', 'system', 'elggpg_run_upgrades');
+
 }
 
 /**
@@ -147,4 +150,15 @@ function elggpg_owner_block_menu($hook, $type, $return, $params) {
 		$return[] = $item;
 	}
 	return $return;
+}
+
+/**
+ * Process upgrades for the elggpg plugin
+ */
+function elggpg_run_upgrades() {
+	$path = elgg_get_plugins_path() . 'elggpg/upgrades/';
+	$files = elgg_get_upgrade_files($path);
+	foreach ($files as $file) {
+		include "$path{$file}";
+	}
 }
