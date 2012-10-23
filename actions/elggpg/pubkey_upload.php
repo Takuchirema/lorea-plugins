@@ -19,7 +19,7 @@ $info = elggpg_import_key($public_key, $user);
 if ($info['unchanged']) {
 	system_message(elgg_echo("elggpg:upload:unchanged"));			
 } elseif ($info['imported']) {
-	add_to_river('river/elggpg/update', 'addkey', $user->getGUID(), $user->getGUID());
+	add_to_river('river/elggpg/update', 'addkey', $user->getGUID(), $user->getGUID(), ACCESS_FRIENDS);
 	
 	system_message(elgg_echo("elggpg:upload:imported", array($info['key_id'])));
 }
