@@ -6,7 +6,7 @@
  */
 
 $owner = elgg_get_page_owner_entity();
-if (!$owner || !elgg_instanceof($owner, 'user') || !$owner->isFriend()) {
+if (!$owner || !elgg_instanceof($owner, 'user') || !($owner->isFriend() || $owner->guid == elgg_get_logged_in_user_guid())) {
 	forward();
 }
 

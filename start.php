@@ -135,7 +135,7 @@ function elggpg_send_email_handler($hook, $type, $return, $params) {
  * @param array  $params
  */
 function elggpg_owner_block_menu($hook, $type, $return, $params) {
-	if (elgg_instanceof($params['entity'], 'user') && $params['entity']->isFriend()) {
+	if (elgg_instanceof($params['entity'], 'user') && ($params['entity']->isFriend() || $params['entity']->guid == elgg_get_logged_in_user_guid())) {
 		$url = "elggpg/owner/{$params['entity']->username}";
 		if ($params['entity'] == elgg_get_logged_in_user_entity()) {
 			$item = new ElggMenuItem('elggpg', elgg_echo('elggpg:manage'), $url);
