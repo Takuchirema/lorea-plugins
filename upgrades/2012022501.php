@@ -45,7 +45,6 @@ function elggpg_2012022501($user) {
 			$fingerprint = $info[0]['subkeys'][0]['fingerprint'];
 			if ($fingerprint) {
 				create_metadata($user->guid, "openpgp_publickey", $fingerprint, 'text', $user->guid, ACCESS_LOGGEDIN);
-				error_log("   fingerprint $user->email $fingerprint");
 			}
 		}
 		catch (Exception $e) {
