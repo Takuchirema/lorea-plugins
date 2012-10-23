@@ -83,7 +83,10 @@ function elggpg_send_email_handler($hook, $type, $return, $params) {
 	// Encrypting
 	if (elgg_get_plugin_user_setting('encrypt_emails', $receiver->guid, 'elggpg') != 'no') {
 		elgg_load_library('elggpg');
-		$body = elggpg_encrypt($body, $receiver, false);
+		$encrypted_body = elggpg_encrypt($body, $receiver, false);
+		if ($encrypted_body) {
+			$body = $encrypted_body;
+		}
 	}
 
 	// The following code is the same that in elgg's
