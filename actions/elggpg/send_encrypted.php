@@ -33,18 +33,23 @@ if (!$body || !$subject) {
 // Otherwise, encrypt and 'send' the message 
 
 elgg_load_library('elggpg');
+elgg_load_library('elggpg:send:override');
 // FIXME
 if (elgg_get_plugin_user_setting('encrypt_site_messages', elgg_get_logged_in_user_guid(), 'elggpg') == 'yes') {
 	$body_from = elggpg_encrypt($body, elgg_get_logged_in_user_entity(), false);
+	if (!$body_from) {
+		$body_from = $body;
+	}
 }
 if (elgg_get_plugin_user_setting('encrypt_site_messages', $user->guid, 'elggpg') == 'yes') {
 	$body_to = elggpg_encrypt($body, $user, false);
+	if (!$body_to) {
+		$body_to = $body;
+	}
 }
 
-// TODO: messages_send saves two copies of the message. In previous version of the
-// elggpg plugin, this function was overriden to allow save both versions encrypted
-// with its owner key. Nowadays there is only one version saved, the 'sent' one.
-$result = messages_send($subject, $body_to, $recipient_guid, 0, $reply);
+// override of messages send to be able to save versions encrypted for both users
+$result = messages_send_override($subject, $body_to, $body_from, $recipient_guid, 0, $reply);
 
 // Save 'send' the message
 if (!$result) {
