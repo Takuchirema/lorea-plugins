@@ -9,7 +9,7 @@ $english = array(
 	'microthemes:user' => 'Personal theme',
 	'microthemes:profile:edit' => 'Edit personal theme',
 	'microthemes:group' => 'Group theme',
-	'microthemes:group:edit' => 'Edit group theme',
+	'microthemes:group:edit' => 'Group theme',
 	
 	'microthemes:owner' => 'Select a theme for %s',
 	'microthemes:add' => 'Create a theme',
