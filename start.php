@@ -205,9 +205,9 @@ function elggman_notifications($event, $object_type, $object) {
 		foreach (elggman_get_subscriptors($group->guid) as $subscriptor) {
 			$to = $subscriptor->email;
 			$headers['Resent-To'] = $to;
-			$headers = elgg_view('page/elements/header', $headers);
+			$send_headers = elgg_view('page/elements/header', $headers);
 	
-			elggman_send_email($from, $to, $subject, $message, array('headers' => $headers));
+			elggman_send_email($from, $to, $subject, $message, array('headers' => $send_headers));
 		}
 	}
 }
