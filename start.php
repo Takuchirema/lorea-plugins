@@ -63,7 +63,7 @@ function subgroups_setup_sidebar_menus() {
 	// Get the page owner entity
 	$page_owner = elgg_get_page_owner_entity();
 
-	if (elgg_get_context() == 'group_profile') {
+	if (elgg_get_context() == 'group_profile' || elgg_get_context() == 'groups') {
 		if ($page_owner instanceof ElggGroup) {
 			if (elgg_is_logged_in() && $page_owner->canEdit() || elgg_is_admin_logged_in()) {
 				$url = elgg_get_site_url() . "subgroups/edit/{$page_owner->getGUID()}";
