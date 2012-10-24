@@ -34,18 +34,18 @@ if (!$body || !$subject) {
 
 elgg_load_library('elggpg');
 elgg_load_library('elggpg:send:override');
-// FIXME
+
 if (elgg_get_plugin_user_setting('encrypt_site_messages', elgg_get_logged_in_user_guid(), 'elggpg') == 'yes') {
 	$body_from = elggpg_encrypt($body, elgg_get_logged_in_user_entity(), false);
-	if (!$body_from) {
-		$body_from = $body;
-	}
+}
+if (!$body_from) {
+	$body_from = $body;
 }
 if (elgg_get_plugin_user_setting('encrypt_site_messages', $user->guid, 'elggpg') == 'yes') {
 	$body_to = elggpg_encrypt($body, $user, false);
-	if (!$body_to) {
-		$body_to = $body;
-	}
+}
+if (!$body_to) {
+	$body_to = $body;
 }
 
 // override of messages send to be able to save versions encrypted for both users
