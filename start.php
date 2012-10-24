@@ -239,7 +239,7 @@ function microthemes_pagesetup() {
 			'contexts' => array('profile_edit', 'settings'),
 		));
 		// need to check for groups context like this otherwise the item appears on the main page for the group.
-		if (elgg_get_context() == 'groups') {
+		if (elgg_get_context() == 'groups' || elgg_get_context() == 'group_profile') {
 			elgg_register_menu_item('page', array(
 				'name' => 'microthemes',
 				'text' => elgg_echo('microthemes:group:edit'),
