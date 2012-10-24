@@ -22,9 +22,6 @@ function elggpg_init() {
 	// Register a page handler, so we can have nice URLs
 	elgg_register_page_handler('elggpg', 'elggpg_page_handler');
 	
-	// Register entity type for search
-	elgg_register_entity_type('object', 'elggpg');
-
 	// Register a notification handler to encrypt messages
 	elgg_register_plugin_hook_handler('email', 'system', 'elggpg_send_email_handler');
 	
