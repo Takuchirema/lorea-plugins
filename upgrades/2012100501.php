@@ -1,5 +1,7 @@
 <?php
 
+global $MIGRATED;
+
 $options = array(
         'type' => 'object',
         'subtypes' => array('page', 'page_top'),
@@ -23,14 +25,19 @@ if (!$apikey) {
 	return;
 }
 
-
 /**
  * Save previous author id
  */
 function etherpad_user_2012100501($user) {
+	$MIGRATED += 1;
+	if ($MIGRATED % 100 == 0) {
+		error_log(" * pad user $user->guid");
+	}
+
 	$user->etherpad_author_id = $user->username;
 	return true;
 }
+
 
 /**
  * Save previous pad name, adapt subtype, river, clean up.
@@ -39,7 +46,11 @@ function etherpad_pad_2012100501($pad_entity) {
 	require_once(elgg_get_plugins_path() . 'upgrade-tools/lib/upgrade_tools.php');
 
 	global $DB_QUERY_CACHE;
-	error_log("pad $pad_entity->guid");
+	global $MIGRATED;
+	$MIGRATED += 1;
+	if ($MIGRATED % 100 == 0) {
+		error_log(" * pad $pad_entity->guid");
+	}
 
 	// pad name
 	$site_name = elgg_get_site_url();
@@ -125,6 +136,8 @@ function etherpad_pad_2012100501($pad_entity) {
 // users
 $options = array('type' => 'user', 'limit' => 0);
 
+$MIGRATED = 0;
+
 $previous_access = elgg_set_ignore_access(true);
 $batch = new ElggBatch('elgg_get_entities', $options, "etherpad_user_2012100501", 100);
 elgg_set_ignore_access($previous_access);
@@ -143,6 +156,8 @@ $options = array(
         'metadata_name' => 'ispad',
         'metadata_value' => 1,
 );
+
+$MIGRATED = 0;
 
 $previous_access = elgg_set_ignore_access(true);
 $batch = new ElggBatch('elgg_get_entities_from_metadata', $options, "etherpad_pad_2012100501", 100);
