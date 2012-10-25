@@ -19,7 +19,8 @@ class SalmonDiscovery
 
 	static function getPersonalXrds($uri) {
 	    require_once 'Auth/Yadis/Yadis.php';
-	    $fetcher = Auth_Yadis_Yadis::getHTTPFetcher();
+	    //$fetcher = Auth_Yadis_Yadis::getHTTPFetcher();
+	    $fetcher = new Auth_Yadis_ParanoidHTTPFetcher();
 
 	    if (strpos($uri, '@')) {
 		$uri = 'acct:' . $uri;
@@ -47,7 +48,8 @@ class SalmonDiscovery
 
 	static function getYadisEndpoint($webid, $pattern, $link_type=NULL) {
 	    require_once 'Auth/Yadis/Yadis.php';
-	    $fetcher = Auth_Yadis_Yadis::getHTTPFetcher();
+	    //$fetcher = Auth_Yadis_Yadis::getHTTPFetcher();
+	    $fetcher = new Auth_Yadis_ParanoidHTTPFetcher();
 
 	    $xrds_url = SalmonDiscovery::getPersonalXrds($webid);
 
@@ -94,10 +96,13 @@ class SalmonDiscovery
 
 	static function getRemoteKey($uri, $sig_hash) {
 	    require_once 'Auth/Yadis/Yadis.php';
-	    $fetcher = Auth_Yadis_Yadis::getHTTPFetcher();
+	    $fetcher = new Auth_Yadis_ParanoidHTTPFetcher();
+	//    $fetcher = Auth_Yadis_Yadis::getHTTPFetcher();
 
 	    $uri = SalmonDiscovery::getPersonalXrds($uri);
 	    $response = Auth_Yadis_Yadis::discover($uri, $fetcher);
+	    if (empty($response->response_text)) // retry
+	    	$response = Auth_Yadis_Yadis::discover($uri, $fetcher);
 	    if ($response->isXRDS() || !empty($response)) {
 			$xrds = new SimpleXMLElement($response->response_text,null,false,'xrd');
 			if ($xrds->getName() == 'XRDS') {
