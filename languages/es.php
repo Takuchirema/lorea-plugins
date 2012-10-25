@@ -51,6 +51,7 @@ $language = array (
   'assemblies:decision:permanent' => 'Permanente',
   'assemblies:decision:conjunctural' => 'Coyuntural',
   'assemblies:decision:new' => 'Nueva',
+  'assemblies:decision:draft' => 'Borrador',
   'assemblies:decision:accepted' => 'Aceptada',
   'assemblies:decision:discarded' => 'Descartada',
   'assemblies:decision:delayed' => 'Postpuesta',

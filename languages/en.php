@@ -69,6 +69,7 @@ $english = array(
 	'assemblies:decision:conjunctural' => 'Conjunctural',
 	// statuses
 	'assemblies:decision:new' => 'New',
+	'assemblies:decision:draft' => 'Draft',
 	'assemblies:decision:accepted' => 'Accepted',
 	'assemblies:decision:discarded' => 'Discarded',
 	'assemblies:decision:delayed' => 'Delayed',

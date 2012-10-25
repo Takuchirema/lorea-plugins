@@ -90,7 +90,7 @@ function assemblies_init() {
 		'status' => array(
 			'type' => 'crud/select',
 			'default_value' => 'new',
-			'options' => array('new', 'accepted', 'discarded', 'delayed'),
+			'options' => array('draft', 'new', 'accepted', 'discarded', 'delayed'),
 		),
 		'category' => array(
 			'type' => 'crud/parentselect',
