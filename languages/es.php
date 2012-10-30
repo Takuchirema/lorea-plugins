@@ -57,6 +57,7 @@ $language = array (
   'assemblies:decision:delayed' => 'Postpuesta',
   'assemblies:decision:section:new' => 'Nuevas',
   'assemblies:decision:section:accepted' => 'Aceptadas',
+  'assemblies:decision:section:draft' => 'Borradores',
   'assemblies:decision:section:discarded' => 'Descartadas',
   'assemblies:decision:section:delayed' => 'Postpuestas',
   'assemblies:link:view' => 'Ver',

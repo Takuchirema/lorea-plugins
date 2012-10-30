@@ -78,6 +78,7 @@ $english = array(
 	'assemblies:decision:discarded' => 'Discarded',
 	'assemblies:decision:delayed' => 'Delayed',
 	'assemblies:decision:section:new' => 'New',
+	'assemblies:decision:section:draft' => 'Drafts',
 	'assemblies:decision:section:accepted' => 'Accepted',
 	'assemblies:decision:section:discarded' => 'Discarded',
 	'assemblies:decision:section:delayed' => 'Delayed',
