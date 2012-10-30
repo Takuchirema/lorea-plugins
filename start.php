@@ -174,7 +174,8 @@ function assemblies_ecml_views_hook($hook, $entity_type, $return_value, $params)
  */
 function assemblies_decision_view_buttons($hook, $type, $return, $params) {
     $entity = $params['entity'];
-    if (empty($entity->parent_guid)) {
+    $group = $entity->getContainerEntity();
+    if (empty($entity->parent_guid) && $group->assemblies_enable == "yes") {
         elgg_register_menu_item('title', array(
                                 'name' => 'link',
                                 'href' => "action/assemblies/link?guid=$entity->guid",
