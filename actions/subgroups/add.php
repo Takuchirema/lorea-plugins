@@ -14,9 +14,17 @@ if(!$othergroup && $othergroup = subgroups_get_group_from_url($othergroup_url)){
 
 if ($group instanceof ElggGroup && $group->canEdit() && $othergroup instanceof ElggGroup) {
 	if ($othergroup->canEdit() && $group_guid != $othergroup_guid) {
-		$othergroup->container_guid = $group_guid;
-		$othergroup->save();
-		forward(REFERER);
+		// Check if other group isn't currently a supergroup
+		$tree_group = $group;
+		while ($tree_group->container_guid > 0 && $tree_group->guid != $othergroup_guid) {
+			$tree_group = get_entity($tree_group->container_guid);
+		}
+		// Only save if there isn't circles in the tree.
+		if ($tree_group->guid != $othergroup_guid) {
+			$othergroup->container_guid = $group_guid;
+			$othergroup->save();
+			forward(REFERER);
+		}
 	}
 }
 
