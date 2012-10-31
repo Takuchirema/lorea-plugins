@@ -41,6 +41,9 @@ function subgroups_init() {
 	// Extend group fields
 	elgg_register_plugin_hook_handler('profile:fields', 'group', 'subgroups_add_container_field');
 
+	// Access permissions
+	elgg_register_plugin_hook_handler('access:collections:write', 'all', 'subgroups_read_acl_plugin_hook');
+
 	// Extending views
 	elgg_extend_view('groups/sidebar/members', 'groups/sidebar/subgroups', 300);
 	//TODO elgg_extend_view('groups/forum_latest', 'subgroups/frontpage');
@@ -182,4 +185,27 @@ function subgroups_unset_group_container($event, $object_type, $entity) {
 function subgroups_add_container_field($hook, $type, $return, $params) {
 	$return['container_guid'] = 'hidden';
 	return $return;
+}
+
+/**
+ * Hook to listen to read access control requests and return parent groups.
+ */
+function subgroups_read_acl_plugin_hook($hook, $entity_type, $returnvalue, $params) {
+	$page_owner = elgg_get_page_owner_entity();
+	$user_guid = $params['user_id'];
+	$user = get_entity($user_guid);
+	if (!$user) {
+		return $returnvalue;
+	}
+
+	// only insert group access for current group
+	if ($page_owner instanceof ElggGroup) {
+		$parent_group = $page_owner->getContainerEntity();
+		while ($parent_group) {
+			$returnvalue[$parent_group->group_acl] = elgg_echo('groups:group') . ': ' . $parent_group->name;
+			$parent_group = $parent_group->getContainerEntity();
+		}
+	}
+
+	return $returnvalue;
 }
