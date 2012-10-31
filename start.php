@@ -61,6 +61,8 @@ function subgroups_init() {
  */
 function subgroups_setup_sidebar_menus() {
 
+	elgg_unregister_menu_item('page', 'groups:member');
+
 	// Get the page owner entity
 	$page_owner = elgg_get_page_owner_entity();
 

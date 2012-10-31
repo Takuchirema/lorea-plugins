@@ -165,10 +165,12 @@ function groups_handle_mine_page() {
 		$content = elgg_echo('groups:none');
 	}
 
+	$filter = elgg_view('groups/group_sort_menu', array('selected' => $selected_tab));
+
 	$params = array(
 		'content' => $content,
 		'title' => $title,
-		'filter' => '',
+		'filter' => $filter,
 	);
 	$body = elgg_view_layout('content', $params);
 
