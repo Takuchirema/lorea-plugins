@@ -3,7 +3,7 @@
 	echo elgg_echo('subgroups:add:label'); echo '<br />';
 	echo elgg_view('input/autocomplete', array(
 		'name' => 'othergroup',
-		'match_on' => 'groups',
+		'livesearch_url' => elgg_get_site_url().'ajax/view/subgroups/groups_i_can_edit',
 		'class' => 'mvm',
 	));
 ?>

@@ -49,6 +49,8 @@ function subgroups_init() {
 	// Extending CSS
 	elgg_extend_view('css/elements/components', 'groups/css/elements/components');
 
+	elgg_register_ajax_view('subgroups/groups_i_can_edit');
+
 	// Add group tool
 	add_group_tool_option('subgroups', elgg_echo('subgroups:in_frontpage'), false);
 	elgg_extend_view('groups/tool_latest', 'subgroups/group_module');
