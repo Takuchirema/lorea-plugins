@@ -10,7 +10,6 @@ $fav_options = array(
 	'relationship' => 'flags_content', 
 	'full_view' => FALSE, 
 	'view_type_toggle' => FALSE, 
-	'order_by' => 'e.time_updated desc', 
 );
 
 echo elgg_list_entities_from_relationship($fav_options);
