@@ -22,12 +22,20 @@ elgg_push_breadcrumb($title);
 
 elgg_register_title_button('subgroups', 'new');
 
-$content = list_subgroups($page_owner);
+elgg_register_menu_item('title', array(
+	'name' => 'add_existing',
+	'href' => "#subgroups-add",
+	'text' => elgg_echo("subgroups:add_existing"),
+	'rel' => 'toggle',
+	'link_class' => 'elgg-button elgg-button-action',
+	'priority' => 200,
+));
 
-$form_vars = array();
+$form_vars = array('class' => 'hidden', 'id' => 'subgroups-add');
 $body_vars = array('group' => $page_owner);
 
-$content .= elgg_view_form('subgroups/add', $form_vars, $body_vars);
+$content = elgg_view_form('subgroups/add', $form_vars, $body_vars);
+$content .= list_subgroups($page_owner);
 
 $body = elgg_view_layout('content', array(
 	'content' => $content,

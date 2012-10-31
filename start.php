@@ -7,7 +7,6 @@
  * TODO:
  *       * ElggSubgroup class with getMetaContainerGUID() ?
  *       * Subgroup graphs
- *       * Toggle 'add existing group' form with a button
  * 
  */
 
