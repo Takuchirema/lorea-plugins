@@ -114,6 +114,11 @@ function elggman_page_handler($page) {
 			include "$pages_dir/manage.php";
 			break;
 		default:
+			// deprecated urls
+			if ((int) $page[0] && (int) $page[1]) {
+				forward('discussion/view/' . $page[1]);
+			}
+
 			return false;
 	}
 	return true;
