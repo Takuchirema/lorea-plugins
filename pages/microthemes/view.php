@@ -31,6 +31,11 @@ else {
 		file_register_toggle(); <-- gallery toggle
 	}*/
 
+	if ($owner->microtheme) {
+		$owner_microtheme = get_entity($owner->microtheme);
+		$selected = "selected: <a href='{$owner_microtheme->getURL()}'>".elgg_echo('microthemes')."</a>";
+	}
+
 	// list view
 	elgg_register_title_button();
 
@@ -52,6 +57,7 @@ else {
 	if (!$content) {
 		$content = elgg_echo("microthemes:none");
 	}
+	$content = $selected . $content;
 }
 
 
