@@ -6,7 +6,6 @@
  */
 
 elgg_register_event_handler('init', 'system', 'group_alias_init');
-
 /**
  * Initialize the group alias plugin.
  *
@@ -36,8 +35,17 @@ function group_alias_init() {
 	
 	// Register tests
 	elgg_register_plugin_hook_handler('unit_test', 'system', 'group_alias_test');
+	elgg_register_event_handler('upgrade', 'system', 'group_alias_run_upgrades');
 
 }
+
+function group_alias_run_upgrades() {
+	if (include_once(elgg_get_plugins_path() . 'upgrade-tools/lib/upgrade_tools.php')) {
+		upgrade_module_run('group_alias');
+	}
+
+}
+
 
 function group_alias_test($hook, $type, $value, $params) {
 	$value[] = elgg_get_config('pluginspath') . "group_alias/tests/group_alias_test.php";
@@ -72,7 +80,7 @@ function group_alias_page_handler($page) {
 		return true;
 	}
 
-	$group = get_group_from_group_alias($page[0]);
+	$group = get_group_from_group_alias(str_replace(' ', '+', urldecode($page[0])));
 
 	if($group && !isset($page[1])){
 		groups_page_handler(array('profile', $group->guid));
@@ -117,6 +125,7 @@ function group_alias_update_from_name($group) {
 
 	$alias = elgg_get_friendly_title($group->name);
 	$alias = preg_replace("/-/", "_", $alias);
+	$alias = urldecode($alias);
 	// If alias is taken
 	$g = get_group_from_group_alias($alias);
 	if (elgg_instanceof($g, 'group') && $g->getGUID() != $group->guid){
