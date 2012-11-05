@@ -26,10 +26,6 @@ if ($microtheme_guid ||
 					$owner = $user;
 			}
 		}
-		if (!$owner) {
-			$site = get_site_by_url($CONFIG->wwwroot);
-			$owner = $site;
-		}
 		$microtheme_guid = $owner->microtheme;
 	}
         $microtheme = get_entity($microtheme_guid);
