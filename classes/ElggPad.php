@@ -104,7 +104,7 @@ class ElggPad extends ElggObject {
 
 		//Etherpad: Create an author(etherpad user) for logged in user
 		//if (!isset($user->etherpad_author_id)) {
-			$author = $this->get_pad_client()->createAuthorIfNotExistsFor($user->username . $site_mask);
+			$author = $this->get_pad_client()->createAuthorIfNotExistsFor($user->username . $site_mask, null);
 			$user->etherpad_author_id = $author->authorID;
 	//	}
 		$this->authorID = $user->etherpad_author_id;
