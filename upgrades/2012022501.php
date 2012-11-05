@@ -11,8 +11,8 @@ if (!$items) {
 	return;
 }
 
-$local_version = elgg_get_plugin_setting('version', 'elggpg');
-if (2012022501 < $local_version) {
+$local_version = (int)elgg_get_plugin_setting('version', 'elggpg');
+if (2012022501 <= $local_version) {
 	error_log("ElggPG requires no upgrade");
 	// no upgrade required
 	return;
