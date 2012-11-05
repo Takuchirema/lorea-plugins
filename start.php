@@ -68,6 +68,7 @@ function microthemes_create_thumbnails($microtheme, $file) {
 	$thumbnail = get_resized_image_from_existing_file($file->getFilenameOnFilestore(), 60, 60, true);
 	if ($thumbnail) {
 		$thumb = new ElggFile();
+		$thumb->owner_guid = $microtheme->owner_guid;
 		$thumb->setFilename($prefix."medium");
 		$thumb->open("write");
 		$thumb->write($thumbnail);
