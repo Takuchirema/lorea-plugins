@@ -121,7 +121,9 @@ function elggman_extract_attachments($result, $group, $owner) {
 				$filename = $value;
 			}
 		}
-		$file = elggman_create_file($group, $owner, $part->body, $filename, $mime_type);
+		if ($filename) {
+			$file = elggman_create_file($group, $owner, $part->body, $filename, $mime_type);
+		}
 		if ($file) {
 			$files[] = $file;
 		}
@@ -156,7 +158,7 @@ function elggman_incoming_mail($sender, $list, $data, $secret, $accepted=false) 
 	$group = get_group_from_group_alias($list);
 	$user = current(get_user_by_email($sender));
 	if (!$group) {
-		error_log("elggman: no group or user for email! $user->name $group->name $sender");
+		error_log("elggman: no group or user for email! $user->name $group->name $sender $list");
 		return;
 	}
 	// check for moderation
