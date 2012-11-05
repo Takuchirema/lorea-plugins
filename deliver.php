@@ -8,10 +8,13 @@ if (PHP_SAPI != 'cli') {
 // get command parameters
 $size = $argv[1];
 $user = $argv[2];
+$user_split = explode("@", $user);
+$user = $user_split[0];
 $sender = $argv[3];
 $network = $argv[4];
 $secret = $argv[5];
 
+//file_put_contents("/tmp/foo", "SENDER $user");
 // get stdinput
 $data = "";
 $stdin = fopen("php://stdin", "rb");
@@ -24,7 +27,6 @@ while(strlen($data) < $size) {
 	if ($last == $total) {
 		$counter += 1;
 		if ($counter  == 1000) {
-			#file_put_contents("/tmp/foo", "stalled at $total $total2");
 			break;
 		}
 	}
@@ -47,10 +49,14 @@ $post_fields = array(
 		'data' => $data,
 );
 $request = curl_init($network . 'elggman/receive');
+$parsed_url = parse_url($network);
+$host = $parsed_url['host'];
 
 curl_setopt($request, CURLOPT_POST, TRUE);
+curl_setopt($request, CURLOPT_HTTPHEADER, array("Host: $host"));
 curl_setopt($request, CURLOPT_POSTFIELDS, $post_fields);
 curl_setopt ($request, CURLOPT_FOLLOWLOCATION, 1);
+
 
 $data = curl_exec($request);
 curl_close($request);
