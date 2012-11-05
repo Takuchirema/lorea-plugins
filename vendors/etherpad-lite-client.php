@@ -33,6 +33,9 @@ class EtherpadLiteClient {
       $c = curl_init($url);
       curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($c, CURLOPT_TIMEOUT, 20);
+      $parsed_url = parse_url($url);
+      $host = $parsed_url['host'];
+      curl_setopt($c, CURLOPT_HTTPHEADER, array('Host: ' . $host));
       $result = curl_exec($c);
       curl_close($c);
     } else {
