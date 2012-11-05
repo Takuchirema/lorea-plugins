@@ -71,14 +71,13 @@ echo '</div><div class="spotlight-column">';
 
 echo elgg_view('page/elements/spotlight/module', array(
 	'title' => elgg_echo('dev:dev'),
-	'items' => array( <<<<<<< HEAD
+	'items' => array(
 		 'https://n-1.cc/g/lorea+code' => elgg_echo('dev:group'),
 		 'https://n-1.cc/spotlight/source-code' => elgg_echo('dev:source'),
 		'https://n-1.cc/g/bughunting/' => elgg_echo('dev:bughunting'),
 		'https://n-1.cc/g/testers-and-usability/' => elgg_echo('dev:testers'),
 		'https://dev.lorea.org/' => elgg_echo('dev:network'),
 		'https://gitorious.org/lorea/'=> elgg_echo('dev:repo'),
-
 	),
 ));
 
