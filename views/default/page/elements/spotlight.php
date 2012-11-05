@@ -15,7 +15,7 @@ echo elgg_view('page/elements/spotlight/module', array(
 	'title' => elgg_echo('about:lorea'),
 	'items' => array(
 		'https://lorea.org/' => elgg_echo('about:blog'),
-		'https://n-1.cc/pg/groups/7826/lorea/' => elgg_echo('about:group'),
+		'https://n-1.cc/g/lorea/' => elgg_echo('about:group'),
 		elgg_echo('lorea:sustainability:url') => elgg_echo('lorea:sustainability'),
 	),
 ));
@@ -33,8 +33,8 @@ echo elgg_view('page/elements/spotlight/module', array(
 	'title' => elgg_echo('help:help'),
 	'items' => array(
 		'https://n-1.cc/pg/faq/' => elgg_echo('help:faq'),
-		'https://n-1.cc/pg/dokuwiki/9394' => elgg_echo('help:howto'),
-		'https://n-1.cc/pg/groups/9394/help/' => elgg_echo('help:group'),
+		'https://n-1.cc/dokuwiki/9394' => elgg_echo('help:howto'),
+		'https://n-1.cc/g/help/' => elgg_echo('help:group'),
 	),
 ));
 
@@ -43,9 +43,9 @@ echo '</div><div class="spotlight-column">';
 echo elgg_view('page/elements/spotlight/module', array(
 	'title' => elgg_echo('dev:dev'),
 	'items' => array(
-		'https://n-1.cc/pg/groups/6217/bughunting/' => elgg_echo('dev:bughunting'),
-		'https://n-1.cc/pg/groups/5241/testers-de-la-red-social/' => elgg_echo('dev:testers'),
-		'https://dev18.lorea.org/' => elgg_echo('dev:network'),
+		'https://n-1.cc/g/bughunting/' => elgg_echo('dev:bughunting'),
+		'https://n-1.cc/g/testers-and-usability/' => elgg_echo('dev:testers'),
+		'https://dev.lorea.org/' => elgg_echo('dev:network'),
 		'https://gitorious.org/lorea/'=> elgg_echo('dev:repo'),
 		
 	),
