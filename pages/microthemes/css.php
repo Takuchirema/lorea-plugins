@@ -13,8 +13,6 @@ $prefix = "microthemes/banner_{$microtheme->guid}large";
 
 $image_url = elgg_get_site_url() . 'mod/microthemes/thumbnail.php?guid=' . $microtheme->guid."&size=master&last_update=$microtheme->time_updated";
 
-error_log("generate css");
-
 $bgopts = '';
 if ($microtheme->bg_alignment)
 	$bgopts .= ' '.$microtheme->bg_alignment;
