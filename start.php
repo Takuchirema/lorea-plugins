@@ -33,4 +33,17 @@ elgg_register_event_handler('init','system','spotlight_init');
 function spotlight_init() {
 	elgg_extend_view('page/elements/footer', 'page/elements/spotlight');
 	elgg_extend_view('css/elgg', 'spotlight/css');
+
+	elgg_register_page_handler('spotlight', 'spotlight_page_handler');
+}
+
+function spotlight_page_handler($page) {
+
+	// We only serve one page at the moment
+
+	$page_file = elgg_get_plugins_path() . 'spotlight/pages/spotlight/source_code.php';
+
+	require_once($page_file);
+
+	return TRUE;
 }
