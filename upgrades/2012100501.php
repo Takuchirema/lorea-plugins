@@ -52,9 +52,11 @@ function etherpad_pad_2012100501($pad_entity) {
 		error_log(" * pad $pad_entity->guid");
 	}
 
+	if ($pad_entity->ispad != 1)
+		return true;
 	// pad name
 	$site_name = elgg_get_site_url();
-	$pname = 'elgg-entitypad-'.md5($site_name).'-'.$pad_entity->guid;
+	$pname = 'p'.md5($site_name).'-'.$pad_entity->guid;
 	$pad_entity->pname = $pname;
 
 	// adapt river
@@ -71,7 +73,7 @@ function etherpad_pad_2012100501($pad_entity) {
 
 	// clean up
 	$pad_entity->deleteMetadata('ispad');
-	$pad_entity->deleteAnnotations('page');
+	// $pad_entity->deleteAnnotations('page');
 
 	// copy to a brand new pad
 	$container = $pad_entity->getContainerEntity();
@@ -91,42 +93,14 @@ function etherpad_pad_2012100501($pad_entity) {
 	} else {
 		return true;
 	}
+	// dont recreate old pads with new ids
 
 	$pad = new ElggPad($pad_entity->guid);
-
+	$pad->pname = $pad_entity->pname;
 	// prepare session
 	$session_id = $pad->startSession();
 	$pad_client = $pad->get_pad_client();
-	$old_id = $pad->pname;
-
-	// get old text
-	try {
-		$result = $pad_client->getText($old_id);
-	} catch(Exception $e) {
-	}
-
-	if ($result && $result->text) {
-		$text = $result->text;
-	}
-	else {
-		error_log("problems bailing out");
-		return;
-	}
-
-	// create new pad
-	$name = uniqid();
-	$pad_client->createGroupPad($pad->groupID, $name, $text);
-	$pad->pname = $pad->groupID . "$" . $name;
-
-	// delete old pad
-	$pad_client->deletePad($old_id);
-
-	// end session
-	$pad_client->deleteSession($session_id);
-
-	// now save to apply permissions
 	$pad->save();
-
 	return true;
 }
 
@@ -156,11 +130,10 @@ $options = array(
         'metadata_name' => 'ispad',
         'metadata_value' => 1,
 );
-
 $MIGRATED = 0;
 
 $previous_access = elgg_set_ignore_access(true);
-$batch = new ElggBatch('elgg_get_entities_from_metadata', $options, "etherpad_pad_2012100501", 100);
+$batch = new ElggBatch('elgg_get_entities_from_metadata', $options, "etherpad_pad_2012100501", 100, false);
 elgg_set_ignore_access($previous_access);
 
 if ($batch->callbackResult) {
@@ -168,5 +141,4 @@ if ($batch->callbackResult) {
 } else {
 	error_log("Elgg Etherpad pads upgrade (201210050) failed");
 }
-
 
