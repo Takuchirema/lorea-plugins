@@ -8,7 +8,7 @@ if ($microtheme_guid ||
             ($page_owner instanceof ElggGroup)) && $page_owner->microtheme && get_entity($page_owner->microtheme)) {
 }
 
-	$context = get_context();
+	$context = elgg_get_context();
 	if (!$microtheme_guid) {
 		$owner = null;
 		if ($context == 'activity' && elgg_get_logged_in_user_entity()) {
