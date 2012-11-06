@@ -134,14 +134,24 @@ function elggman_extract_attachments($result, $group, $owner) {
 function elggman_extract_body($result, $group) {
 	if ($result->ctype_primary == 'multipart') {
 		$part = elggman_extract_multipart_text($result, $group);
-		$body = htmlspecialchars_decode($part->body);
 	}
 	elseif ($result->ctype_primary == 'text' && $result->ctype_secondary == 'plain') {
-		$body = htmlspecialchars_decode($result->body);
+		$part = $result;
 	}
 	else {
 		error_log("unknown message type: $result->ctype_primary $result->ctype_secondary");
+		return;
 	}
+	// look for charset and decode if needed
+	$charset = $part->ctype_parameters['charset'];
+	if ($charset) {
+		$body = iconv( $charset, 'utf-8', $part->body );
+	}
+	else {
+		$body = $part->body;
+	}
+	$body = htmlspecialchars_decode($body);
+
 	return $body;
 }
 
