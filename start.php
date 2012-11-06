@@ -144,7 +144,16 @@ function etherpad_entity_menu($hook, $type, $return, $params) {
 	if(!in_array($entity->getSubtype(), array('etherpad', 'subpad'))){
 		return $return;
 	}
-	
+
+	// remove delete if not owner or admin
+	if (!elgg_is_admin_logged_in() && elgg_get_logged_in_user_guid() != $entity->getOwnerGuid()) {
+		foreach ($return as $index => $item) {
+			if ($item->getName() == 'delete') {
+				unset($return[$index]);
+			}
+		}
+	}
+
 	// timeslider button, show only if pages integration is enabled.
 	$handler = elgg_get_plugin_setting('integrate_in_pages', 'etherpad') == 'yes' ? 'pages' : 'etherpad';
 	if($handler == 'pages') {
