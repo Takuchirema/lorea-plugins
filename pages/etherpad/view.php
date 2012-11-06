@@ -8,6 +8,8 @@
 $pad_guid = get_input('guid');
 $pad = get_entity($pad_guid);
 if (!$pad) {
+	register_error(elgg_echo('noaccess'));
+	$_SESSION['last_forward_from'] = current_page_url();
 	forward();
 }
 

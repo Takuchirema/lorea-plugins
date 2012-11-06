@@ -78,7 +78,12 @@ function pages_register_navigation_tree($container) {
 		'type' => 'object',
 		'subtypes' => array('page_top', 'etherpad'),
 		'container_guid' => $container->getGUID(),
+		'limit' => 0,
 	));
+
+	if (!$top_pages) {
+		return;
+	}
 
 	foreach ($top_pages as $page) {
 		elgg_register_menu_item('pages_nav', array(
@@ -96,16 +101,19 @@ function pages_register_navigation_tree($container) {
 				'subtypes' => array('page', 'subpad'),
 				'metadata_name' => 'parent_guid',
 				'metadata_value' => $parent->getGUID(),
+				'limit' => 0,
 			));
-			
-			foreach ($children as $child) {
-				elgg_register_menu_item('pages_nav', array(
-					'name' => $child->getGUID(),
-					'text' => $child->title,
-					'href' => $child->getURL(),
-					'parent_name' => $parent->getGUID(),
-				));
-				array_push($stack, $child);
+
+			if ($children) {
+				foreach ($children as $child) {
+					elgg_register_menu_item('pages_nav', array(
+						'name' => $child->getGUID(),
+						'text' => $child->title,
+						'href' => $child->getURL(),
+						'parent_name' => $parent->getGUID(),
+					));
+					array_push($stack, $child);
+				}
 			}
 		}
 	}

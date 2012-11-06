@@ -8,9 +8,10 @@
 $variables = elgg_get_config('etherpad');
 $input = array();
 foreach ($variables as $name => $type) {
-	$input[$name] = get_input($name);
 	if ($name == 'title') {
-		$input[$name] = strip_tags($input[$name]);
+		$input[$name] = htmlspecialchars(get_input($name, '', false), ENT_QUOTES, 'UTF-8');
+	} else {
+		$input[$name] = get_input($name);
 	}
 	if ($type == 'tags') {
 		$input[$name] = string_to_tag_array($input[$name]);
@@ -40,12 +41,26 @@ if ($page_guid) {
 	$page = new ElggPad();
 	if ($parent_guid) {
 		$page->subtype = 'subpad';
+	} else {
+		$page->subtype = 'etherpad';
 	}
 	$new_page = true;
 }
 
 if (sizeof($input) > 0) {
+	// don't change access if not an owner/admin
+	$user = elgg_get_logged_in_user_entity();
+	$can_change_access = true;
+
+	if ($user && $page) {
+		$can_change_access = $user->isAdmin() || $user->getGUID() == $page->owner_guid;
+	}
+	
 	foreach ($input as $name => $value) {
+		if (($name == 'access_id' || $name == 'write_access_id') && !$can_change_access) {
+			continue;
+		}
+
 		$page->$name = $value;
 	}
 }
