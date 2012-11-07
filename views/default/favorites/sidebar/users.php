@@ -8,5 +8,6 @@ $fav_user_body = elgg_list_entities_from_relationship(array(
 	'gallery_class' => 'elgg-gallery-users',
 	'pagination' => false,
 ));
-
-echo elgg_view_module('aside', elgg_echo('favorites:users'), $fav_user_body);
+if ($fav_user_body) {
+  echo elgg_view_module('aside', elgg_echo('favorites:users'), $fav_user_body);
+}

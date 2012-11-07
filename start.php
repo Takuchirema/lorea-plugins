@@ -9,6 +9,7 @@ function favorites_init(){
 
     elgg_register_page_handler('favorites','favorites_page_handler');
     elgg_extend_view("js/elgg", "js/favorites");
+    elgg_extend_view("page/elements/sidebar", "favorites/sidebar");
 
     if ( elgg_is_logged_in() ) {
         elgg_register_menu_item(
