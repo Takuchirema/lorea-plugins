@@ -1,7 +1,5 @@
 <?php
 
-global $CONFIG;
-
 if (!elgg_is_logged_in()) {
 	exit();
 }
@@ -14,25 +12,36 @@ $q = str_replace(array('_', '%'), array('\_', '\%'), $q);
 $user_guid = elgg_get_logged_in_user_guid();
 $entities = elgg_get_entities(array(
 	'type' => 'group',
-	'joins' => array(
-		"NATURAL JOIN {$CONFIG->dbprefix}groups_entity ge",
-		", {$CONFIG->dbprefix}entity_relationships er",
-	),
-	'wheres' => array(
-		"(ge.name LIKE '$q%' OR ge.name LIKE '% $q%')",
-		"((e.owner_guid = $user_guid) OR (
-			er.relationship = 'operator'
-			AND er.guid_one = $user_guid
-			AND er.guid_two = ge.guid))",
-	),
-	'limit' => 40,
+	'owner_guid' => $user_guid,
+	'limit' => 0,
 ));
+$entities = array_merge(
+	$entities,
+	elgg_get_entities_from_relationship(array(
+		'type' => 'group',
+		'relationship' => 'operator',
+		'relationship_guid' => $user_guid,
+		'limit' => 0,
+	))
+);
 
+$all_entities = array();
+while (!empty($entities)) {
+	$entity = array_pop($entities);
+	$childs = elgg_get_entities(array(
+		'type' => 'group',
+		'container_guid' => $entity->guid,
+	));
+	foreach ($childs as $child) {
+		array_push($entities, $child);
+	}
+	$all_entities[] = $entity;
+}
 
 $results = array();
-foreach ($entities as $entity) {
-	$entity = get_entity($entity->guid);
-	if (!$entity) {
+foreach ($all_entities as $entity) {
+
+	if (!preg_match("/^{$q}/i", $entity->name)) {
 		continue;
 	}
 
@@ -44,7 +53,7 @@ foreach ($entities as $entity) {
 	$icon = elgg_view_entity_icon($entity, 'tiny', array(
 		'use_hover' => false,
 	));
-	$results[$entity->name . rand(1, 100)] = array(
+	$results[$entity->name . $entity->guid] = array(
 		'type' => 'group',
 		'name' => $entity->name,
 		'desc' => strip_tags($entity->description),
