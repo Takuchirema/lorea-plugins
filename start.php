@@ -167,7 +167,17 @@ function elggman_notifications($event, $object_type, $object) {
 			|| (elgg_instanceof($object, 'object', 'topicreply') && $object_type == 'top')) {
 		$user  = $object->getOwnerEntity();
 		$group = $object->getContainerEntity();
-		
+
+		elgg_load_library("elgg:threads");
+                $parent = threads_parent($object->guid);
+                $top = threads_top($object->guid);
+
+		if (check_entity_relationship($user->guid, 'starred_groupmailshot', $group->guid)) {
+			if (!check_entity_relationship($user->guid ,'flags_content', $top->guid)) {
+				return;
+			}
+		}
+
 		if ($object->forwarded_for) {
 			$from = $object->forwarded_for;
 			$from_header = $object->forwarded_for;
@@ -179,27 +189,23 @@ function elggman_notifications($event, $object_type, $object) {
 		$mailing_list_email = elggman_get_group_mailinglist($group);
 		$mailing_list_header = "$group->name <$mailing_list_email>";
 		$archive_url = elgg_normalize_url('discussion/owner/'.$group->guid);
-		if(!$mailing_list_email) {
+		if (!$mailing_list_email) {
 			return;
 		}
-		
-		elgg_load_library("elgg:threads");
-		$parent = threads_parent($object->guid);
-		$top = threads_top($object->guid);
-		
+
 		$subject = "[$group->name] $top->title";
-		
+
 		if ($is_reply) {
 			$subject = "Re: $subject";
 		}
-		
+
 		elgg_set_viewtype("email");
 		$message = elgg_view('page/elements/body', array(
 			'value' => $object->description,
 			'post_url' => $object->getURL(),
 			'mailing_list' => $group,
-			));
-			
+		));
+
 		$headers = array(
 			'From' => $from_header,
 			'To' => $mailing_list_header,
@@ -210,7 +216,7 @@ function elggman_notifications($event, $object_type, $object) {
 			'Precedence' => "list",
 			'Message-ID' => "<{$object->guid}.{$mailing_list_email}>",
 			'In-Reply-To' => $is_reply ? "<{$parent->guid}.{$mailing_list_email}>" : false,
-			);
+		);
 		if ($object->tags) {
 			$tags = implode(',', $object->tags);
 			$headers['Keywords'] = $tags;
