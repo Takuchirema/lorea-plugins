@@ -8,6 +8,7 @@
  * @subpackage Core
  */
 
+elggman_set_path();
 require_once 'Mail/mimeDecode.php';
 
 $entity = $vars['entity'];

@@ -156,6 +156,7 @@ function elggman_extract_body($result, $group) {
 }
 
 function elggman_incoming_mail($sender, $list, $data, $secret, $accepted=false) {
+	elggman_set_path();
 	require_once 'Mail/mimeDecode.php';
 
 	// check secret
@@ -181,6 +182,7 @@ function elggman_incoming_mail($sender, $list, $data, $secret, $accepted=false) 
 
 	$decoder = new Mail_mimeDecode($data);
 	$result = $decoder->decode($params);
+	
 	$subject = htmlspecialchars_decode($result->headers['subject']);
 
 	$body = elggman_extract_body($result, $group);

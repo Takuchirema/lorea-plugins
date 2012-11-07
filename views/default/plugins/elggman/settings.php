@@ -10,6 +10,7 @@ $readme = " (<a href='". elgg_get_site_url() . "admin_plugin_text_file/elggman/R
 <div>
 <?php
 
+elggman_set_path();
 // check for mimedecode library
 if(!@include("Mail/mimeDecode.php")) {
 	// show the failure page with instructions.
