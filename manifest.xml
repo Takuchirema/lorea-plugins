@@ -3,12 +3,14 @@
 	<name>ElggPG</name>
 	<author>Lorea developers</author>
 	<version>1.8-beta</version>
-	<category>bundled</category>
+	<category>lorea</category>
 	<category>content</category>
 	<category>encryption</category>
 	<description>OpenPGP public key on user's profile and encryption features</description>
-	<website>https://lorea.org/</website>
-	<copyright>(C) Lorea 2012</copyright>
+	<website>https://lorea.org/plugin/elggpg</website>
+	<repository>https://gitorious.org/lorea/elggpg</repository>
+	<donations>https://lorea.org/donations</donations>
+	<copyright>Copyright 2011-2012 Lorea Faeries &lt;federation@lorea.org&gt;</copyright>
 	<license>GNU Affero General Public License, version 3 or later</license>
 	<requires>
 		<type>elgg_release</type>
