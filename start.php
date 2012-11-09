@@ -169,8 +169,8 @@ function elggman_notifications($event, $object_type, $object) {
 		$group = $object->getContainerEntity();
 
 		elgg_load_library("elgg:threads");
-                $parent = threads_parent($object->guid);
-                $top = threads_top($object->guid);
+		$parent = threads_parent($object->guid);
+		$top = threads_top($object->guid);
 
 		if (check_entity_relationship($user->guid, 'starred_groupmailshot', $group->guid)) {
 			if (!check_entity_relationship($user->guid ,'flags_content', $top->guid)) {
@@ -202,7 +202,7 @@ function elggman_notifications($event, $object_type, $object) {
 		elgg_set_viewtype("email");
 		$message = elgg_view('page/elements/body', array(
 			'value' => $object->description,
-			'post_url' => $object->getURL(),
+			'post_url' => $top->getURL(),
 			'mailing_list' => $group,
 		));
 

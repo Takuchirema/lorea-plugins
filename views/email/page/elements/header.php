@@ -11,6 +11,8 @@
  * @uses $vars['Content-Transfer-Encoding'] Transfer encoding (optional)
  */
 
+global $CONFIG;
+
 $header_eol = "\r\n";
 if (isset($CONFIG->broken_mta) && $CONFIG->broken_mta) {
 	// Allow non-RFC 2822 mail headers to support some broken MTAs
