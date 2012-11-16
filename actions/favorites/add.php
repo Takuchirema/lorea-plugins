@@ -1,6 +1,6 @@
 <?php
     $entity_guid = (int) get_input('guid');
-	$user_guid = get_loggedin_userid();
+	$user_guid = elgg_get_logged_in_user_guid();
     if (($entity_guid > 0) && 
         ($user_guid > 0) &&
         !check_entity_relationship($user_guid ,'flags_content', $entity_guid)) {
