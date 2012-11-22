@@ -40,6 +40,7 @@ $english = array(
 	'assemblies:decision:group' => 'Group minutes',
 	'assemblies:enableassemblies' => 'Enable group assemblies',
 	'assemblies:next' => 'Next assembly',
+	'assemblies:assembly:saved' => 'Assembly saved correctly',
 
 	// General properties
 	'assemblies:assembly_location' => 'Default location',
@@ -53,6 +54,7 @@ $english = array(
 	'assemblies:assembly:title' => 'Title',
 	'assemblies:assembly:description' => 'Description',
 	'assemblies:assembly:date' => 'Date',
+	'assemblies:assembly:time' => 'Time',
 	'assemblies:assembly:location' => 'Location',
 	'assemblies:assembly:category' => 'Sections',
 	'assemblies:assembly:access_id' => 'Access',

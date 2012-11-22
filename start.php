@@ -83,6 +83,7 @@ function assemblies_init() {
 		),
 		#'description' => 'longtext',
 		'date' => 'date',
+		'time' => 'time',
 		'location' => 'text',
 		#'tags' => 'tags',
 		'access_id' => 'access',
