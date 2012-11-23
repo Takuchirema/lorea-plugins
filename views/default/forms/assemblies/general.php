@@ -24,8 +24,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-$group = get_entity($vars['guid']);
-$vars['entity'] = $group;
+$group = $vars['entity'];
 
 // Grab variables
 $periodicity = $group->assembly_periodicity;

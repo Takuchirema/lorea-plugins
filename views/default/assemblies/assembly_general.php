@@ -26,8 +26,7 @@
 
 elgg_load_library('elgg:assemblies');
 
-$entity_guid = $vars['entity'];
-$group = get_entity($entity_guid);
+$group = $vars['entity'];
 
 // Grab variables
 $periodicity = $group->assembly_periodicity;
@@ -77,5 +76,3 @@ if ($voip) {
 	echo "<b>".elgg_echo('assemblies:voip')."</b>";
 	echo ": " . $voip;
 }
-
-
