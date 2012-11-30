@@ -48,7 +48,8 @@ function group_alias_validate($alias) {
 
 	// Belts and braces
 	// @todo Tidy into main unicode
-	$blacklist2 = '\'/\\"*& ?#%^(){}[]~?<>;|¬`@-+=';
+	//$blacklist2 = '\'/\\"*& ?#%^(){}[]~?<>;|¬`@-+=';
+	$blacklist2 = '\'/\\"*& ?#%^(){}[]~?<>;|¬`=';
 
 	for ($n = 0; $n < strlen($blacklist2); $n++) {
 		if (strpos($alias, $blacklist2[$n]) !== false) {
