@@ -52,8 +52,8 @@ class ElggGroupAliasTest extends ElggCoreUnitTest {
 		// do not allow SimpleTest to interpret Elgg notices as exceptions
 		$this->swallowErrors();
 		// Remove created objects
-		unset($this->existing_group);
-		unset($this->new_group);
+		$this->existing_group->delete();
+		$this->new_group->delete();
 	}
 
 	/**
