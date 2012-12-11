@@ -25,9 +25,9 @@ function group_alias_init() {
 	// Add alias field
 	elgg_register_plugin_hook_handler('profile:fields', 'group', 'group_alias_fields_setup');
 
-	// Override some actions
-	$action_base = elgg_get_plugins_path() . 'group_alias/actions/groups';
-	elgg_register_action("groups/edit", "$action_base/edit.php");
+	// Save alias when group is saved
+	elgg_register_event_handler('create', 'group', 'group_alias_save_hook');
+	elgg_register_event_handler('update', 'group', 'group_alias_save_hook');
 
 	// Extend the main css view
 	elgg_extend_view('css/elgg', 'group_alias/css');
@@ -99,6 +99,38 @@ function group_alias_fields_setup($hook, $type, $return, $params) {
 	return array_merge($return, array('alias' => 'group_alias'));
 }
 
+function group_alias_from_name($group) {
+
+	$alias = elgg_get_friendly_title($group->name);
+	$alias = preg_replace("/-/", "_", $alias);
+	$alias = urldecode($alias);
+
+	return $alias;
+}
+
+/**
+ * This is an event hook for create/update group to handle the alias
+ * without overriding the groups/edit action.
+ */
+function group_alias_save_hook($event, $type, $entity) {
+
+	$alias_from_name = group_alias_from_name($entity);
+	$aliased_group   = get_group_from_group_alias($alias_from_name);
+
+	// If the alias is already taken by another group, append GUID.
+	if (elgg_instanceof($aliased_group, 'group')
+		&& $aliased_group->guid != $entity->guid) {
+		$entity->set('alias', "$alias_from_name$entity->guid");
+		return TRUE;
+	} 
+	// Force keeping default or existing alias if empty or not changeable
+	if (empty($entity->alias) || !elgg_get_config('changeable_group_alias')) {
+		$entity->set('alias', $alias_from_name);
+	}
+
+	return TRUE;
+}
+
 /**
  * Override the group url
  * 
@@ -120,18 +152,16 @@ function group_alias_url($group) {
  * @return string
  */
 function group_alias_update_from_name($group) {
-	if (!empty($group->alias))
+	if (!empty($group->alias)) {
 		return $group->alias;
-
-	$alias = elgg_get_friendly_title($group->name);
-	$alias = preg_replace("/-/", "_", $alias);
-	$alias = urldecode($alias);
-	// If alias is taken
+	}
+	$alias = group_alias_from_name($group);
+	// If alias is taken, append GUID
 	$g = get_group_from_group_alias($alias);
-	if (elgg_instanceof($g, 'group') && $g->getGUID() != $group->guid){
+	if (elgg_instanceof($g, 'group') && $g->guid != $group->guid) {
 		$alias .= $group->guid;
 	}
-	$group->alias = $alias;
-	$group->save();
+	$group->set('alias', $alias);
+
 	return $alias;
 }
