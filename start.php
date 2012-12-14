@@ -89,7 +89,7 @@ function group_alias_page_handler($page) {
 		forward("$page[1]/group/$group->guid");
 
 	} else {
-		groups_page_handler($page);
+		return groups_page_handler($page);
 	}
 
 	return true;
