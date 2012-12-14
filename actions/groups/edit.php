@@ -14,7 +14,7 @@ elgg_make_sticky_form('groups');
  * wrapper for recursive array walk decoding
  */
 function profile_array_decoder(&$v) {
-	$v = _elgg_html_decode($v);
+	$v = html_entity_decode($v, ENT_COMPAT, 'UTF-8');
 }
 
 // Get group fields
@@ -25,7 +25,7 @@ foreach ($CONFIG->group as $shortname => $valuetype) {
 	if (is_array($input[$shortname])) {
 		array_walk_recursive($input[$shortname], 'profile_array_decoder');
 	} else {
-		$input[$shortname] = _elgg_html_decode($input[$shortname]);
+		$input[$shortname] = html_entity_decode($input[$shortname], ENT_COMPAT, 'UTF-8');
 	}
 
 	if ($valuetype == 'tags') {
@@ -47,9 +47,11 @@ foreach ($CONFIG->group as $shortname => $valuetype) {
 			}
 		}
 	}
+
 }
 
-$input['name'] = htmlspecialchars(get_input('name', '', false), ENT_QUOTES, 'UTF-8');
+$input['name'] = get_input('name');
+$input['name'] = html_entity_decode($input['name'], ENT_COMPAT, 'UTF-8');
 
 $user = elgg_get_logged_in_user_entity();
 
@@ -64,6 +66,7 @@ if ($new_group_flag && elgg_get_plugin_setting('limited_groups', 'groups') == 'y
 $group = new ElggGroup($group_guid); // load if present, if not create a new group
 if (($group_guid) && (!$group->canEdit())) {
 	register_error(elgg_echo("groups:cantedit"));
+
 	forward(REFERER);
 }
 
@@ -113,7 +116,25 @@ if ($new_group_flag) {
 	$group->access_id = ACCESS_PUBLIC;
 }
 
+$owner_guid = (int) get_input('owner_guid');
+$loggedin_guid = elgg_get_logged_in_user_guid();
+$is_admin = elgg_is_admin_logged_in();
+
+if (!$new_group_flag && $owner_guid && $owner_guid != $group->owner_guid) {
+	if($group->isMember($owner_guid) && ($group->owner_guid == $loggedin_guid || $is_admin)) {
+		$old_owner_guid = $group->owner_guid;
+		$group->owner_guid = $owner_guid;
+		
+		// @todo Remove this when #4683 fixed
+		$owner_changed_flag = true;
+		$old_icontime = $group->icontime; 
+	}
+}
+
 $group->save();
+
+// group saved so clear sticky form
+elgg_clear_sticky_form('groups');
 
 // Invisible group support
 // @todo this requires save to be called to create the acl for the group. This
@@ -131,9 +152,6 @@ if (elgg_get_plugin_setting('hidden_groups', 'groups') == 'yes') {
 }
 
 $group->save();
-
-// group saved so clear sticky form
-elgg_clear_sticky_form('groups');
 
 // group creator needs to be member of new group and river entry created
 if ($new_group_flag) {
@@ -187,6 +205,38 @@ if ((isset($_FILES['icon'])) && (substr_count($_FILES['icon']['type'],'image/'))
 		$thumb->close();
 
 		$group->icontime = time();
+	}
+	
+	if ($owner_changed_flag && $old_icontime) { // @todo Remove this when #4683 fixed
+		
+		$filehandler = new ElggFile();
+		$filehandler->setFilename('groups');
+		
+		$filehandler->owner_guid = $old_owner_guid;
+		$old_path = $filehandler->getFilenameOnFilestore();
+		
+		$sizes = array('', 'tiny', 'small', 'medium', 'large');
+	
+		foreach($sizes as $size) {
+			unlink("$old_path/{$group_guid}{$size}.jpg");
+		}
+	}
+	
+} elseif ($owner_changed_flag && $old_icontime) { // @todo Remove this when #4683 fixed
+	
+	$filehandler = new ElggFile();
+	$filehandler->setFilename('groups');
+
+	$filehandler->owner_guid = $old_owner_guid;
+	$old_path = $filehandler->getFilenameOnFilestore();
+	
+	$filehandler->owner_guid = $group->owner_guid;
+	$new_path = $filehandler->getFilenameOnFilestore();
+	
+	$sizes = array('', 'tiny', 'small', 'medium', 'large');
+	
+	foreach($sizes as $size) {
+		rename("$old_path/{$group_guid}{$size}.jpg", "$new_path/{$group_guid}{$size}.jpg");
 	}
 }
 
