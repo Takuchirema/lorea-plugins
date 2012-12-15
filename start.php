@@ -11,7 +11,7 @@ elgg_register_event_handler('init', 'system', 'group_alias_init');
  *
  */
 function group_alias_init() {
-	
+
 	// Register group alias library
 	$library_path = elgg_get_plugins_path() . 'group_alias/lib/group_alias.php';
 	elgg_register_library('elgg:group_alias', $library_path);
@@ -25,14 +25,14 @@ function group_alias_init() {
 	// Add alias field
 	elgg_register_plugin_hook_handler('profile:fields', 'group', 'group_alias_fields_setup');
 
-	// Save alias when group is saved
-	elgg_register_event_handler('create', 'group', 'group_alias_save_hook');
-	elgg_register_event_handler('update', 'group', 'group_alias_save_hook');
+	// Override groups/edit action
+	$action_base = elgg_get_plugins_path() . 'group_alias/actions/groups';
+	elgg_register_action("groups/edit", "$action_base/edit.php");
 
 	// Extend the main css view
 	elgg_extend_view('css/elgg', 'group_alias/css');
 	elgg_extend_view('js/elgg', 'group_alias/js');
-	
+
 	// Register tests
 	elgg_register_plugin_hook_handler('unit_test', 'system', 'group_alias_test');
 	elgg_register_event_handler('upgrade', 'system', 'group_alias_run_upgrades');
@@ -122,7 +122,7 @@ function group_alias_save_hook($event, $type, $entity) {
 		&& $aliased_group->guid != $entity->guid) {
 		$entity->set('alias', "$alias_from_name$entity->guid");
 		return TRUE;
-	} 
+	}
 	// Force keeping default or existing alias if empty or not changeable
 	if (empty($entity->alias) || !elgg_get_config('changeable_group_alias')) {
 		$entity->set('alias', $alias_from_name);
@@ -133,7 +133,7 @@ function group_alias_save_hook($event, $type, $entity) {
 
 /**
  * Override the group url
- * 
+ *
  * @param ElggObject $group Group object
  * @return string
  */

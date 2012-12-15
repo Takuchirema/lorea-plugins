@@ -1,6 +1,6 @@
 $(function(){
 	$('input.elgg-input-text[name="name"]').keyup(function(){
-		$('input.elgg-input-text[name="alias"]').val(function(title){
+		$('input.elgg-input-text[name="alias"][disabled!="disabled"]').val(function(title){
 			return title.replace(/[^\w ]/g, "")
 							.replace(/^\s+/g,'').replace(/\s+$/g,'') //trim
 							.replace(/ /g, "_")
