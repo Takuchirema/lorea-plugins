@@ -11,15 +11,11 @@
  * @throws RegistrationException on invalid
  */
 function group_alias_validate($alias) {
-	global $CONFIG;
 
 	// Basic, check length
-	if (!isset($CONFIG->minusername)) {
-		$CONFIG->minusername = 4;
-	}
-
-	if (strlen($alias) < $CONFIG->minusername) {
-		$msg = elgg_echo('groups:alias:registration:usernametooshort', array($CONFIG->minusername));
+	$min_length = elgg_get_config('minusername', 4);
+	if (strlen($alias) < $min_length) {
+		$msg = elgg_echo('groups:alias:registration:usernametooshort', array($min_length));
 		throw new RegistrationException($msg);
 	}
 	
@@ -42,8 +38,7 @@ function group_alias_validate($alias) {
 	if (
 		preg_match($blacklist, $alias)
 	) {
-		// @todo error message needs work
-		throw new RegistrationException(elgg_echo('groups:alias:registration:invalidchars'));
+		throw new RegistrationException(elgg_echo('groups:alias:registration:invalidctrlchars'));
 	}
 
 	// Belts and braces
