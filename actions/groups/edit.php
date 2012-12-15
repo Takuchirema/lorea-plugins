@@ -10,11 +10,23 @@ global $CONFIG;
 
 elgg_make_sticky_form('groups');
 
+$group_guid = (int)get_input('group_guid');
+$new_group_flag = ($group_guid == 0);
+
+if ($new_group_flag && elgg_get_plugin_setting('limited_groups', 'groups') == 'yes'
+	&& !elgg_is_admin_logged_in()) {
+	
+	register_error(elgg_echo("groups:cantcreate"));
+	forward(REFERER);
+}
+
+$sticky_alias = ('no' == elgg_get_plugin_setting('changeable_group_alias', 'group_alias'));
+
 /**
  * wrapper for recursive array walk decoding
  */
 function profile_array_decoder(&$v) {
-	$v = _elgg_html_decode($v);
+	$v = html_entity_decode($v, ENT_COMPAT, 'UTF-8');
 }
 
 // Get group fields
@@ -25,41 +37,32 @@ foreach ($CONFIG->group as $shortname => $valuetype) {
 	if (is_array($input[$shortname])) {
 		array_walk_recursive($input[$shortname], 'profile_array_decoder');
 	} else {
-		$input[$shortname] = _elgg_html_decode($input[$shortname]);
+		$input[$shortname] = html_entity_decode($input[$shortname], ENT_COMPAT, 'UTF-8');
 	}
 
 	if ($valuetype == 'tags') {
 		$input[$shortname] = string_to_tag_array($input[$shortname]);
 	}
 	
-	if ($shortname == 'alias') {
-		if($CONFIG->changeable_group_alias || !get_input('group_guid')) {
-			elgg_load_library('elgg:group_alias');
-			try {
-				group_alias_validate($input['alias']);
-				$existing_group = get_group_from_group_alias($input['alias']);
-				if ($existing_group && $existing_group->guid != get_input('group_guid')) {
-					throw new Exception(elgg_echo('groups:alias:already_taken'));
-				}
-			} catch(Exception $e) {
-				register_error($e->getMessage());
-				forward(REFERER);
+	if ($shortname == 'alias' && ($new_group_flag || !$sticky_alias)) {
+		elgg_load_library('elgg:group_alias');
+		try {
+			group_alias_validate($input['alias']);
+			$existing_group = get_group_from_group_alias($input['alias']);
+			if ($existing_group && $existing_group->guid != get_input('group_guid')) {
+				throw new Exception(elgg_echo('groups:alias:already_taken'));
 			}
+		} catch(Exception $e) {
+			register_error($e->getMessage());
+			forward(REFERER);
 		}
 	}
 }
 
-$input['name'] = htmlspecialchars(get_input('name', '', false), ENT_QUOTES, 'UTF-8');
+$input['name'] = get_input('name');
+$input['name'] = html_entity_decode($input['name'], ENT_COMPAT, 'UTF-8');
 
 $user = elgg_get_logged_in_user_entity();
-
-$group_guid = (int)get_input('group_guid');
-$new_group_flag = $group_guid == 0;
-
-if ($new_group_flag && elgg_get_plugin_setting('limited_groups', 'groups') == 'yes' && !elgg_is_admin_logged_in()) {
-	register_error(elgg_echo("groups:cantcreate"));
-	forward(REFERER);
-}
 
 $group = new ElggGroup($group_guid); // load if present, if not create a new group
 if (($group_guid) && (!$group->canEdit())) {
@@ -68,7 +71,7 @@ if (($group_guid) && (!$group->canEdit())) {
 }
 
 // Keep existing alias unless explicit update
-if ($input['alias'] == $group->alias || !$CONFIG->changeable_group_alias && $group->guid) {
+if ($input['alias'] == $group->alias || (!$new_group_flag && $sticky_alias)) {
 	unset($input['alias']);
 }
 
@@ -111,6 +114,21 @@ switch (get_input('membership')) {
 
 if ($new_group_flag) {
 	$group->access_id = ACCESS_PUBLIC;
+}
+
+$owner_guid    = (int) get_input('owner_guid');
+$loggedin_guid = elgg_get_logged_in_user_guid();
+$is_admin      = elgg_is_admin_logged_in();
+
+if (!$new_group_flag && $owner_guid && $owner_guid != $group->owner_guid) {
+	if($group->isMember($owner_guid) && ($group->owner_guid == $loggedin_guid || $is_admin)) {
+		$old_owner_guid = $group->owner_guid;
+		$group->owner_guid = $owner_guid;
+		
+		// @todo Remove this when #4683 fixed
+		$owner_changed_flag = true;
+		$old_icontime = $group->icontime; 
+	}
 }
 
 $group->save();
@@ -187,6 +205,38 @@ if ((isset($_FILES['icon'])) && (substr_count($_FILES['icon']['type'],'image/'))
 		$thumb->close();
 
 		$group->icontime = time();
+	}
+
+	if ($owner_changed_flag && $old_icontime) { // @todo Remove this when #4683 fixed
+		
+		$filehandler = new ElggFile();
+		$filehandler->setFilename('groups');
+		
+		$filehandler->owner_guid = $old_owner_guid;
+		$old_path = $filehandler->getFilenameOnFilestore();
+		
+		$sizes = array('', 'tiny', 'small', 'medium', 'large');
+	
+		foreach($sizes as $size) {
+			unlink("$old_path/{$group_guid}{$size}.jpg");
+		}
+	}
+	
+} elseif ($owner_changed_flag && $old_icontime) { // @todo Remove this when #4683 fixed
+	
+	$filehandler = new ElggFile();
+	$filehandler->setFilename('groups');
+
+	$filehandler->owner_guid = $old_owner_guid;
+	$old_path = $filehandler->getFilenameOnFilestore();
+	
+	$filehandler->owner_guid = $group->owner_guid;
+	$new_path = $filehandler->getFilenameOnFilestore();
+	
+	$sizes = array('', 'tiny', 'small', 'medium', 'large');
+	
+	foreach($sizes as $size) {
+		rename("$old_path/{$group_guid}{$size}.jpg", "$new_path/{$group_guid}{$size}.jpg");
 	}
 }
 
