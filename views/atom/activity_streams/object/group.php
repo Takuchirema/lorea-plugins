@@ -8,7 +8,7 @@ $webpage = $group->webpage;
 <id><?php echo $group->getURL(); ?></id>
 <title><?php echo elgg_view('output/text', array('value' => $group->name)); ?></title>
 <summary><?php echo elgg_view('output/text', array('value' => $group->briefdescription)); ?></summary>
-<content><?php echo elgg_view('output/text', array('value' => $group->description)); ?></content>
+<content><?php echo elgg_view('output/longtext', array('value' => $group->description)); ?></content>
 <published>
 	<?php echo date(DATE_ATOM, $group->time_created); ?>
 </published>
