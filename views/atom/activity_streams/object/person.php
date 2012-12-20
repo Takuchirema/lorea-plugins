@@ -3,13 +3,12 @@
 $person = $vars['entity'];
 $host = parse_url(elgg_get_site_url(), PHP_URL_HOST);
 
-$name = $person->name;
+$name = elgg_view('output/text', array('value' => $person->name));
 $username = $person->username;
-$description = $person->description;
+$description = elgg_view('output/longtext', array('value' => $person->description));
 $website = $person->website;
 
 ?>
-
 <id><?php echo $person->getURL(); ?></id>
 <uri><?php echo $person->getURL(); ?></uri>
 <name><?php echo elgg_view('output/text', array('value' => $person->name)); ?></name>
@@ -21,7 +20,7 @@ ActivityStreams::formatAvatarIcons($person);
 <poco:preferredUsername><?php echo $username; ?></poco:preferredUsername>
 <poco:displayName><?php echo $name; ?></poco:displayName>
 <?php
-if ($description) {
+if (!empty($description)) {
 ?>
 <poco:note><?php echo $description; ?></poco:note>
 <?php

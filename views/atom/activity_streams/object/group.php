@@ -15,7 +15,7 @@ $webpage = $group->webpage;
 <updated>
 	<?php echo date(DATE_ATOM, $group->time_updated); ?>
 </updated>
-<poco:note><?php echo $group->description; ?></poco:note>
+<poco:note><?php echo elgg_view('output/text', array('value' => $group->description)); ?></poco:note>
 <?php
 if ($webpage) {
 ?>

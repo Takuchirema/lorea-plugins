@@ -1,19 +1,19 @@
 <?php
 
 $note = $vars['entity'];
-$title = $note->title;
+$title = elgg_view('output/text', array('value' => $note->title));
 ?>
 
 <id><?php echo ActivityStreams::getEntityAtomID($note); ?></id>
 <?php
 if ($title) {
 ?>
-<title><?php echo htmlspecialchars($title); ?></title>
+<title><?php echo $title; ?></title>
 <?php
 }
 ?>
-<content><![CDATA[<?php 
-	echo elgg_view('output/longtext', array('value' => $note->description)); 
+<content><![CDATA[<?php
+	echo elgg_view('output/longtext', array('value' => $note->description));
 ?>]]></content>
 <published>
 	<?php echo date(DATE_ATOM, $note->time_created); ?>
