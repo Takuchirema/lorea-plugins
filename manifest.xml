@@ -26,5 +26,9 @@
 		<priority>after</priority>
 		<plugin>groups</plugin>
 	</requires>
+	<suggests>
+		<type>plugin</type>
+		<name>linkup</name>
+	</suggests>
 	<activate_on_install>true</activate_on_install>
 </plugin_manifest>
