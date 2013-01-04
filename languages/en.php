@@ -5,7 +5,7 @@
  * @package        Lorea
  * @subpackage     Spotlight
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -68,7 +68,7 @@ $english = array(
 	'dev:source:code' => '
 <p>Lorea is free software.</p>
 
-<p>Copyright 2009-2012 Lorea Faeries &lt;federation@lorea.org&gt;</p>
+<p>Copyright 2009-2013 Lorea Faeries &lt;federation@lorea.org&gt;</p>
 
 <p>This program is free software: you can redistribute it and/or
 modify it under the terms of the GNU Affero General Public License as
@@ -82,6 +82,7 @@ Affero General Public License for more details.</p>
 
 <p>You should have received a copy of the GNU Affero General Public License along with this program. If not, see &lt;<a href="http://www.gnu.org/licenses/agpl">http://www.gnu.org/licenses/</a>&gt;.</p>
 
+<p>The following <a href="https://lorea.org/plugins">features</a> are currently in use on this <a href="https://n-1.cc/g/seeds">seed</a>. Those part of the Lorea distribution are identified as such, by copyright and the above license.</p>
 ',
 	'dev:bughunting'  => "Bug hunting",
 	'dev:testers'     => "Testers",
