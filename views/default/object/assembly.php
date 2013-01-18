@@ -8,10 +8,10 @@
  * @package        Lorea
  * @subpackage     Assemblies
  *
- * Copyright 2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2012-2013 Lorea Faeries <federation@lorea.org>
  *
  * This file is part of the Assemblies plugin for Elgg.
- * 
+ *
  * Assemblies is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the

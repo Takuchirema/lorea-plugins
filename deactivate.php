@@ -5,7 +5,7 @@
  * @package    Lorea
  * @subpackage Assembly
  *
- * Copyright 2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2012-2013 Lorea Faeries <federation@lorea.org>
  *
  * This file is part of the Assemblies plugin for Elgg.
  *
