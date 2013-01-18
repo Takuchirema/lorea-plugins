@@ -8,9 +8,10 @@
 	<category>enhancement</category>
 	<description>Provide clean URLs for groups using an unique alphanumeric identifier.</description>
 	<website>https://lorea.org/plugins/group_alias</website>
+	<bugtracker></bugtracker>
 	<repository>https://gitorious.org/lorea/group_alias</repository>
 	<donations>https://lorea.org/support</donations>
-	<copyright>2012 Lorea Faeries</copyright>
+	<copyright>Copryright 2012,2013 Lorea Faeries &lt;federation@lorea.org&gt;</copyright>
 	<license>GNU Affero General Public License version 3, or later</license>
 	
 	<requires>
@@ -30,5 +31,8 @@
 		<type>plugin</type>
 		<name>linkup</name>
 	</suggests>
-	<activate_on_install>true</activate_on_install>
+	<suggests>
+		<type>plugin</type>
+		<name>upgrade-tools</name>
+	</suggests>
 </plugin_manifest>
