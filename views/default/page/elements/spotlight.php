@@ -5,7 +5,7 @@
  * @package        Lorea
  * @subpackage     Spotlight
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This file is part of the Lorea Spotlight plugin.
  *

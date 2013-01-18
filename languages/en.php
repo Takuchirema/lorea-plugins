@@ -22,7 +22,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-$english = array(
+$language = array(
 
 	'stats:stats'      => "Community stats",
 	'stats:members'    => "Members",
@@ -65,6 +65,7 @@ $english = array(
 	'dev:dev'         => "Development",
 	'dev:group'       => 'Working Group',
 	'dev:source'      => "Source Code",
+	'dev:issues'      => 'Report Issues',
 	'dev:source:code' => '
 <p>Lorea is free software.</p>
 
@@ -93,4 +94,4 @@ Affero General Public License for more details.</p>
 	'contact:mailing' => "Mailing list",
 );
 
-add_translation("en",$english);
+add_translation("en",$language);

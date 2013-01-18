@@ -5,7 +5,7 @@
  * @package        Lorea
  * @subpackage     Spotlight
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -65,6 +65,7 @@ $language = array (
   'dev:dev' => 'Desenvolupament',
   'dev:group'       => 'Grup de treball',
   'dev:source'      => 'Codi font',
+  'dev:issues'      => 'Informar dels problemes',
   'dev:bughunting' => 'Caçadors de bugs',
   'dev:testers' => 'Tastaolletes',
   'dev:network' => 'Xarxa de desenvolupament',

@@ -4,11 +4,11 @@
  *
  * @package        Lorea
  * @subpackage     Spotlight
- * @homepage       http://lorea.org/plugin/spotlight
- * @copyright      2011-2012 Lorea Faeries <federation@lorea.org>
+ * @homepage       https://lorea.org/plugin/spotlight
+ * @copyright      2011-2013 Lorea Faeries <federation@lorea.org>
  * @license        COPYING, http://www.gnu.org/licenses/agpl
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
