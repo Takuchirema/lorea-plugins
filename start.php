@@ -61,10 +61,10 @@ function group_alias_init() {
 }
 
 function group_alias_run_upgrades() {
-	if (include_once(elgg_get_plugins_path() . 'upgrade-tools/lib/upgrade_tools.php')) {
+	$upgrade_tools = elgg_get_plugins_path() . 'upgrade-tools/lib/upgrade_tools.php';
+	if (file_exists($upgrade_tools) && include_once($upgrade_tools)) {
 		upgrade_module_run('group_alias');
 	}
-
 }
 
 
