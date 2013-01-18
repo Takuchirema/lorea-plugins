@@ -5,7 +5,7 @@
  * @package        Lorea
  * @subpackage     AudioHTML5
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This file is part of the AudioHTML5 plugin for Elgg.
  *
@@ -29,5 +29,5 @@ $audio_url = elgg_get_site_url() . "mod/file/download.php?file_guid={$vars['file
 ?>
 
 <div class="audio-html5">
-	<audio src="<?php echo $audio_url; ?>" controls width="90" height="50"></audio>            
+	<audio src="<?php echo $audio_url; ?>" controls width="90" height="50"></audio>
 </div>
