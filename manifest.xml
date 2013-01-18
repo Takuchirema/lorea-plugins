@@ -8,13 +8,13 @@
 	<category>enhancement</category>
 	<description>This simple plugin lets users play audio files in the page.</description>
 	<website>https://lorea.org/plugin/audio_html5</website>
+	<bugtracker>https://n-1.cc/tasks/view/1566132/audio-html5</bugtracker>
 	<repository>https://gitorious.org/lorea/audio_html5</repository>
         <donations>https://lorea.org/support</donations>
-	<copyright>Copyright 2011-2012 Lorea Faeries &lt;federation@lorea.org&gt;</copyright>
+	<copyright>Copyright 2011-2013 Lorea Faeries &lt;federation@lorea.org&gt;</copyright>
 	<license>GNU Affero General Public License version 3 or later</license>
 	<requires>
 		<type>elgg_release</type>
 		<version>1.8</version>
 	</requires>
-	<activate_on_install>true</activate_on_install>
 </plugin_manifest>
