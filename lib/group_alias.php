@@ -1,4 +1,28 @@
 <?php
+/**
+ * GroupAlias -- Shared Library
+ *
+ * @package        Lorea
+ * @subpackage     GroupAlias
+ *
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
+ *
+ * This file is part of the GroupAlias plugin for Elgg.
+ *
+ * GroupAlias is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * GroupAlias is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 
 /**
  * Simple function which ensures that a group alias contains only valid characters.
@@ -18,7 +42,7 @@ function group_alias_validate($alias) {
 		$msg = elgg_echo('groups:alias:registration:usernametooshort', array($min_length));
 		throw new RegistrationException($msg);
 	}
-	
+
 	// username in the database has a limit of 128 characters
 	if (strlen($alias) > 128) {
 		$msg = elgg_echo('groups:alias:registration:usernametoolong', array(128));

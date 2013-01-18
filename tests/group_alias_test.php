@@ -28,7 +28,7 @@ class ElggGroupAliasTest extends ElggCoreUnitTest {
 	 */
 	public function __construct() {
 		parent::__construct();
-		
+
 		// all __construct() code should come after here
 	}
 

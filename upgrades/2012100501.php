@@ -1,12 +1,36 @@
 <?php
+/**
+ * GroupAlias -- Create missing aliases
+ *
+ * @package        Lorea
+ * @subpackage     GroupAlias
+ *
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
+ *
+ * This file is part of the GroupAlias plugin for Elgg.
+ *
+ * GroupAlias is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * GroupAlias is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 
 global $MIGRATED;
 
-$local_version = (int)elgg_get_plugin_setting('version', 'group_alias'); 
-if (2012022501 <= $local_version) { 
-        error_log("Group alias requires no upgrade"); 
-        // no upgrade required 
-        return; 
+$local_version = (int)elgg_get_plugin_setting('version', 'group_alias');
+
+if (2012022501 <= $local_version) {
+        error_log("Group alias requires no upgrade");
+        return;
 }
 
 elgg_load_library("elgg:group_alias");
@@ -16,14 +40,18 @@ function group_alias_filtername($name) {
         $group_name = str_replace(']','' ,$group_name);
         $group_name = str_replace('[','' ,$group_name);
         $group_name = strtolower($group_name);
+
         return $group_name;
 }
+
 function group_alias_get_groupmail($group) {
         $group_name = group_alias_filtername($group->name);
         $group_email = $group_name;
         $parent = get_entity($group->container_guid);
-        if ($parent instanceof ElggGroup)
+        if ($parent instanceof ElggGroup) {
                 $group_email = group_alias_filtername($parent->name)."+".$group_email;
+	}
+
         return $group_email;
 }
 
@@ -87,5 +115,3 @@ if ($batch->callbackResult) {
 } else {
 	error_log("Group alias upgrade (201210050) failed");
 }
-
-
