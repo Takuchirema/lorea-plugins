@@ -5,7 +5,7 @@
  * @package        Lorea
  * @subpackage     ElggPG
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This file is part of the ElggPG plugin for Elgg.
  *
@@ -24,22 +24,20 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-$catalan = array( 
-	 'elggpg:profileinstructions'  =>  "Sobre la teva clau pública" , 
-	 'elggpg:identity'  =>  "Identitat asociada" , 
-	 'elggpg:manage'  =>  "Xifrat" , 
-	 'elggpg:download'  =>  "Descarrega" , 
-	 'elggpg:river:addkey'  =>  "%s ha pujat la seva clau pública GPG" , 
-	 'elggpg:public_key:imported'  =>  "Clau importada" , 
-	 'elggpg:date'  =>  "Data" , 
-	 'elggpg:size'  =>  "Bits" , 
-	 'elggpg:sendamessage'  =>  "Envia un missatge xifrat" , 
-	 'elggpg:view'  =>  "Veure claus de xifrat" , 
-	 'elggpg:nopublickey'  =>  "Aquesta persona no té cap clau GPG" , 
-	 'elggpg:manage:header'  =>  "Clau pública GPG" , 
+$language = array(
+	 'elggpg:profileinstructions'  =>  "Sobre la teva clau pública" ,
+	 'elggpg:identity'  =>  "Identitat asociada" ,
+	 'elggpg:manage'  =>  "Xifrat" ,
+	 'elggpg:download'  =>  "Descarrega" ,
+	 'elggpg:river:addkey'  =>  "%s ha pujat la seva clau pública GPG" ,
+	 'elggpg:public_key:imported'  =>  "Clau importada" ,
+	 'elggpg:date'  =>  "Data" ,
+	 'elggpg:size'  =>  "Bits" ,
+	 'elggpg:sendamessage'  =>  "Envia un missatge xifrat" ,
+	 'elggpg:view'  =>  "Veure claus de xifrat" ,
+	 'elggpg:nopublickey'  =>  "Aquesta persona no té cap clau GPG" ,
+	 'elggpg:manage:header'  =>  "Clau pública GPG" ,
 	 'elggpg:upload'  =>  "Puja una clau nova"
-); 
+);
 
-add_translation('ca', $catalan); 
-
-?>
+add_translation('ca', $language);

@@ -9,7 +9,7 @@
  * @package        Lorea
  * @subpackage     ElggPG
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This file is part of the ElggPG plugin for Elgg.
  *
@@ -126,5 +126,3 @@ function messages_send_override($subject, $body, $body_sent, $send_to, $from = 0
 	$messagesendflag = 0;
 	return $success;
 }
-
-

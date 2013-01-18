@@ -5,7 +5,7 @@
  * @package        Lorea
  * @subpackage     ElggPG
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This file is part of the ElggPG plugin for Elgg.
  *
@@ -37,7 +37,7 @@ $info = elggpg_delete_key($user);
 if ($info) {
 	system_message(elgg_echo("elggpg:deleted"));
 } else {
-	register_error(elgg_echo("elggpg:delete:error"));		
+	register_error(elgg_echo("elggpg:delete:error"));
 }
 
 forward(REFERER);

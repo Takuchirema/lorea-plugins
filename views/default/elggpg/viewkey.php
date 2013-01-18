@@ -7,7 +7,7 @@
  * @package        Lorea
  * @subpackage     ElggPG
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This file is part of the ElggPG plugin for Elgg.
  *
@@ -91,23 +91,23 @@ $subkeys_info = <<<HTML
 HTML;
 
 foreach ($info['subkeys'] as $subkey) {
-	
+
 	$keyid = $subkey["keyid"];
 
 	$created = date('d M Y', $subkey['created']);
-	
+
 	if ($subkey['expires']) {
 		$expires = date('d M Y', $subkey['expires']);
 	} else {
 		$expires = elgg_echo('elggpg:expires:never');
 	}
-	
+
 	$type = elgg_echo('elggpg:type:'.$subkey['type']);
 
 	$subkeys_info .= <<<HTML
 	<tr><td>$keyid</td><td>$type</td><td>$created</td><td>$expires</td></tr>
 HTML;
-	
+
 }
 
 $subkeys_info .= <<<HTML

@@ -5,10 +5,10 @@
  * @package        Lorea
  * @subpackage     ElggPG
  * @homepage       https://lorea.org/plugin/elggpg
- * @copyright      2011-2012 Lorea Faeries <federation@lorea.org>
+ * @copyright      2011-2013 Lorea Faeries <federation@lorea.org>
  * @license        COPYING, http://www.gnu.org/licenses/agpl
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -31,22 +31,22 @@ elgg_register_event_handler('init', 'system', 'elggpg_init');
  * GnuPG plugin initialization functions.
  */
 function elggpg_init() {
-	
+
 	// Register library
 	elgg_register_library('elggpg', elgg_get_plugins_path() . 'elggpg/lib/elggpg.php');
 	elgg_register_library('elggpg:send:override', elgg_get_plugins_path() . 'elggpg/lib/messages_send.php');
-	
+
 	// Extend CSS
 	elgg_extend_view('css/elgg', 'elggpg/css');
-	
+
 	// Register a page handler, so we can have nice URLs
 	elgg_register_page_handler('elggpg', 'elggpg_page_handler');
-	
+
 	// Register a notification handler to encrypt messages
 	elgg_register_plugin_hook_handler('email', 'system', 'elggpg_send_email_handler');
-	
+
 	elgg_extend_view("core/settings/account/email", "elggpg/viewkey", 1);
-	
+
 	// Actions
 	$actions_path = elgg_get_plugins_path() . 'elggpg/actions/elggpg';
 	elgg_register_action("elggpg/pubkey_upload", "$actions_path/pubkey_upload.php");
@@ -91,16 +91,16 @@ function elggpg_send_email_handler($hook, $type, $return, $params) {
 	$subject = $params['subject'];
 	$body = $params['body'];
 	$headers = $params['headers'];
-	
+
 	$receiver = current(get_user_by_email($to));
-	
+
 	// Format message
 	$body = html_entity_decode($body, ENT_COMPAT, 'UTF-8'); // Decode any html entities
 	$body = elgg_strip_tags($body); // Strip tags from message
 	$body = preg_replace("/(\r\n|\r)/", "\n", $body); // Convert to unix line endings in body
 	$body = preg_replace("/^From/", ">From", $body); // Change lines starting with From to >From
 	$body = wordwrap($body);
-	
+
 	// Encrypting
 	if (elgg_get_plugin_user_setting('encrypt_emails', $receiver->guid, 'elggpg') != 'no') {
 		elgg_load_library('elggpg');
@@ -111,7 +111,7 @@ function elggpg_send_email_handler($hook, $type, $return, $params) {
 	}
 
 	// The following code is the same that in elgg's
-	
+
 	$header_eol = "\r\n";
 	if (isset($CONFIG->broken_mta) && $CONFIG->broken_mta) {
 		// Allow non-RFC 2822 mail headers to support some broken MTAs
@@ -149,7 +149,7 @@ function elggpg_send_email_handler($hook, $type, $return, $params) {
 
 /**
  * Add a menu item to an ownerblock
- * 
+ *
  * @param string $hook
  * @param string $type
  * @param array  $return

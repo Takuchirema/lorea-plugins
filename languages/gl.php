@@ -5,7 +5,7 @@
  * @package        Lorea
  * @subpackage     ElggPG
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This file is part of the ElggPG plugin for Elgg.
  *
@@ -24,22 +24,20 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-$galician = array( 
-	 'elggpg:profileinstructions'  =>  "Información sobre a súa chave pública" , 
-	 'elggpg:identity'  =>  "Identidade asociada" , 
-	 'elggpg:manage'  =>  "Ecriptación" , 
-	 'elggpg:download'  =>  "Descargar" , 
-	 'elggpg:river:addkey'  =>  "%s subiu a súa chave pública GPG" , 
-	 'elggpg:public_key:imported'  =>  "Chave importada" , 
-	 'elggpg:date'  =>  "Data" , 
-	 'elggpg:size'  =>  "Bits" , 
-	 'elggpg:sendamessage'  =>  "Enviar unha mensaxe encriptada" , 
-	 'elggpg:view'  =>  "Ve-las chaves de encriptación" , 
-	 'elggpg:nopublickey'  =>  "Esta persoa non ten ningunha chave GPG" , 
-	 'elggpg:manage:header'  =>  "Chave pública GPG" , 
-	 'elggpg:upload'  =>  "Subir unha chave nova"
-); 
+$language = array(
+	'elggpg:profileinstructions'  =>  "Información sobre a súa chave pública",
+	'elggpg:identity'  =>  "Identidade asociada",
+	'elggpg:manage'  =>  "Ecriptación",
+	'elggpg:download'  =>  "Descargar",
+	'elggpg:river:addkey'  =>  "%s subiu a súa chave pública GPG",
+	'elggpg:public_key:imported'  =>  "Chave importada",
+	'elggpg:date'  =>  "Data" ,
+	'elggpg:size'  =>  "Bits",
+	'elggpg:sendamessage'  =>  "Enviar unha mensaxe encriptada",
+	'elggpg:view'  =>  "Ve-las chaves de encriptación",
+	'elggpg:nopublickey'  =>  "Esta persoa non ten ningunha chave GPG",
+	'elggpg:manage:header'  =>  "Chave pública GPG",
+	'elggpg:upload'  =>  "Subir unha chave nova",
+);
 
-add_translation('gl', $galician); 
-
-?>
+add_translation('gl', $language);

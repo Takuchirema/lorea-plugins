@@ -5,7 +5,7 @@
  * @package        Lorea
  * @subpackage     ElggPG
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This file is part of the ElggPG plugin for Elgg.
  *
@@ -45,9 +45,9 @@ if($owner->guid == elgg_get_logged_in_user_guid()) {
 	$body_vars = array(
 		'user' => $owner,
 	);
-	
+
 	$content .= elgg_view_form("elggpg/pubkey_upload", $form_vars, $body_vars);
-	
+
 	if(!empty($owner->openpgp_publickey)) {
 		elgg_register_menu_item('title', array(
 				'name' => 'elggpg_delete',

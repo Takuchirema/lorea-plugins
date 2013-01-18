@@ -5,7 +5,7 @@
  * @package        Lorea
  * @subpackage     ElggPG
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This file is part of the ElggPG plugin for Elgg.
  *
@@ -32,7 +32,7 @@
     <?php echo elgg_view('input/securitytoken'); ?>
     <input type="hidden" name="username" value="<?php echo $currentuser->username; ?>" />
     <input type="hidden" name="send_to" value="<?php echo $currentuser->getGUID(); ?>" />
-    
+
     <p><label><?php echo elgg_echo("messages:title"); ?>: <br /><input type='text' name='title' value='<?php echo $msg_title; ?>' class="input-text" /></label></p>
     <p class="longtext_editarea"><label><?php echo elgg_echo("messages:message"); ?>: <br />
     <?php
@@ -45,4 +45,3 @@
     <p><input type="submit" class="elgg-button elgg-button-submit" value="<?php echo elgg_echo("messages:fly"); ?>" /></p>
   </form>
 </div>
-

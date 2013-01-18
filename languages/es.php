@@ -5,7 +5,7 @@
  * @package        Lorea
  * @subpackage     ElggPG
  *
- * Copyright 2011-2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
  * This file is part of the ElggPG plugin for Elgg.
  *
@@ -24,23 +24,20 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-$spanish = array( 
-                'elggpg:profileinstructions'=>'Informaci&oacute;n acerca de su llave p&uacute;blica',
-                'elggpg:identity'=>'Identidad asociada',
-                'elggpg:manage'=>'Encriptaci&oacute;n',
-                'elggpg:download'=>'Descargar',
-                'elggpg:river:addkey'=>'%s ha subido su llave p&uacute;blica GPG',
-                'elggpg:public_key:imported'=>'Llave importada',
-                'elggpg:date'=>'Fecha',
-                'elggpg:size'=>'Bits',
-                'elggpg:sendamessage'=>'Enviar un mensaje encriptado',
-                'elggpg:view'=>'Ver llaves de encriptaci&oacute;n',
-                'elggpg:nopublickey'=>'Esta persona no tiene ninguna llave GPG',
-                'elggpg:manage:header'=>'LLave p&uacute;blica GPG',
-                'elggpg:upload'=>'Subir una llave nueva'
+$language = array(
+	'elggpg:profileinstructions'=>'Informaci&oacute;n acerca de su llave p&uacute;blica',
+	'elggpg:identity'=>'Identidad asociada',
+	'elggpg:manage'=>'Encriptaci&oacute;n',
+	'elggpg:download'=>'Descargar',
+	'elggpg:river:addkey'=>'%s ha subido su llave p&uacute;blica GPG',
+	'elggpg:public_key:imported'=>'Llave importada',
+	'elggpg:date'=>'Fecha',
+	'elggpg:size'=>'Bits',
+	'elggpg:sendamessage'=>'Enviar un mensaje encriptado',
+	'elggpg:view'=>'Ver llaves de encriptaci&oacute;n',
+	'elggpg:nopublickey'=>'Esta persona no tiene ninguna llave GPG',
+	'elggpg:manage:header'=>'LLave p&uacute;blica GPG',
+	'elggpg:upload'=>'Subir una llave nueva',
+);
 
-); 
-
-add_translation('es', $spanish); 
-
-?>
+add_translation('es', $language);
