@@ -5,7 +5,7 @@
  * @package        Lorea
  * @subpackage     Spotlight
  *
- * Copyright 2012 Lorea Faeries <federation@lorea.org>
+ * Copyright 2012-2013 Lorea Faeries <federation@lorea.org>
  *
  * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -33,7 +33,7 @@ elgg_generate_plugin_entities();
 $plugins = elgg_get_plugins('active');
 $plugin_list = array();
 $css         = 'odd';
- 
+
 foreach ($plugins AS $plugin) {
 	$plugin_list[$plugin->getFriendlyName()] = $plugin;
 }
@@ -63,17 +63,23 @@ foreach ($plugin_list AS $name => $plugin) {
 								  'text' => elgg_echo('dev:source'),
 								  'is_trusted' => TRUE));
 
+	$bugtracker = elgg_view('output/url',
+							array(
+								  'href' => $manifest->getBugtrackerURL(),
+								  'text' => elgg_echo('dev:issues'),
+								  'is_trusted' => TRUE));
+
 	$copyright = elgg_view('output/text', array('value' => $manifest->getCopyright()));
 	$license   = elgg_view('output/text', array('value' => $manifest->getLicense()));
 
 $content.=<<<___HTML
 
     <div class="elgg-plugin elgg-state-active $css" id="plugin-{$plugin->guid}">
- 	    <h3>$website ($author)</h3>
-        <p class="description">{$description}</p>
- 	    <p class="copyright">{$copyright} ({$repository})
-		<br/>{$license}</p>
-		<p>&nbsp;<!-- que feo --></p>
+	<h3>$website ($author)</h3>
+	<p class="description">{$description}</p>
+	<p class="copyright">{$copyright}<br/>{$license}</p>
+	<p class="links">{$repository}, {$bugtracker}</p>
+	<p>&nbsp;<!-- que feo --></p>
     </div>
 
 ___HTML;
