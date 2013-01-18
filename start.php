@@ -1,4 +1,29 @@
 <?php
+/**
+ * Federated Objects -- Create objects from OStatus and Salmon remote sources.
+ *
+ * @package        Lorea
+ * @subpackage     FederatedObjects
+ * @homepage       https://lorea.org/plugin/federated-objects
+ * @copyright      2012-2013 Lorea Faeries <federation@lorea.org>
+ * @license        COPYING, http://www.gnu.org/licenses/agpl
+ *
+ * Copyright 2012-2013 Lorea Faeries <federation@lorea.org>
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
 
 function federated_menu_item($entity, $name='federated') {
 	if ($entity->foreign) {
@@ -21,7 +46,7 @@ function federated_river_menu_setup($hook, $type, $return, $params) {
 	$item = $params['item'];
 	$object = $item->getObjectEntity();
 
-	if ($object->foreign) {	
+	if ($object->foreign) {
 		$return[] = federated_menu_item($object);
 	}
 	$provenance = AtomRiverMapper::getRiverProvenance($item->id);
@@ -39,7 +64,7 @@ function federated_entity_menu_setup($hook, $type, $return, $params) {
 	$entity = $params['entity'];
 
 
-	if ($entity->foreign) {	
+	if ($entity->foreign) {
 		$return[] = federated_menu_item($entity);
 	}
 
