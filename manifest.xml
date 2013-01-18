@@ -8,8 +8,9 @@
 	<blurb>Ostatus</blurb>
 	<description>Imports objects from ostatus or salmon notifications.</description>
 	<website>https://lorea.org/plugin/federated-objects</website>
-	<bugtracker></bugtracker>
+	<bugtracker>https://n-1.cc/tasks/view/1566222/federated-objects</bugtracker>
 	<repository>https://gitorious.org/lorea/federated-objects</repository>
+	<donations>https://lorea.org/support</donations>
 	<copyright>Copyright 2012-2013 &lt;federation@lorea.org&gt;</copyright>
 	<license>GNU Affero General Public License, version 3 or later</license>
 	<requires>
