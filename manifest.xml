@@ -4,15 +4,14 @@
 	<author>Lorea developers</author>
 	<version>0.1.0</version>
 	<category>lorea</category>
-	<category>social</category>
-	<category>content</category>
-	<category>widget</category>
+	<category>communication</category>
 	<blurb>Assemblies file plugin</blurb>
 	<description>Assemblies planification and file for groups of the site.</description>
 	<website>https://lorea.org/plugin/assemblies</website>
+	<bugtracker>https://n-1.cc/tasks/view/1566098/assemblies</bugtracker>
         <repository>https://gitorious.org/lorea/assemblies</repository>
         <donations>https://lorea.org/support</donations>
-	<copyright>Copyright 2012 Lorea Faeries &lt;federation@lorea.org&gt;</copyright>
+	<copyright>Copyright 2012-2013 Lorea Faeries &lt;federation@lorea.org&gt;</copyright>
 	<license>GNU Affero General Public License, version 3 or later</license>
 	<requires>
 		<type>elgg_release</type>
@@ -27,6 +26,8 @@
 		<priority>after</priority>
 		<plugin>crud</plugin>
 	</requires>
-
-	<activate_on_install>true</activate_on_install>
+	<suggests>
+		<type>plugin</type>
+		<name>proposals</name>
+	</suggests>
 </plugin_manifest>
