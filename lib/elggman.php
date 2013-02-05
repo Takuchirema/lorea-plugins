@@ -41,6 +41,7 @@ function elggman_moderated_message($group, $headers, $subject, $body, $data, $se
 	} else {
 		$owner = $group->getOwnerEntity();
 	}
+	$prev_user = elgg_get_logged_in_user_entity();
 	login($owner);
 	$entity->owner_guid = $owner->guid;
 	$entity->container_guid = $group->guid;
@@ -55,9 +56,12 @@ function elggman_moderated_message($group, $headers, $subject, $body, $data, $se
 	if ($in_whitelist) {
 		elggman_message_accept($entity);
 	}
+	if ($prev_user)
+		login($prev_user);
 }
 
 function elggman_create_file($group, $owner, $body, $filename, $mime_type) {
+	$prev_user = elgg_get_logged_in_user_entity();
 	login($owner);
 
 	$name_parts = explode('.', $filename);
@@ -86,6 +90,8 @@ function elggman_create_file($group, $owner, $body, $filename, $mime_type) {
 	$file->simpletype = file_get_simple_type($mime_type);
 	$file->save();
 	elggman_create_thumbnails($file, $filename, $mime_type);
+	if ($prev_user)
+		login($prev_user);
 	return $file;
 }
 
