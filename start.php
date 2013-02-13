@@ -62,7 +62,7 @@ function favorites_page_handler($page) {
 }
 
 function favorites_entity_menu_setup($hook, $type, $return, $params) {
-	if (elgg_in_context('widgets')) {
+	if (elgg_in_context('widgets') || elgg_in_context('admin')) {
 		return $return;
 	}
     if ( elgg_is_logged_in() ) {
