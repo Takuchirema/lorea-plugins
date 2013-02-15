@@ -1,8 +1,8 @@
-	if ($.fn.ckeditorGet) {
+	if (CKEDITOR) {
 		try {
-			var editor = $(textAreaId).ckeditorGet();
-			editor.execCommand("inserthtml", content);
+			CKEDITOR.instances[textAreaId].insertHtml(content, 'html');
 		} catch (e) {
 			// do nothing.
 		}
 	}
+

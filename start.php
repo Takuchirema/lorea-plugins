@@ -17,7 +17,6 @@ function ckeditor_init() {
 	elgg_extend_view('css/wysiwyg', 'css/elements/typography', 100);
 
 	elgg_register_js('ckeditor', 'mod/ckeditor/vendors/ckeditor/ckeditor.js');
-	elgg_register_js('jquery-ckeditor', 'mod/ckeditor/vendors/ckeditor/adapters/jquery.js');
 	elgg_register_js('elgg.ckeditor', elgg_get_simplecache_url('js', 'ckeditor'));
 	elgg_register_simplecache_view('js/ckeditor');
 	
