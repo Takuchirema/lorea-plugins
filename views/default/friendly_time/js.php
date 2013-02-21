@@ -78,6 +78,11 @@ elgg.friendly_time.update = function() {
 		friendlytime = elgg.friendly_time($(this).find('span').text())
 		$(this).find('acronym').text(friendlytime);
 	});
+	// Support for HTML5 plugin
+	$('time.timestamp').each(function() {
+		var friendlytime = elgg.friendly_time(new Date($(this).attr('datetime')).getTime()/1000);
+		$(this).text(friendlytime);
+	});
 }
 
 elgg.friendly_time.init = function() {
