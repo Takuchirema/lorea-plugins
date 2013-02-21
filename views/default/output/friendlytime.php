@@ -30,7 +30,7 @@ $timestamp     = htmlspecialchars(date(elgg_echo('friendlytime:date_format'), $v
 
 echo <<<___HTML
 	<span class="elgg-friendlytime">
-		<time datetime="$timestamp">$friendly_time</time>
+		<acronym title="$timestamp">$friendly_time</acronym>
 		<span class="hidden">{$vars['time']}</span>
 	</span>
 ___HTML;
