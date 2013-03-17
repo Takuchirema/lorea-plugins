@@ -33,7 +33,7 @@ if ('group_profile' != elgg_get_context()) {
 $alias = htmlspecialchars($vars['value'], ENT_QUOTES, 'UTF-8', false);
 $target_url = elgg_get_config('url') . "g/$alias";
 
-if (is_plugin_enabled('linkup')) {
+if (elgg_is_active_plugin('linkup')) {
 
     $hint = elgg_echo('linkup:hint:group', array($alias, $target_url));
 
