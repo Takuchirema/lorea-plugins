@@ -15,7 +15,11 @@
 		<version>1.8</version>
 	</requires>
 	<requires>
-                <type>php_extension</type>
-                <name>curl</name>
-        </requires>
+		<type>plugin</type>
+		<name>group_alias</name>
+	</requires>
+	<requires>
+		<type>php_extension</type>
+		<name>curl</name>
+	</requires>
 </plugin_manifest>
