@@ -46,6 +46,10 @@ if (elgg_is_sticky_form('register')) {
 		'name' => 'username',
 		'value' => $username,
 	));
+	echo elgg_view('input/text', array(
+		'name' => 'dummy',
+		'value' => '',
+	));
 	?>
 </div>
 <div>
