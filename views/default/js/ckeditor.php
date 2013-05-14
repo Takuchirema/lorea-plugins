@@ -51,7 +51,7 @@ elgg.ckeditor.config = {
 	toolbar : [['Bold', 'Italic', 'Underline', '-', 'Strike', 'NumberedList', 'BulletedList', 'Undo', 'Redo', 'Link', 'Unlink', 'Image', 'Blockquote', 'Paste', 'PasteFromWord', 'Maximize']],
 	toolbarCanCollapse : false,
 	baseHref : elgg.config.wwwroot,
-	extraPlugins : 'autogrow',
+	extraPlugins : 'autogrow,confighelper',
 	removePlugins : 'contextmenu,showborders,tabletools,resize',
 	uiColor : '#EEEEEE',
 	contentsCss : '<?php echo $css_url; ?>',
