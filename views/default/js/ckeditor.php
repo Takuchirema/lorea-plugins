@@ -20,7 +20,7 @@ elgg.ckeditor.toggleEditor = function(event) {
 	var target = $(this).attr('href').substr(1);
 
 	if (!CKEDITOR.instances[target]) {
-		CKEDITOR.replace($('#'+target)[0], elgg.ckeditor.config).on('key', elgg.ckeditor.wordCount);
+		CKEDITOR.replace($('#'+target)[0], elgg.ckeditor.config);
 		$(this).html(elgg.echo('ckeditor:remove'));
 	} else {
 		CKEDITOR.instances[target].destroy();
@@ -34,12 +34,6 @@ elgg.ckeditor.toggleEditor = function(event) {
  * @param {Object} event
  * @return void
  */
-elgg.ckeditor.wordCount = function(evt) {
-	var matches = evt.editor.getData().replace(/<[^<|>]+?>|&nbsp;/gi,' ').match(/\b/g);
-	var words = matches ? matches.length / 2 : 0;
-	var text = elgg.echo('ckeditor:word_count') + words;
-	$('.cke_wordcount', evt.editor.container.$).text(text);
-}
 
 /**
  * CKEditor configuration
@@ -51,7 +45,7 @@ elgg.ckeditor.config = {
 	toolbar : [['Bold', 'Italic', 'Underline', '-', 'Strike', 'NumberedList', 'BulletedList', 'Undo', 'Redo', 'Link', 'Unlink', 'Image', 'Blockquote', 'Paste', 'PasteFromWord', 'Maximize']],
 	toolbarCanCollapse : false,
 	baseHref : elgg.config.wwwroot,
-	extraPlugins : 'autogrow,confighelper',
+	extraPlugins : 'autogrow,confighelper,wordcount',
 	removePlugins : 'contextmenu,showborders,tabletools,resize',
 	uiColor : '#EEEEEE',
 	contentsCss : '<?php echo $css_url; ?>',
@@ -66,11 +60,7 @@ elgg.ckeditor.init = function() {
 
 	$('.ckeditor-toggle-editor').live('click', elgg.ckeditor.toggleEditor);
 	$('.elgg-input-longtext').each(function() {
-		CKEDITOR.replace(this, elgg.ckeditor.config).on('key', elgg.ckeditor.wordCount);
-	});
-	CKEDITOR.on('instanceReady', function(evt) {
-		$('.cke_bottom', evt.editor.container.$).prepend('<div class="cke_wordcount" />');
-		elgg.ckeditor.wordCount(evt);
+		CKEDITOR.replace(this, elgg.ckeditor.config);
 	});
 }
 
