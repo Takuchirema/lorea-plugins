@@ -9,6 +9,10 @@
  */
 ?>
 
+.cke {
+	clear: right;
+}
+
 .cke_bottom .cke_wordcount {
 	float: left;
 }
