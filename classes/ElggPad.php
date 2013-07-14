@@ -85,11 +85,7 @@ class ElggPad extends ElggObject {
 			$container = elgg_get_logged_in_user_entity();
 		}
 
-		if (isset($this->owner_guid)) {
-			$user = get_entity($this->owner_guid);
-		} else {
-			$user = elgg_get_logged_in_user_entity();
-		}
+		$user = elgg_get_logged_in_user_entity();
 
 		//$site_mask = preg_replace('https?://', '@', elgg_get_site_url());
 		$site_mask = str_replace('http://', '@', elgg_get_site_url());
