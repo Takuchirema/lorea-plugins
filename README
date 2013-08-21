@@ -1,13 +1,13 @@
-elggpad v0.8.0
+elggpad v0.9.0
 
 Requires:
 	elgg 1.8 http://elgg.org/download.php
-	etherpad lite 1.0 http://etherpad.org/download/
+	etherpad lite 1.2 http://etherpad.org/download/
 	
 
 Install Etherpad Lite:
-	Run install/INSTALL.sh (as sudo) and follow its instructions.
-	It will install ep-lite dependences (node.js, npm...), install
+	Follow INSTALL instructions.
+	You will install ep-lite dependences (node.js, npm...), install
 	and configure ep-lite and finally create a daemon to manage it.
 
 Install Plugin:
@@ -44,7 +44,7 @@ Changes:
 	Plugin name changed from 'elggpad-lite' to 'elggpad' 
 	
 License:
-	GPL version 2, see LICENSE for more details.
+	GPL version 2+, see LICENSE for more details.
 
 
 
