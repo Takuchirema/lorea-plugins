@@ -3,6 +3,7 @@
  * Group edit form
  * 
  * @package ElggGroups
+ * @override mod/groups/views/default/forms/groups/edit.php
  */
 
 // only extract these elements.

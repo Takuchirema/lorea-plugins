@@ -1,6 +1,8 @@
 <?php
 /**
  * Group profile fields
+ * 
+ * @override mod/groups/views/default/groups/profile/fields.php
  */
 
 $group = $vars['entity'];

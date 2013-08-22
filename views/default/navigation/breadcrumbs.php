@@ -9,6 +9,7 @@
  * @uses $vars['class']
  *
  * @see elgg_push_breadcrumb
+ * @override views/default/navigation/breadcrumbs.php
  */
 
 if (isset($vars['breadcrumbs'])) {

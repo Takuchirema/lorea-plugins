@@ -12,6 +12,8 @@
  * @uses $vars['match_owner'] Bool.  Match only entities that are owned by logged in user.
  * @uses $vars['livesearsh_url'] Alternative livesearch URL
  * @uses $vars['class']       Additional CSS class
+ * 
+ * @override views/default/input/autocomplete.php
  */
 
 if (isset($vars['class'])) {

@@ -8,6 +8,8 @@
  * @uses $vars['subtitle']  HTML for the subtitle (optional)
  * @uses $vars['tags']      HTML for the tags (optional)
  * @uses $vars['content']   HTML for the entity content (optional)
+ * 
+ * @override mod/groups/views/default/group/elements/summary.php
  */
 
 $entity = $vars['entity'];

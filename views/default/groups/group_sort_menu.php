@@ -3,6 +3,7 @@
  * All groups listing page navigation
  *
  * @uses $vars['selected'] Name of the tab that has been selected
+ * @override mod/groups/views/default/groups/group_sort_menu.php
  */
 
 $tabs = array(
