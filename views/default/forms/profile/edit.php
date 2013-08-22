@@ -3,6 +3,7 @@
  * Edit profile form
  *
  * @uses vars['entity']
+ * @override views/default/forms/profile/edit.php
  */
 
 ?>
