@@ -4,6 +4,7 @@
  *
  * @package        Lorea
  * @subpackage     ElggPG
+ * @override mod/messages/actions/messages/send.php
  *
  * Copyright 2011-2013 Lorea Faeries <federation@lorea.org>
  *
