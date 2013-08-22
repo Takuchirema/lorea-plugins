@@ -10,6 +10,8 @@
  * @uses $vars['href']       Optional override for link
  * @uses $vars['img_class']  Optional CSS class added to img
  * @uses $vars['link_class'] Optional CSS class for the link
+ * 
+ * @override views/default/icon/default.php
  */
 
 $entity = $vars['entity'];

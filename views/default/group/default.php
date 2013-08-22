@@ -3,6 +3,7 @@
  * Group entity view
  * 
  * @package ElggGroups
+ * @override mod/groups/views/default/group/default.php
  */
 
 $group = $vars['entity'];
