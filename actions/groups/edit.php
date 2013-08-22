@@ -3,6 +3,7 @@
  * Elgg groups plugin edit action.
  *
  * @package ElggGroups
+ * @override mod/groups/actions/groups/edit.php
  */
 
 // Load configuration
