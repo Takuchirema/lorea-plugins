@@ -4,6 +4,7 @@
  *
  * @package Elgg
  * @subpackage Core
+ * @override views/default/forms/register.php
  */
 
 elgg_load_js('elgg.register');
