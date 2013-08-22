@@ -3,6 +3,7 @@
  * Group pages
  *
  * @package ElggPad
+ * @override mod/pages/views/default/pages/group_module.php
  */
 
 

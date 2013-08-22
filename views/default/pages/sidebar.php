@@ -1,6 +1,8 @@
 <?php
 /**
  * Pages sidebar
+ * 
+ * @override mod/pages/views/default/pages/sidebar.php
  */
 
 echo elgg_view('page/elements/comments_block', array(
