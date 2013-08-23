@@ -31,10 +31,6 @@ if (!$message) {
 	return true;
 }
 
-if ($full) {
-	$message->readYet = true;
-}
-
 if ($message->toId == elgg_get_page_owner_guid()) {
 	// received
 	$user = get_entity($message->fromId);
@@ -43,6 +39,7 @@ if ($message->toId == elgg_get_page_owner_guid()) {
 		$user_link = elgg_view('output/url', array(
 			'href' => "messages/compose?send_to=$user->guid",
 			'text' => $user->name,
+			'is_trusted' => true,
 		));
 	} else {
 		$icon = '';
@@ -64,6 +61,7 @@ if ($message->toId == elgg_get_page_owner_guid()) {
 		$user_link = elgg_view('output/url', array(
 			'href' => "messages/compose?send_to=$user->guid",
 			'text' => elgg_echo('messages:to_user', array($user->name)),
+			'is_trusted' => true,
 		));
 	} else {
 		$icon = '';
@@ -82,13 +80,14 @@ if (!$full) {
 $subject_info .= elgg_view('output/url', array(
 	'href' => $message->getURL(),
 	'text' => $message->title,
+	'is_trusted' => true,
 ));
 
 $delete_link = elgg_view("output/confirmlink", array(
 						'href' => "action/messages/delete?guid=" . $message->getGUID(),
-						'text' => "<span class=\"elgg-icon elgg-icon-delete right\"></span>",
+						'text' => "<span class=\"elgg-icon elgg-icon-delete float-alt\"></span>",
 						'confirm' => elgg_echo('deleteconfirm'),
-						'text_encode' => false,
+						'encode_text' => false,
 					));
 
 $body = <<<HTML
@@ -101,13 +100,11 @@ HTML;
 if ($full) {
 	echo elgg_view_image_block($icon, $body, array('class' => $class));
 
-	if (strpos($message->description, "-----BEGIN PGP MESSAGE-----")) {
-    echo "<pre class=\"pgparmor\">" . $message->description . "</pre>";
-  }
-  else
-  {
-	  echo elgg_view('output/longtext', array('value' => $message->description));
-  }
+	if (strpos($message->description, "-----BEGIN PGP MESSAGE-----") > 0) {
+		echo "<pre class=\"pgparmor\">" . $message->description . "</pre>";
+	} else {
+		echo elgg_view('output/longtext', array('value' => $message->description));
+	}
 
 } else {
 	echo elgg_view_image_block($icon, $body, array('class' => $class));
