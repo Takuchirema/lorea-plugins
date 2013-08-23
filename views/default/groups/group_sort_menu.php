@@ -12,17 +12,15 @@ $tabs = array(
 		'href' => 'groups/all?filter=newest',
 		'priority' => 200,
 	),
-
 	'popular' => array(
 		'text' => elgg_echo('groups:popular'),
 		'href' => 'groups/all?filter=popular',
-		'priority' => 400,
+		'priority' => 300,
 	),
-	
 	'discussion' => array(
 		'text' => elgg_echo('groups:latestdiscussion'),
 		'href' => 'groups/all?filter=discussion',
-		'priority' => 500,
+		'priority' => 400,
 	),
 );
 
@@ -30,7 +28,7 @@ if ($user = elgg_get_logged_in_user_entity()) {
 	$tabs['member'] = array(
 		'text' => elgg_echo('groups:yours'),
 		'href' => "groups/member/$user->username",
-		'priority' => 300,
+		'priority' => 250,
 	);
 }
 
