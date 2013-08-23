@@ -26,7 +26,6 @@ if (elgg_get_context() == 'gallery') {
 	echo elgg_view("groups/profile/profile_block", $vars);
 } else {
 	// brief view
-
 	$params = array(
 		'entity' => $group,
 		'metadata' => $metadata,
