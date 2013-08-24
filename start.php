@@ -7,35 +7,6 @@
 
 elgg_register_event_handler('init', 'system', 'elggman_init');
 
-function elggman_dummy($from, $to, $subject, $topic, $params = array()) {
-}
-
-function elggman_set_path() {
-	global $CONFIG;
-	if (get_include_path())
-		set_include_path($CONFIG->path . 'mod/elggman/vendors/' . PATH_SEPARATOR . get_include_path());
-	else
-		set_include_path($CONFIG->path . 'mod/elggman/vendors/');
-}
-
-function elggman_annotation_menu_setup($hook, $type, $return, $params) {
-	$annotation = $params['annotation'];
-	$name = $annotation->name;
-	if (in_array($name, array('whitelist', 'blacklist'))) {
-		$id = $annotation->id;
-		$owner = get_entity($annotation->owner_guid);
-		$options = array(
-			'name' => 'delete',
-			'text' => elgg_echo('delete'),
-			'href' => "action/elggman/whitelist/delete?id=$id&filter=$name",
-			'is_action' => true,
-			'priority' => 1000,
-		);
-		$return[] = ElggMenuItem::factory($options);
-	}
-	return $return;
-}
-
 /**
  * Elggman plugin initialization functions.
  */
@@ -133,27 +104,29 @@ function elggman_page_handler($page) {
 }
 
 function elggman_send_email($from, $to, $subject, $body, $params) {
-	 // return TRUE/FALSE to stop elgg_send_email() from sending
-        $mail_params = array(
-                                                        'to' => $to,
-                                                        'from' => $from,
-                                                        'subject' => $subject,
-                                                        'body' => $body,
-                                                        'headers' => $params['headers']
-                                        );
+    // return TRUE/FALSE to stop elgg_send_email() from sending
+    $mail_params = array(
+        'to' => $to,
+        'from' => $from,
+        'subject' => $subject,
+        'body' => $body,
+        'headers' => $params['headers']
+    );
 
-        $result = elgg_trigger_plugin_hook('email', 'system', $mail_params, NULL);
-        if ($result !== NULL) {
-                return $result;
-        }
+    $result = elgg_trigger_plugin_hook('email', 'system', $mail_params, NULL);
+    if ($result !== NULL) {
+            return $result;
+    }
 
 	$body = preg_replace("/^From/", ">From", $body); // Change lines starting with From to >From
 
 	// Sanitise subject by stripping line endings
-        $subject = preg_replace("/(\r\n|\r|\n)/", " ", $subject);
-        if (is_callable('mb_encode_mimeheader')) {
-                $subject = mb_encode_mimeheader($subject, "UTF-8", "B");
-        }
+    $subject = preg_replace("/(\r\n|\r|\n)/", " ", $subject);
+    // this is because Elgg encodes everything and matches what is done with body
+    $subject = html_entity_decode($subject, ENT_COMPAT, 'UTF-8'); // Decode any html entities
+    if (is_callable('mb_encode_mimeheader')) {
+        $subject = mb_encode_mimeheader($subject, "UTF-8", "B");
+    }
 
 	return mail($to, $subject, wordwrap($body), $params['headers']);
 }
@@ -237,12 +210,12 @@ function elggman_is_user_subscribed($user_guid, $group_guid) {
 
 function elggman_get_subscriptors($group_guid) {
 	return elgg_get_entities_from_relationship(array(
-				'type' => 'user',
-				'relationship' => 'notifymailshot',
-				'relationship_guid' => $group_guid,
-				'inverse_relationship' => TRUE,
-				'limit' => 0,
-				));
+		'type' => 'user',
+		'relationship' => 'notifymailshot',
+		'relationship_guid' => $group_guid,
+		'inverse_relationship' => TRUE,
+		'limit' => 0,
+	));
 }
 
 function elggman_apikey() {
@@ -262,4 +235,34 @@ function elggman_get_group_mailinglist($group) {
 		return $group->alias . '@' . elgg_get_plugin_setting('mailname', 'elggman');
 	}
 	return false;
+}
+
+function elggman_dummy($from, $to, $subject, $topic, $params = array()) {
+}
+
+function elggman_set_path() {
+    global $CONFIG;
+	if (get_include_path()) {
+		set_include_path($CONFIG->path . 'mod/elggman/vendors/' . PATH_SEPARATOR . get_include_path());
+	} else {
+		set_include_path($CONFIG->path . 'mod/elggman/vendors/');
+	}
+}
+
+function elggman_annotation_menu_setup($hook, $type, $return, $params) {
+	$annotation = $params['annotation'];
+	$name = $annotation->name;
+	if (in_array($name, array('whitelist', 'blacklist'))) {
+		$id = $annotation->id;
+		$owner = get_entity($annotation->owner_guid);
+		$options = array(
+			'name' => 'delete',
+			'text' => elgg_echo('delete'),
+			'href' => "action/elggman/whitelist/delete?id=$id&filter=$name",
+			'is_action' => true,
+			'priority' => 1000,
+		);
+		$return[] = ElggMenuItem::factory($options);
+	}
+	return $return;
 }
