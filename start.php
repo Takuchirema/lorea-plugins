@@ -240,15 +240,6 @@ function elggman_get_group_mailinglist($group) {
 function elggman_dummy($from, $to, $subject, $topic, $params = array()) {
 }
 
-function elggman_set_path() {
-    global $CONFIG;
-	if (get_include_path()) {
-		set_include_path($CONFIG->path . 'mod/elggman/vendors/' . PATH_SEPARATOR . get_include_path());
-	} else {
-		set_include_path($CONFIG->path . 'mod/elggman/vendors/');
-	}
-}
-
 function elggman_annotation_menu_setup($hook, $type, $return, $params) {
 	$annotation = $params['annotation'];
 	$name = $annotation->name;

@@ -8,8 +8,7 @@
  * @subpackage Core
  */
 
-elggman_set_path();
-require_once 'Mail/mimeDecode.php';
+require_once(elgg_get_plugins_path() . "elggman/vendorsMail/mimeDecode.php");
 
 $entity = $vars['entity'];
 

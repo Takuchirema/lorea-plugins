@@ -162,8 +162,7 @@ function elggman_extract_body($result, $group) {
 }
 
 function elggman_incoming_mail($sender, $list, $data, $secret, $accepted=false) {
-	elggman_set_path();
-	require_once 'Mail/mimeDecode.php';
+	require_once elgg_get_plugins_path() . "elggman/vendorsMail/mimeDecode.php";
 
 	// check secret
 	if ($secret != elggman_apikey()) {

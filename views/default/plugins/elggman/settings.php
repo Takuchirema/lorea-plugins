@@ -10,16 +10,14 @@ $readme = " (<a href='". elgg_get_site_url() . "admin_plugin_text_file/elggman/R
 <div>
 <?php
 
-elggman_set_path();
 // check for mimedecode library
-if(!@include("Mail/mimeDecode.php")) {
+if(!include(elgg_get_plugins_path() . "elggman/vendorsMail/mimeDecode.php")) {
 	// show the failure page with instructions.
 	echo "<div>";
 	echo elgg_echo('elggman:dependency_fail');
 	echo $readme;
 	echo "</div>";
-}
-else {
+} else {
 // settings
 ?>
     <div><label><?php echo elgg_echo('elggman:mailname'); ?></label><br />
