@@ -26,6 +26,8 @@
 
 $language = array(
 	'elggpg' => 'gpg key',
+    'profile:openpgp_publickey' => 'Encryption key',
+    'profile:openpgp_publickey:help' => 'What\'s that?',
 	'elggpg:profileinstructions'=>'This is your public key information',
 	'elggpg:identity'=>'Associated identity',
 	'elggpg:manage'=>'Manage encryption',
@@ -36,7 +38,6 @@ $language = array(
 	'river:addkey:user:default'=>'%s uploaded her %s',
 	'elggpg:public_key:imported'=>'Key imported',
 	'elggpg:sendamessage'=>'Send an encrypted message',
-	'elggpg:view'=>'View encryption keys',
 	'elggpg:nopublickey'=>'User has no public key',
 	'elggpg:manage:header'=>'GPG Public Key',
 	'elggpg:upload'=>'Upload a new public key',

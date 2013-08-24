@@ -85,11 +85,11 @@ $subject_info .= elgg_view('output/url', array(
 ));
 
 $delete_link = elgg_view("output/confirmlink", array(
-						'href' => "action/messages/delete?guid=" . $message->getGUID(),
-						'text' => "<span class=\"elgg-icon elgg-icon-delete float-alt\"></span>",
-						'confirm' => elgg_echo('deleteconfirm'),
-						'encode_text' => false,
-					));
+	'href' => "action/messages/delete?guid=" . $message->getGUID(),
+	'text' => "<span class=\"elgg-icon elgg-icon-delete float-alt\"></span>",
+	'confirm' => elgg_echo('deleteconfirm'),
+	'encode_text' => false,
+));
 
 $body = <<<HTML
 <div class="messages-owner">$user_link</div>
@@ -101,7 +101,7 @@ HTML;
 if ($full) {
 	echo elgg_view_image_block($icon, $body, array('class' => $class));
 
-	if (strpos($message->description, "-----BEGIN PGP MESSAGE-----") > 0) {
+	if (strpos($message->description, "-----BEGIN PGP MESSAGE-----") >= 0) {
 		echo "<pre class=\"pgparmor\">" . $message->description . "</pre>";
 	} else {
 		echo elgg_view('output/longtext', array('value' => $message->description));

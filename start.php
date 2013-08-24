@@ -42,6 +42,9 @@ function elggpg_init() {
 	// Register a page handler, so we can have nice URLs
 	elgg_register_page_handler('elggpg', 'elggpg_page_handler');
 
+    // Add fingerprint in user details
+    elgg_register_plugin_hook_handler('profile:fields', 'profile', 'elggpg_profile_fingerprint');
+
 	// Register a notification handler to encrypt messages
 	elgg_register_plugin_hook_handler('email', 'system', 'elggpg_send_email_handler');
 
@@ -63,6 +66,10 @@ function elggpg_init() {
 
 /**
  * Page handler
+ * 
+ * @param array $page Url parts
+ * 
+ * @return bool
 */
 function elggpg_page_handler($page) {
 
@@ -85,6 +92,16 @@ function elggpg_page_handler($page) {
 	return true;
 }
 
+/**
+ * It hijacks the email sender to encrypt the messages if needed.
+ * 
+ * @param string $hook
+ * @param string $type
+ * @param bool $return
+ * @param array $params Includes $from, $to, $subject, $body and $headers
+ * 
+ * @return bool
+ */
 function elggpg_send_email_handler($hook, $type, $return, $params) {
 	$from = $params['from'];
 	$to = $params['to'];
@@ -113,7 +130,7 @@ function elggpg_send_email_handler($hook, $type, $return, $params) {
 	// The following code is the same that in elgg's
 
 	$header_eol = "\r\n";
-	if (isset($CONFIG->broken_mta) && $CONFIG->broken_mta) {
+	if (elgg_get_config('broken_mta')) {
 		// Allow non-RFC 2822 mail headers to support some broken MTAs
 		$header_eol = "\n";
 	}
@@ -140,11 +157,28 @@ function elggpg_send_email_handler($hook, $type, $return, $params) {
 
 	// Sanitise subject by stripping line endings
 	$subject = preg_replace("/(\r\n|\r|\n)/", " ", $subject);
+    // this is because Elgg encodes everything and matches what is done with body
+    $subject = html_entity_decode($subject, ENT_COMPAT, 'UTF-8'); // Decode any html entities
 	if (is_callable('mb_encode_mimeheader')) {
 		$subject = mb_encode_mimeheader($subject, "UTF-8", "B");
 	}
 
 	return mail($to, $subject, $body, $headers);
+}
+
+/**
+ * Add a fingerprint profile field
+ * 
+ * @param string $hook
+ * @param string $type
+ * @param array  $return
+ * @param array  $profile_defaults
+ * 
+ * @return array
+ */
+function elggpg_profile_fingerprint ($hook, $type, $return, $profile_defaults) {
+    $return['openpgp_publickey'] = 'fingerprint';
+    return $return;
 }
 
 /**
@@ -154,14 +188,14 @@ function elggpg_send_email_handler($hook, $type, $return, $params) {
  * @param string $type
  * @param array  $return
  * @param array  $params
+ * 
+ * @return array
  */
 function elggpg_owner_block_menu($hook, $type, $return, $params) {
-	if (elgg_instanceof($params['entity'], 'user') && ($params['entity']->isFriend() || $params['entity']->guid == elgg_get_logged_in_user_guid())) {
+	if ($params['entity']->guid == elgg_get_logged_in_user_guid()) {
 		$url = "elggpg/owner/{$params['entity']->username}";
 		if ($params['entity'] == elgg_get_logged_in_user_entity()) {
 			$item = new ElggMenuItem('elggpg', elgg_echo('elggpg:manage'), $url);
-		} else {
-			$item = new ElggMenuItem('elggpg', elgg_echo('elggpg:view'), $url);
 		}
 		$item->setSection('manage');
 		$return[] = $item;
