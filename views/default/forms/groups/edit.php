@@ -93,7 +93,8 @@ if (isset($vars['entity'])) {
 	$entity = false;
 }
 
-if ($entity && ($owner_guid == elgg_get_logged_in_user_guid() || elgg_is_admin_logged_in())) {
+if ($entity && ($owner_guid == elgg_get_logged_in_user_guid() || elgg_is_admin_logged_in())
+&& !elgg_get_config('disable_group_owner_change_from_form')) {
 	$members = array();
 
 	$options = array(
