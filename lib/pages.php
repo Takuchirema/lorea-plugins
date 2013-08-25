@@ -1,6 +1,8 @@
 <?php
 /**
  * Pages function library
+ * 
+ * @override mod/pages/lib/pages.php
  */
 
 /**
@@ -9,9 +11,9 @@
  * @param ElggObject $page
  * @return array
  */
-function pages_prepare_form_vars($page = null, $parent_guid = 0) {
+function pages_prepare_form_vars($page = null, $parent_guid = 0, $revision = null) {
 
-	// input names => defaults
+    // input names => defaults
 	$values = array(
 		'title' => '',
 		'description' => '',
@@ -41,6 +43,11 @@ function pages_prepare_form_vars($page = null, $parent_guid = 0) {
 
 	elgg_clear_sticky_form('page');
 
+	// load the revision annotation if requested
+	if ($revision instanceof ElggAnnotation && $revision->entity_guid == $page->getGUID()) {
+		$values['description'] = $revision->value;
+	}
+
 	return $values;
 }
 
@@ -65,11 +72,11 @@ function pages_prepare_parent_breadcrumbs($page) {
 }
 
 /**
- * Register the navigation menu
+ * Produce the navigation tree
  * 
  * @param ElggEntity $container Container entity for the pages
  */
-function pages_register_navigation_tree($container) {
+function pages_get_navigation_tree($container) {
 	if (!$container) {
 		return;
 	}
@@ -84,13 +91,18 @@ function pages_register_navigation_tree($container) {
 	if (!$top_pages) {
 		return;
 	}
+	
+	$tree = array();
+	$depths = array();
 
 	foreach ($top_pages as $page) {
-		elgg_register_menu_item('pages_nav', array(
-			'name' => $page->getGUID(),
-			'text' => $page->title,
-			'href' => $page->getURL(),
-		));
+		$tree[] = array(
+			'guid' => $page->getGUID(),
+			'title' => $page->title,
+			'url' => $page->getURL(),
+			'depth' => 0,
+		);
+		$depths[$page->guid] = 0;
 
 		$stack = array();
 		array_push($stack, $page);
@@ -106,15 +118,37 @@ function pages_register_navigation_tree($container) {
 
 			if ($children) {
 				foreach ($children as $child) {
-					elgg_register_menu_item('pages_nav', array(
-						'name' => $child->getGUID(),
-						'text' => $child->title,
-						'href' => $child->getURL(),
-						'parent_name' => $parent->getGUID(),
-					));
+					$tree[] = array(
+						'guid' => $child->getGUID(),
+						'title' => $child->title,
+						'url' => $child->getURL(),
+						'parent_guid' => $parent->getGUID(),
+						'depth' => $depths[$parent->guid] + 1,
+					);
+					$depths[$child->guid] = $depths[$parent->guid] + 1;
 					array_push($stack, $child);
 				}
 			}
+		}
+	}
+	return $tree;
+}
+
+/**
+ * Register the navigation menu
+ * 
+ * @param ElggEntity $container Container entity for the pages
+ */
+function pages_register_navigation_tree($container) {
+	$pages = pages_get_navigation_tree($container);
+	if ($pages) {
+		foreach ($pages as $page) {
+			elgg_register_menu_item('pages_nav', array(
+				'name' => $page['guid'],
+				'text' => $page['title'],
+				'href' => $page['url'],
+				'parent_name' => $page['parent_guid'],
+			));
 		}
 	}
 }

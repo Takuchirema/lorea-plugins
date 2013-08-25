@@ -1,6 +1,8 @@
 <?php
 /**
  * List a user's or group's pages
+ * 
+ * @override mod/pages/pages/owner.php
  *
  * @package ElggPages
  */

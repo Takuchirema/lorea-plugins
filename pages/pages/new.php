@@ -1,6 +1,8 @@
 <?php
 /**
  * Create a new page
+ * 
+ * @override mod/pages/pages/new.php
  *
  * @package ElggPages
  */

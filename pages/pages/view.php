@@ -1,6 +1,8 @@
 <?php
 /**
  * View a single page
+ * 
+ * @override mod/pages/pages/view.php
  *
  * @package ElggPages
  */

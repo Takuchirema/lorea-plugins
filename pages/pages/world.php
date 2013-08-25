@@ -1,6 +1,8 @@
 <?php
 /**
  * List all pages
+ * 
+ * @override mod/pages/pages/world.php
  *
  * @package ElggPages
  */

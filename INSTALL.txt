@@ -1,9 +1,9 @@
 
-## Node & NPM
+### Node & NPM
 
 You first need to install **node** and **npm**.
 
-When writting this documentation, latest Etherpad Lite (1.2.11) wasn't working with latest stable node.js version (v0.10.16).
+At the time of writting this documentation, latest Etherpad Lite (1.2.11) wasn't working with latest stable node.js version (v0.10.16).
 
 You can download precompiled *node.js v0.8.25* from http://nodejs.org
 
@@ -13,16 +13,7 @@ $ tar -vxzf node-v0.8.25-linux-x64.tar.gz
 $ rm node-v0.8.25-linux-x64.tar.gz
 $ mv node-v0.8.25-linux-x64 /opt
 $ ln -s /opt/node-v0.8.25-linux-x64/bin/node /usr/local/bin/node
-</pre>
-
-NPM is included as a binary package in *node v10.** versions. You can get it from there.
-
-<pre>
-$ wget http://nodejs.org/dist/v0.10.16/node-v0.10.16-linux-x64.tar.gz
-$ tar -vxzf node-v0.10.16-linux-x64.tar.gz
-$ rm node-v0.10.16-linux-x64.tar.gz
-$ mv node-v0.10.16-linux-x64 /opt
-$ ln -s /opt/node-v0.10.16-linux-x64/bin/npm /usr/local/bin/npm
+$ ln -s /opt/node-v0.8.25-linux-x64/bin/npm /usr/local/bin/npm
 </pre>
 
 You can check node's version:
@@ -32,18 +23,19 @@ $ node --version
 v0.8.25
 </pre>
 
-## Etherpad Lite
+### Etherpad Lite
 
 You can get the latest version from github, configure and deploy as a service.
 
 <pre>
 # Install etherpad-lite
-$ git clone git://github.com/Pita/etherpad-lite.git /usr/share/etherpad-lite
+$ git clone git://github.com/ether/etherpad-lite.git /usr/share/etherpad-lite
 $ sh /usr/share/etherpad-lite/bin/installDeps.sh
 
 # Configure Etherpad settings
-$ cp /usr/share/etherpad-lite/settings.json.template /usr/share/etherpad-lite/settings.json
 $ nano /usr/share/etherpad-lite/settings.json
+
+Usually you set a mysql database for etherpad here.
 
 # Create a user called etherpad-lite
 $ useradd -r -d /bin/false etherpad-lite
@@ -64,9 +56,46 @@ $ chmod +x /etc/init.d/etherpad-lite
 $ update-rc.d etherpad-lite defaults
 </pre>
 
-Provided **ep-daemon** if for Debian and Ubuntu, you can get more in the [Etherpad Lite Wiki](https://github.com/ether/etherpad-lite/wiki/How-to-deploy-Etherpad-Lite-as-a-service).
+Provided **ep-daemon** if for Debian and Ubuntu, you can get more daemons in the [Etherpad Lite Wiki](https://github.com/ether/etherpad-lite/wiki/How-to-deploy-Etherpad-Lite-as-a-service).
 
-## Elgg Plugin
+You can run Etherpad Lite with:
+
+<pre>
+service etherpad-lite start
+</pre>
+
+Etherpad Lite should be running on http://localhost:9001/
+
+### Reverse Proxy
+
+You can read [How to put Etherpad Lite behind a reverse Proxy](https://github.com/ether/etherpad-lite/wiki/How-to-put-Etherpad-Lite-behind-a-reverse-Proxy) from Etherpad Wiki to know how to serve resources from 9001 port to / path.
+
+To integrate Etherpad with Elgg, we need it served in a /pad subpath, becuase whey are sharing cookies.
+
+This is an example for apache2:
+
+<pre>
+  Redirect /pad /pad/
+
+  LoadModule  proxy_module         /usr/lib/apache2/modules/mod_proxy.so  
+  LoadModule  proxy_http_module    /usr/lib/apache2/modules/mod_proxy_http.so
+  LoadModule  headers_module       /usr/lib/apache2/modules/mod_headers.so
+  LoadModule  deflate_module       /usr/lib/apache2/modules/mod_deflate.so
+
+  ProxyVia On
+  ProxyRequests Off
+  ProxyPass /pad/ http://localhost:9001/
+  ProxyPassReverse /pad/ http://localhost:9001/
+  ProxyPreserveHost on
+  <Proxy *>
+      Options FollowSymLinks MultiViews
+      AllowOverride All
+      Order allow,deny
+      allow from all
+  </Proxy>
+</pre>
+
+### Elgg Plugin
 
 Once you have Etherpad Lite running, it's the turn to Elgg. Go to the admin area and activate the plugin. Then, in it's configuration write the API KEY you can find in API-KEY.txt.
 

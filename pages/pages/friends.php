@@ -1,6 +1,8 @@
 <?php
 /**
  * List a user's friends' pages
+ * 
+ * @override mod/pages/pages/friends.php
  *
  * @package ElggPages
  */

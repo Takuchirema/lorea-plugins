@@ -5,12 +5,13 @@
  * Subpages are not deleted but are moved up a level in the tree
  *
  * @package ElggPad
+ * @override mod/pages/actions/pages/delete.php
  */
 
 $guid = get_input('guid');
 $page = new ElggPad($guid);
 if ($page) {
-	// only allow owners and admin to delete
+    // only allow owners and admin to delete
 	if (elgg_is_admin_logged_in() || elgg_get_logged_in_user_guid() == $page->getOwnerGuid()) {
 		$container = get_entity($page->container_guid);
 
@@ -21,11 +22,33 @@ if ($page) {
 			'metadata_value' => $page->getGUID()
 		));
 		if ($children) {
+			$db_prefix = elgg_get_config('dbprefix');
+			$subtype_id = (int)get_subtype_id('object', 'etherpad');
+			$newentity_cache = is_memcache_available() ? new ElggMemcache('new_entity_cache') : null;
+
 			foreach ($children as $child) {
-				$child->parent_guid = $parent;
+				if ($parent) {
+					$child->parent_guid = $parent;
+				} else {
+					// If no parent, we need to transform $child to a page_top
+					$child_guid = (int)$child->guid;
+
+					update_data("UPDATE {$db_prefix}entities
+						SET subtype = $subtype_id WHERE guid = $child_guid");
+
+					elgg_delete_metadata(array(
+						'guid' => $child_guid,
+						'metadata_name' => 'parent_guid',
+					));
+
+					_elgg_invalidate_cache_for_entity($child_guid);
+					if ($newentity_cache) {
+						$newentity_cache->delete($child_guid);
+					}
+				}
 			}
 		}
-		
+
 		if ($page->delete()) {
 			system_message(elgg_echo('etherpad:delete:success'));
 			if ($parent) {

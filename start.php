@@ -3,75 +3,104 @@
  * Elgg Etherpad lite plugin
  *
  * @package etherpad
+ * @override mod/pages/start.php
  */
  
 elgg_register_event_handler('init', 'system', 'etherpad_init');
 
-
+/**
+ * Initialize the etherpad plugin.
+ *
+ */
 function etherpad_init() {
-	
-	// override pages library
+
+    // override pages library
 	elgg_register_library('elgg:pages', elgg_get_plugins_path() . 'etherpad/lib/pages.php');
-	
-	$actions_base = elgg_get_plugins_path() . 'etherpad/actions/etherpad';
-	elgg_register_action("etherpad/save", "$actions_base/save.php");
-	elgg_register_action("etherpad/delete", "$actions_base/delete.php");
-	
+
+	$page_integration = elgg_get_plugin_setting('integrate_in_pages', 'etherpad') != 'yes';
+
+	if ($page_integration) {
+		$item = new ElggMenuItem('etherpad', elgg_echo('etherpad'), 'etherpad/all');
+		elgg_register_menu_item('site', $item);
+	}
+
+	// Register a URL handler, so we can have nice URLs
 	elgg_register_page_handler('pages', 'etherpad_page_handler');
 	elgg_register_page_handler('etherpad', 'etherpad_page_handler');
+
+	// Register a url handler
+	if ($page_integration) {
+		elgg_register_entity_url_handler('object', 'etherpad', 'etherpad_url');
+		elgg_register_entity_url_handler('object', 'subpad', 'etherpad_url');
+	} else {
+		elgg_register_entity_url_handler('object', 'etherpad', 'pages_url');
+		elgg_register_entity_url_handler('object', 'subpad', 'pages_url');
+	}
+
+	// Register some actions
+	$action_base = elgg_get_plugins_path() . 'etherpad/actions';
+	elgg_register_action("etherpad/save", "$action_base/etherpad/save.php");
+	elgg_register_action("etherpad/delete", "$action_base/etherpad/delete.php");
+
+	// Register entity type for search
+	elgg_register_entity_type('object', 'etherpad', 'ElggPad');
+	elgg_register_entity_type('object', 'subpad', 'ElggPad');
+
+	if($page_integration) {
+		// add to groups
+		add_group_tool_option('etherpad', elgg_echo('groups:enablepads'), true);
+		elgg_extend_view('groups/tool_latest', 'etherpad/group_module');
+	}
+
+	// add a widget
+	elgg_register_widget_type('etherpad', elgg_echo('etherpad'), elgg_echo('etherpad:profile:widgetdesc'));
 	
+
 	// Language short codes must be of the form "etherpad:key"
 	// where key is the array key below
 	elgg_set_config('etherpad', array(
 		'title' => 'text',
 		'tags' => 'tags',
+		'parent_guid' => 'parent',
 		'access_id' => 'access',
 		'write_access_id' => 'write_access',
 	));
-	
-	elgg_register_plugin_hook_handler('register', 'menu:entity', 'etherpad_entity_menu');
-	
-	elgg_register_entity_type('object', 'etherpad', 'ElggPad');
-	elgg_register_entity_type('object', 'subpad', 'ElggPad');
-	
+
+	if ($page_integration) {
+		elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'etherpad_owner_block_menu');
+	}
+
 	// write permission plugin hooks
 	elgg_register_plugin_hook_handler('permissions_check', 'object', 'etherpad_write_permission_check');
 	elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'etherpad_container_permission_check');
 	
-	//Widget
-	elgg_register_widget_type('etherpad', elgg_echo('etherpad'), elgg_echo('etherpad:profile:widgetdesc'));
-	
 	// icon url override
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'etherpad_icon_url_override');
-	
-	if(elgg_get_plugin_setting('integrate_in_pages', 'etherpad') != 'yes') {
-		$item = new ElggMenuItem('etherpad', elgg_echo('etherpad'), 'etherpad/all');
-		elgg_register_menu_item('site', $item);
-		
-		elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'etherpad_owner_block_menu');
-		
-		// add to groups
-		add_group_tool_option('etherpad', elgg_echo('groups:enablepads'), true);
-		elgg_extend_view('groups/tool_latest', 'etherpad/group_module');
-		
-		// Register a URL handler for bookmarks
-		elgg_register_entity_url_handler('object', 'etherpad', 'etherpad_url');
-		elgg_register_entity_url_handler('object', 'subpad', 'etherpad_url');
-	} else {
-		// Register a URL handler for bookmarks
-		elgg_register_entity_url_handler('object', 'etherpad', 'pages_url');
-		elgg_register_entity_url_handler('object', 'subpad', 'pages_url');
-	}
+
+	// entity menu
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'etherpad_entity_menu_setup');
+
 	elgg_register_event_handler('upgrade', 'system', 'etherpad_run_upgrades');
 }
 
-function etherpad_run_upgrades() {
-	if (include_once(elgg_get_plugins_path() . 'upgrade-tools/lib/upgrade_tools.php')) {
-		upgrade_module_run('etherpad');
-	}
-
-}
-
+/**
+ * Dispatcher for pages.
+ * URLs take the form of
+ *  All pages:        (pages|etherpad)/all
+ *  User's pages:     (pages|etherpad)/owner/<username>
+ *  Friends' pages:   (pages|etherpad)/friends/<username>
+ *  View page:        (pages|etherpad)/view/<guid>/<title>
+ *  New page:         (pages|etherpad)/add/<guid> (container: user, group, parent)
+ *  Edit page:        (pages|etherpad)/edit/<guid>
+ *  History of page:  (pages|etherpad)/history/<guid>
+ *  Revision of page: (pages|etherpad)/revision/<id>
+ *  Group pages:      (pages|etherpad)/group/<guid>/all
+ *
+ * Title is ignored
+ *
+ * @param array $page
+ * @return bool
+ */
 function etherpad_page_handler($page, $handler) {
 	
 	elgg_load_library('elgg:pages');
@@ -125,77 +154,6 @@ function etherpad_page_handler($page, $handler) {
 }
 
 /**
- * Add timeslider to entity menu
- */
-function etherpad_entity_menu($hook, $type, $return, $params) {
-	
-	$entity = $params['entity'];
-	
-	if (elgg_in_context('widgets')) {
-		return $return;
-	}
-	
-	if(!in_array($entity->getSubtype(), array('etherpad', 'subpad'))){
-		return $return;
-	}
-
-	// remove delete if not owner or admin
-	if (!elgg_is_admin_logged_in() && elgg_get_logged_in_user_guid() != $entity->getOwnerGuid()) {
-		foreach ($return as $index => $item) {
-			if ($item->getName() == 'delete') {
-				unset($return[$index]);
-			}
-		}
-	}
-
-	// timeslider button, show only if pages integration is enabled.
-	$handler = elgg_get_plugin_setting('integrate_in_pages', 'etherpad') == 'yes' ? 'pages' : 'etherpad';
-	if($handler == 'pages') {
-		$options = array(
-			'name' => 'etherpad-timeslider',
-			'text' => elgg_echo('etherpad:timeslider'),
-			'href' => elgg_get_site_url() . "$handler/history/" . $entity->guid,
-			'priority' => 200,
-		);
-	} else {
-		// fullscreen button
-		$entity = new ElggPad($entity->guid);
-		$options = array(
-			'name' => 'etherpadfs',
-			'text' => elgg_echo('etherpad:fullscreen'),
-			'href' => $entity->getPadPath(),
-			'priority' => 200,
-		);
-	} 
-	$return[] = ElggMenuItem::factory($options);
-
-	return $return;
-}
-
-/**
-* Returns a more meaningful message
-*
-* @param unknown_type $hook
-* @param unknown_type $entity_type
-* @param unknown_type $returnvalue
-* @param unknown_type $params
-*/
-function etherpad_notify_message($hook, $entity_type, $returnvalue, $params) {
-	$entity = $params['entity'];
-	$to_entity = $params['to_entity'];
-	$method = $params['method'];
-	if (($entity instanceof ElggEntity) && (($entity->getSubtype() == 'etherpad'))) {
-		$descr = $entity->description;
-		$title = $entity->title;
-		//@todo why?
-		$url = elgg_get_site_url() . "view/" . $entity->guid;
-		$owner = $entity->getOwnerEntity();
-		return $owner->name . ' ' . elgg_echo("pages:via") . ': ' . $title . "\n\n" . $descr . "\n\n" . $entity->getURL();
-	}
-	return null;
-}
-
-/**
  * Override the etherpad url
  * 
  * @param ElggObject $entity Pad object
@@ -246,12 +204,87 @@ function etherpad_owner_block_menu($hook, $type, $return, $params) {
 }
 
 /**
+ * Add links/info to entity menu particular to pages plugin
+ */
+function etherpad_entity_menu_setup($hook, $type, $return, $params) {
+	if (elgg_in_context('widgets')) {
+		return $return;
+	}
+
+	$entity = $params['entity'];
+	$handler = elgg_extract('handler', $params, false);
+	if ($handler != 'etherpad') {
+		return $return;
+	}
+
+	// remove delete if not owner or admin
+	if (!elgg_is_admin_logged_in() && elgg_get_logged_in_user_guid() != $entity->getOwnerGuid()) {
+		foreach ($return as $index => $item) {
+			if ($item->getName() == 'delete') {
+				unset($return[$index]);
+			}
+		}
+	}
+
+	// timeslider button, show only if pages integration is enabled.
+	$handler = elgg_get_plugin_setting('integrate_in_pages', 'etherpad') == 'yes' ? 'pages' : 'etherpad';
+	if($handler == 'pages') {
+		$options = array(
+			'name' => 'etherpad-timeslider',
+			'text' => elgg_echo('etherpad:timeslider'),
+			'href' => "$handler/history/$entity->guid",
+			'priority' => 200,
+		);
+	} 
+		// fullscreen button
+		$entity = new ElggPad($entity->guid);
+		$options = array(
+			'name' => 'etherpadfs',
+			'text' => elgg_echo('etherpad:fullscreen'),
+			'href' => $entity->getPadPath(),
+			'priority' => 200,
+		);
+	
+	$return[] = ElggMenuItem::factory($options);
+
+	return $return;
+}
+
+/**
+* Returns a more meaningful message
+*
+* @param unknown_type $hook
+* @param unknown_type $entity_type
+* @param unknown_type $returnvalue
+* @param unknown_type $params
+*/
+function etherpad_notify_message($hook, $entity_type, $returnvalue, $params) {
+	$entity = $params['entity'];
+	$to_entity = $params['to_entity'];
+	$method = $params['method'];
+
+	if (elgg_instanceof($entity, 'object', 'etherpad') || elgg_instanceof($entity, 'object', 'subpad')) {
+		$descr = $entity->description;
+		$title = $entity->title;
+		$owner = $entity->getOwnerEntity();
+		
+		return elgg_echo('pages:notification', array(
+			$owner->name,
+			$title,
+			$descr,
+			$entity->getURL()
+		));
+	}
+	return null;
+}
+
+/**
  * Extend permissions checking to extend can-edit for write users.
  *
- * @param unknown_type $hook
- * @param unknown_type $entity_type
- * @param unknown_type $returnvalue
- * @param unknown_type $params
+ * @param string $hook
+ * @param string $entity_type
+ * @param bool   $returnvalue
+ * @param array  $params
  */
 function etherpad_write_permission_check($hook, $entity_type, $returnvalue, $params)
 {
@@ -261,12 +294,25 @@ function etherpad_write_permission_check($hook, $entity_type, $returnvalue, $par
 		$write_permission = $params['entity']->write_access_id;
 		$user = $params['user'];
 
-		if (($write_permission) && ($user)) {
-			// $list = get_write_access_array($user->guid);
-			$list = get_access_array($user->guid); // get_access_list($user->guid);
-
-			if (($write_permission!=0) && (in_array($write_permission,$list))) {
-				return true;
+		if ($write_permission && $user) {
+			switch ($write_permission) {
+				case ACCESS_PRIVATE:
+					// Elgg's default decision is what we want
+					return;
+					break;
+				case ACCESS_FRIENDS:
+					$owner = $params['entity']->getOwnerEntity();
+					if ($owner && $owner->isFriendsWith($user->guid)) {
+						return true;
+					}
+					break;
+				default:
+					$list = get_access_array($user->guid);
+					if (in_array($write_permission, $list)) {
+						// user in the access collection
+						return true;
+					}
+					break;
 			}
 		}
 	}
@@ -301,4 +347,10 @@ function etherpad_container_permission_check($hook, $entity_type, $returnvalue, 
 		}
 	}
 
+}
+
+function etherpad_run_upgrades() {
+	if (include_once(elgg_get_plugins_path() . 'upgrade-tools/lib/upgrade_tools.php')) {
+		upgrade_module_run('etherpad');
+	}
 }

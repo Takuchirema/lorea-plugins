@@ -1,6 +1,8 @@
 <?php
 /**
  * History of revisions of a page
+ * 
+ * @override mod/pages/pages/history.php
  *
  * @package ElggPages
  */
@@ -20,7 +22,7 @@ if (!$container) {
 elgg_set_page_owner_guid($container->getGUID());
 
 if (elgg_instanceof($container, 'group')) {
-	elgg_push_breadcrumb($container->name, "pages/group/$container->guid/all");
+    elgg_push_breadcrumb($container->name, "pages/group/$container->guid/all");
 } else {
 	elgg_push_breadcrumb($container->name, "pages/owner/$container->username");
 }
@@ -36,7 +38,12 @@ if($page->getSubtype() == 'etherpad' || $page->getSubtype() == 'subpad') {
 		'full_view' => true,
 	));
 } else {
-	$content = list_annotations($page_guid, 'page', 20, false);
+	$content = elgg_list_annotations(array(
+		'guid' => $page_guid,
+		'annotation_name' => 'page',
+		'limit' => 20,
+		'order_by' => "n_table.time_created desc"
+	));
 }
 
 $body = elgg_view_layout('content', array(
