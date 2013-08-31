@@ -54,6 +54,10 @@ if ($comments_count != 0) {
 	$comments_link = '';
 }
 
+if ($full) {
+    elgg_push_context('full_view');
+}
+
 $metadata = elgg_view_menu('entity', array(
 	'entity' => $vars['entity'],
 	'handler' => 'etherpad',

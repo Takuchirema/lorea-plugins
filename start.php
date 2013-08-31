@@ -218,6 +218,7 @@ function etherpad_entity_menu_setup($hook, $type, $return, $params) {
 	}
 
 	// remove delete if not owner or admin
+	// @todo Elgg 1.9 has a function to remove a menu item.
 	if (!elgg_is_admin_logged_in() && elgg_get_logged_in_user_guid() != $entity->getOwnerGuid()) {
 		foreach ($return as $index => $item) {
 			if ($item->getName() == 'delete') {
@@ -235,18 +236,20 @@ function etherpad_entity_menu_setup($hook, $type, $return, $params) {
 			'href' => "$handler/history/$entity->guid",
 			'priority' => 200,
 		);
+		$return[] = ElggMenuItem::factory($options);
 	}
 
-	// fullscreen button
-	$entity = new ElggPad($entity->guid);
-	$options = array(
-		'name' => 'etherpadfs',
-		'text' => elgg_echo('etherpad:fullscreen'),
-		'href' => $entity->getPadPath(),
-		'priority' => 200,
-	);
-	
-	$return[] = ElggMenuItem::factory($options);
+    if (elgg_in_context('full_view')) {
+    	// fullscreen button
+    	$entity = new ElggPad($entity->guid);
+    	$options = array(
+    		'name' => 'etherpadfs',
+    		'text' => elgg_echo('etherpad:fullscreen'),
+    		'href' => $entity->getPadPath(),
+    		'priority' => 200,
+    	);
+    	$return[] = ElggMenuItem::factory($options);
+    }
 
 	return $return;
 }
