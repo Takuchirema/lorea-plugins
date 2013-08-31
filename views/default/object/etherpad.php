@@ -76,8 +76,7 @@ if ($full) {
     if ($padPath = $etherpad->getPadPath($timeslider)) {
         $body .= elgg_view('output/iframe', array('value' => $padPath, 'type' => "etherpad"));
     } else {
-        $body .= elgg_view('etherpad/failure', $vars);
-        register_error(elgg_echo('etherpad:server:failure'));
+        forward('', 'etherpad/server_failure');
     }
 
 	$params = array(

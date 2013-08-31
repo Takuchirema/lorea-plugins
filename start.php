@@ -27,6 +27,7 @@ function etherpad_init() {
 	// Register a URL handler, so we can have nice URLs
 	elgg_register_page_handler('pages', 'etherpad_page_handler');
 	elgg_register_page_handler('etherpad', 'etherpad_page_handler');
+	elgg_register_plugin_hook_handler('forward', 'etherpad/server_failure', 'elgg_error_page_handler');
 
 	// Register a url handler
 	if ($page_integration) {
