@@ -69,11 +69,13 @@ if (elgg_in_context('widgets')) {
 }
 
 if ($full) {
-	try {
-		$body .= elgg_view('output/iframe', array('value' => $etherpad->getPadPath($timeslider), 'type' => "etherpad"));
-	} catch(Exception $e) {
-		$body .= $e->getMessage();
-	}
+    if ($padPath = $etherpad->getPadPath($timeslider)) {
+        $body .= elgg_view('output/iframe', array('value' => $padPath, 'type' => "etherpad"));
+    } else {
+        $body .= elgg_view('etherpad/failure', $vars);
+        register_error(elgg_echo('etherpad:server:failure'));
+    }
+
 	$params = array(
 		'entity' => $etherpad,
 		'metadata' => $metadata,

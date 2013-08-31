@@ -43,6 +43,7 @@ $english = array(
 	'etherpad:saved' => "Your pad was successfully saved.",
 	'etherpad:delete:success' => "Your pad was successfully deleted.",
 	'etherpad:delete:failure' => "Your pad could not be deleted. Please try again.",
+	'etherpad:server:failure' => "Pads are not available right now.",
 	
 	/**
 	 * Edit page

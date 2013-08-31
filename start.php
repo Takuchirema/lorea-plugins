@@ -235,15 +235,16 @@ function etherpad_entity_menu_setup($hook, $type, $return, $params) {
 			'href' => "$handler/history/$entity->guid",
 			'priority' => 200,
 		);
-	} 
-		// fullscreen button
-		$entity = new ElggPad($entity->guid);
-		$options = array(
-			'name' => 'etherpadfs',
-			'text' => elgg_echo('etherpad:fullscreen'),
-			'href' => $entity->getPadPath(),
-			'priority' => 200,
-		);
+	}
+
+	// fullscreen button
+	$entity = new ElggPad($entity->guid);
+	$options = array(
+		'name' => 'etherpadfs',
+		'text' => elgg_echo('etherpad:fullscreen'),
+		'href' => $entity->getPadPath(),
+		'priority' => 200,
+	);
 	
 	$return[] = ElggMenuItem::factory($options);
 

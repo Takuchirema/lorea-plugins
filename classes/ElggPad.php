@@ -59,7 +59,7 @@ class ElggPad extends ElggObject {
 			$this->startSession();
 			$this->get_pad_client()->deletePad($this->getMetaData('pname'));
 		} catch(Exception $e) {
-			return false;
+			error_log('Pad could not be deleted: ' . $this->getMetadata('pname'));
 		}
 		return parent::delete();
 	}
@@ -70,7 +70,7 @@ class ElggPad extends ElggObject {
 		}
 		
 		require_once(elgg_get_plugins_path() . 'etherpad/vendors/etherpad-lite-client.php');
-		 
+
 		// Etherpad: Create an instance
 		$apikey = elgg_get_plugin_setting('etherpad_key', 'etherpad');
 		$apiurl = elgg_get_plugin_setting('etherpad_host', 'etherpad') . "/api";
@@ -105,7 +105,6 @@ class ElggPad extends ElggObject {
 	//	}
 		$this->authorID = $user->etherpad_author_id;
 
-		//error_log("e $this->groupID $this->authorID");
 		//Etherpad: Create session
 		$validUntil = mktime(date("H"), date("i")+5, 0, date("m"), date("d"), date("y")); // 5 minutes in the future
 		$session = $this->get_pad_client()->createSession($this->groupID, $this->authorID, $validUntil);
@@ -163,9 +162,13 @@ class ElggPad extends ElggObject {
 			'showChat' => $settings[2],
 			'showLineNumbers' => $settings[3],
 		));
-		
-		$this->startSession();
-		
+
+        try {
+            $this->startSession();
+        } catch(Exception $e) {
+            error_log($e->getMessage());
+            return false;
+        }
 		if($this->canEdit() && !$timeslider) {
 			return $this->getAddress() . $options;
 		} elseif ($this->canEdit() && $timeslider) {
