@@ -21,15 +21,13 @@ class ElggPad extends ElggObject {
 	}
 	
 	function save(){
-		$guid = parent::save();
-		
 		try {
 			$sessionID = $this->startSession();
-			$groupID = $this->groupID;
-			
 			// Create a pad if not exists
 			if (!$this->pname) {
 				$name = uniqid();
+				$site_mask = str_replace(array('https://', 'http://'), '@', elgg_get_site_url());
+				$groupID = $this->get_pad_client()->createGroupIfNotExistsFor($this->container_guid . $site_mask)->groupID;
 				$this->get_pad_client()->createGroupPad($groupID, $name, elgg_get_plugin_setting('new_pad_text', 'etherpad'));
 				$this->setMetaData('pname', $groupID . "$" . $name);
 			}
@@ -42,16 +40,13 @@ class ElggPad extends ElggObject {
 			} else {
 				$this->get_pad_client()->setPublicStatus($padID, "false");
 			}
-			
-			$this->get_pad_client()->deleteSession($sessionID);
-			
 		} catch (Exception $e){
 			return false;
 		}
-		
+		$guid = parent::save();
 		return $guid;
 	}
-	
+
 	function delete(){
 		try {
 			$this->startSession();
@@ -78,25 +73,22 @@ class ElggPad extends ElggObject {
 	
 	function startSession() {
 
-		static $user_guid;
-		static $container_guid;
-		static $sessionID;
+		if (!isset($_SESSION['pad_sessions'])) {
+			$_SESSION['pad_sessions'] = array();
+		}
 
 		if (!isset($this->container_guid)) {
-            throw new Exception();
+			throw new Exception();
 		}
 
 		$user = elgg_get_logged_in_user_entity();
 		$container = get_entity($this->container_guid);
 
-		if (isset($user_guid) && isset($container_guid)
-		&& $user->guid == $user_guid && $container->guid == $container_guid) {
-		    return sessionID;
+		if (in_array("{$user->guid}-{$container->guid}", $_SESSION['pad_sessions'])) {
+			return $_SESSION['pad_sessions']["{$user->guid}-{$container->guid}"];
 		}
 
-		//$site_mask = preg_replace('https?://', '@', elgg_get_site_url());
-		$site_mask = str_replace('http://', '@', elgg_get_site_url());
-		$site_mask = str_replace('https://', '@', $site_mask);
+		$site_mask = str_replace(array('https://', 'http://'), '@', elgg_get_site_url());
 
 		//Etherpad: Create an etherpad group for the elgg container
 		$groupID = $this->get_pad_client()->createGroupIfNotExistsFor($container->guid . $site_mask)->groupID;
@@ -104,24 +96,19 @@ class ElggPad extends ElggObject {
 		//Etherpad: Create an author(etherpad user) for logged in user
 		$authorID = $this->get_pad_client()->createAuthorIfNotExistsFor($user->username . $site_mask, null)->authorID;
 
-        //Etherpad: Delete previous session
-        if ($sessionID) {
-            $this->get_pad_client()->deleteSession($sessionID);
-        }
-
 		//Etherpad: Create new session
 		$validUntil = mktime(date("H"), date("i") + 5, 0, date("m"), date("d"), date("y")); // 5 minutes in the future
 		$sessionID = $this->get_pad_client()->createSession($groupID, $authorID, $validUntil)->sessionID;
 
-		$user_guid = $user->guid;
-		$container_guid = $container->guid;
-	
+		$_SESSION['pad_sessions']["{$user->guid}-{$container->guid}"] = $sessionID;
+		$sessionIDs = implode(',', $_SESSION['pad_sessions']);
+
 		$domain = "." . parse_url(elgg_get_site_url(), PHP_URL_HOST);
-		
-		if(!setcookie('sessionID', $sessionID, $validUntil, '/', $domain)){
+
+		if(!setcookie('sessionID', $sessionIDs, $validUntil, '/', $domain)){
 			throw new Exception(elgg_echo('etherpad:error:cookies_required'));
 		}
-		
+
 		return $sessionID;
 	}
 	
