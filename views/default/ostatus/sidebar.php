@@ -1,7 +1,7 @@
 <?php
 
-if (in_array(get_context(), array('ostatus', 'activity')) && get_loggedin_user()) {
-   $user = get_loggedin_user();
+if (in_array(elgg_get_context(), array('ostatus', 'activity')) && elgg_get_logged_in_user_entity()) {
+   $user = elgg_get_logged_in_user_entity();
    $options = array('type'=>'user',
 		 'relationship' => 'follow',
 		 'list_class' => 'list-follow',

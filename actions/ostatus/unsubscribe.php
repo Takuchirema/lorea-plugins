@@ -1,7 +1,7 @@
 <?php
 	elgg_load_library('elgg:push');
 
-	$user = get_loggedin_user();
+	$user = elgg_get_logged_in_user_entity();
 
 	$endpoint = get_input("atom_endpoint");
 	$salmon_link = get_input("salmon_endpoint");

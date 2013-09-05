@@ -3,7 +3,7 @@
 function ostatus_page_handler($page) {
 	switch($page[0]) {
 		case "subscribe":
-			set_context("ostatus");
+			elgg_set_context("ostatus");
 			$title = elgg_echo('ostatus:subscribe');
 			// subscribe, read arg uri
 			$uri = get_input('uri');
@@ -23,7 +23,7 @@ function ostatus_page_handler($page) {
 			break;
 		case "activity":
 			// site activity for following
-			set_context("activity");
+			elgg_set_context("activity");
 			$title = elgg_echo('ostatus:activity');
 			$body = elgg_view('ostatus/activity');
 			echo elgg_view_page($title, $body);
@@ -35,7 +35,7 @@ function ostatus_page_handler($page) {
 }
 
 function ostatus_prepare_menu($hook, $type, $return, $params) {
-	if (!in_array(get_context(), array('activity'))) {
+	if (!in_array(elgg_get_context(), array('activity'))) {
 		return $return;
 	}
 	$page = current_page_url();
@@ -61,7 +61,7 @@ function ostatus_prepare_menu($hook, $type, $return, $params) {
  */
 function ostatus_user_hover_menu($hook, $type, $return, $params) {
         $user = $params['entity'];
-	$logged = get_loggedin_user();
+	$logged = elgg_get_logged_in_user_entity();
 
         if (elgg_is_logged_in() && elgg_get_logged_in_user_guid() != $user->guid) {
 		$id = $user->getURL();
