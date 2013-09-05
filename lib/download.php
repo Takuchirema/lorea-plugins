@@ -47,7 +47,7 @@ function push_import_atom_activitystreams($data, $obj=null) {
                 $entry->registerXPathNamespace('atom', 'http://www.w3.org/2005/Atom');
                 $entry->registerXPathNamespace('activity', 'http://activitystrea.ms/spec/1.0/');
 		$params = array('entry'=>$entry, 'salmon_link'=>$salmon_link);
-                trigger_plugin_hook('push:notification', 'atom', $params);
+                elgg_trigger_plugin_hook('push:notification', 'atom', $params);
         }
 	return $entries;
 }
