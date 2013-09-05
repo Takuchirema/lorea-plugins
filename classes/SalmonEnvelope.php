@@ -87,7 +87,7 @@ class SalmonEnvelope {
 				'internal' => true,
 				'provenance' => $text_provenance,
 				'target_entity' => $entity);
-		trigger_plugin_hook('push:notification', 'atom', $params);
+		elgg_trigger_plugin_hook('push:notification', 'atom', $params);
 	}
 
 
