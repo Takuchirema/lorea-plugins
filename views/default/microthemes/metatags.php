@@ -21,7 +21,7 @@ if ($microtheme_guid ||
 		else if ($context == "microthemes") {
 			$owner = get_entity(get_input("assign_to"));
 			if (!$owner) {
-				$user = get_loggedin_user();
+				$user = elgg_get_logged_in_user_entity();
 				if ($user->microtheme && get_entity($user->microtheme))
 					$owner = $user;
 			}

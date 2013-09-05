@@ -11,7 +11,7 @@
 	 */
 	 
 	 //need to be logged in to send a message
-	 if (isloggedin()) {
+	 if (elgg_is_logged_in()) {
 
 ?>
 
