@@ -63,7 +63,7 @@ class FederatedNotification {
 				'salmon_link' => $salmon_link,
 				'target_entity' => $params['target_entity'],
 				'entry' => $entry);
-		trigger_plugin_hook('federated_objects:'.$verb, $object_type, $params);
+		elgg_trigger_plugin_hook('federated_objects:'.$verb, $object_type, $params);
 	}
 
 	// Specific callbacks for river actions
