@@ -25,6 +25,8 @@ function ckeditor_init() {
 	elgg_extend_view('embed/custom_insert_js', 'ckeditor/embed_custom_insert_js');
 	
 	elgg_register_plugin_hook_handler('register', 'menu:longtext', 'ckeditor_longtext_menu');
+
+	elgg_register_plugin_hook_handler('allowed_styles', 'htmlawed', 'ckeditor_allowed_styles');
 }
 
 function ckeditor_longtext_menu($hook, $type, $items, $vars) {
@@ -38,3 +40,10 @@ function ckeditor_longtext_menu($hook, $type, $items, $vars) {
 	
 	return $items;
 }
+
+function ckeditor_allowed_styles($hook, $type, $styles, $params) {
+	$styles[] = 'height';
+	$styles[] = 'width';
+	return $styles;
+}
+
