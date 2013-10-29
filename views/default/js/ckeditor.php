@@ -42,11 +42,11 @@ elgg.ckeditor.toggleEditor = function(event) {
  * http://docs.ckeditor.com/#!/api/CKEDITOR.config
  */
 elgg.ckeditor.config = {
-	toolbar : [['Bold', 'Italic', 'Underline', '-', 'Strike', 'NumberedList', 'BulletedList', 'Undo', 'Redo', 'Link', 'Unlink', 'Image', 'Blockquote', 'Paste', 'PasteFromWord', 'Maximize']],
+	toolbar : [['Bold', 'Italic', 'Underline', '-', 'Strike', 'NumberedList', 'BulletedList', 'Undo', 'Redo', 'Link', 'Unlink', 'Image', 'Blockquote', 'Table', 'Paste', 'PasteFromWord', 'Maximize']],
 	toolbarCanCollapse : false,
 	baseHref : elgg.config.wwwroot,
 	extraPlugins : 'autogrow,confighelper,wordcount',
-	removePlugins : 'contextmenu,showborders,tabletools,resize',
+	removePlugins : 'contextmenu,showborders,resize',
 	uiColor : '#EEEEEE',
 	contentsCss : '<?php echo $css_url; ?>',
 	disableNativeSpellChecker : false,
