@@ -12,8 +12,9 @@ elgg_register_event_handler('init', 'system', 'online_init');
 function online_init() {
 
 	elgg_extend_view('css/elgg', 'online/css');
-	elgg_extend_view('css/admin', 'online/css');
-	
+	elgg_extend_view('js/elgg', 'online/js');
+	elgg_extend_view('icon/user/default', 'online/icon');
+
 	elgg_register_plugin_hook_handler('find_active_users', 'system', 'online_find_active_friends');
 }
 
