@@ -3,13 +3,11 @@
 	<name>Powered</name>
 	<author>Lorea</author>
 	<version>1.8.1</version>
-	<category>bundled</category>
 	<description>This plugin adds a footer containing different technologies/protocols.</description>
-	<website>http://www.elgg.org/</website>
-	<license>GNU General Public License version 2</license>
+	<website>https://lorea.org/</website>
+	<license>GNU Affero General Public License version 3 or higher</license>
 	<requires>
 		<type>elgg_release</type>
 		<version>1.8</version>
 	</requires>
-	<activate_on_install>false</activate_on_install>
 </plugin_manifest>
