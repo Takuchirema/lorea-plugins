@@ -7,9 +7,9 @@
   <description>This plugin adds a spotlight on the footer.</description>
   <website>https://lorea.org/plugin/spotlight</website>
   <repository>https://gitorious.org/lorea/spotlight</repository>
-  <bugtracker>https://n-1.cc/tasks/view/1555174/spotlight</bugtracker>
+  <bugtracker>https://n-1.cc/g/bughunting</bugtracker>
   <donations>https://lorea.org/support</donations>
-  <copyright>2011-2013 Lorea Faeries &lt;federation@lorea.org&gt;</copyright>
+  <copyright>(C) 2011-2013 Lorea Faeries</copyright>
   <license>GNU Affero General Public License version 3 or later</license>
   <requires>
     <type>elgg_release</type>
