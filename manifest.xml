@@ -2,7 +2,7 @@
 <plugin_manifest xmlns="http://www.elgg.org/plugin_manifest/1.8">
   <name>Favorites</name>
   <author>Lorea Faeries</author>
-  <version>0.1.0</version>
+  <version>1.8.0</version>
   <category>lorea</category>
   <description>
     Allow to star items and provide a overview of such. 
