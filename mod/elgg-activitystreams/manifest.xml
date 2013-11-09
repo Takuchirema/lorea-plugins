@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest xmlns="http://www.elgg.org/plugin_manifest/1.8">
+	<name>Activity Streams</name>
+	<author>Evan Winslow, Brett Profitt</author>
+	<version>1.8.0</version>
+	<blurb>Activity streams</blurb>
+	<description>Adds activity streams support to your Elgg installation.</description>
+	<website>http://evanwinslow.com</website>
+	<copyright>(C) Evan Winslow 2011, Brett Profitt 2012</copyright>
+	<license>GNU Public License version 2</license>
+
+	<requires>
+		<type>elgg_version</type>
+		<version>2011010401</version>
+	</requires>
+</plugin_manifest>
