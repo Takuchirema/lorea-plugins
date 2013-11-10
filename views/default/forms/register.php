@@ -4,9 +4,8 @@
  *
  * @package Elgg
  * @subpackage Core
+ * @override views/default/forms/register.php
  */
-
-elgg_load_js('elgg.register');
 
 $password = $password2 = '';
 $username = get_input('u');
@@ -45,10 +44,6 @@ if (elgg_is_sticky_form('register')) {
 	echo elgg_view('input/text', array(
 		'name' => 'username',
 		'value' => $username,
-	));
-	echo elgg_view('input/text', array(
-		'name' => 'dummy',
-		'value' => '',
 	));
 	?>
 </div>

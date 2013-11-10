@@ -4,6 +4,7 @@
  *
  * @package Elgg.Core
  * @subpackage User.Account
+ * @override actions/register.php
  */
 
 elgg_make_sticky_form('register');
