@@ -2,9 +2,13 @@
 
 command=$1
 branch=$2
-pluginsfile=$3
+plugin=$3
 
 git checkout $branch
-while read plugin; do
+if [ $plugin ]; then
   git subtree $command --prefix mod/$plugin git@gitorious.org:lorea/$plugin.git $branch
-done < $pluginsfile
+else
+  cat *-plugins | while read plugin; do
+    git subtree $command --prefix mod/$plugin git@gitorious.org:lorea/$plugin.git $branch
+  done
+fi
