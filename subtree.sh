@@ -1,11 +1,10 @@
 #!/bin/sh
 
-git checkout master
-while read plugin; do
-  git subtree add --prefix mod/$plugin git://gitorious.org/lorea/$plugin.git master
-done < agpl-plugins
+command=$1
+branch=$2
+pluginsfile=$3
 
-git checkout develop
+git checkout $branch
 while read plugin; do
-  git subtree add --prefix mod/$plugin git://gitorious.org/lorea/$plugin.git develop
-done < agpl-plugins
+  git subtree $command --prefix mod/$plugin git@gitorious.org:lorea/$plugin.git $branch
+done < $pluginsfile
