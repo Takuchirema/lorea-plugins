@@ -28,7 +28,7 @@ $assembly = $vars['next_assembly'];
 if (!empty($assembly)) {
 	echo "<b>".elgg_echo("assemblies:info:when")."</b>";
 	echo "<p>";
-	echo gmdate("d.m.y", $assembly->date);
+	echo gmdate("Y-m-d", $assembly->date);
 	echo "</p>";
 	echo "<b>".elgg_echo("assemblies:info:where")."</b>";
 	echo "<p>";
