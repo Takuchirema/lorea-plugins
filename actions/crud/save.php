@@ -52,7 +52,7 @@ foreach ($variables as $name => $field) {
 		$input[$name] = string_to_tag_array($input[$name]);
 	}
 	if ($type == 'date') {
-		$input[$name] = strtotime($input[$name]." ".date_default_timezone_get());
+		$input[$name] = strtotime($input[$name]." GMT");
 	}
 	if ($type == 'time') {
 		$input[$name] = get_input($name . '_hour') * 60 + get_input($name . '_minute');
