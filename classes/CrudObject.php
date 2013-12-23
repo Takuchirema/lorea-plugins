@@ -50,7 +50,7 @@ class CrudObject extends ElggObject  {
 
 		if ($template->title_extend && !$full_view) {
 			$varname = $template->title_extend;
-			$value = date(elgg_echo('crud:date_format'), $this->$varname);
+			$value = gmdate(elgg_echo('crud:date_format'), $this->$varname);
 			if ($title)
 				$title .= ", $value";
 			else
