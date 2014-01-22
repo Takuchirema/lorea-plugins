@@ -50,7 +50,12 @@ function elggman_init() {
 
 	$current_page = current_page_url();
 	if (!strpos($current_page, 'notifications/personal')) {
-		register_notification_handler('mailshot', 'elggman_dummy');
+
+		if (elgg_get_version(true) > '1.9') {
+			elgg_register_notification_method('mailshot');
+		} else {
+			register_notification_handler('mailshot', 'elggman_dummy');
+		}
 	}
 }
 
