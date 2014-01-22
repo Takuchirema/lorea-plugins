@@ -7,7 +7,7 @@
 
 $owner = elgg_get_page_owner_entity();
 if (!$owner) {
-	forward('etherpad/all');
+	forward('', '404');
 }
 
 elgg_push_breadcrumb($owner->name, "etherpad/owner/$owner->username");

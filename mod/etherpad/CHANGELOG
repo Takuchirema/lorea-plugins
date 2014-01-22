@@ -1,3 +1,10 @@
+1.8.1
+Forwarding to a 404 error page instead to frontpage when error.
+
+1.8.0
+No changes from 0.8.1
+0.8.1 => 1.8.0
+
 0.8.1
 fixed forwarded links. forwards to owners/groups pages when integration is enabled, or pads when not. 
 Changed river message, "created a new collaborative pad" as it works for both pads and collab pages.

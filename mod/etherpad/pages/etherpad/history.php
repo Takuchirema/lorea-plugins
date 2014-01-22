@@ -9,12 +9,12 @@ $pad_guid = get_input('guid');
 
 $pad = get_entity($pad_guid);
 if (!$pad) {
-
+	forward('', '404');
 }
 
 $container = $pad->getContainerEntity();
 if (!$container) {
-
+	forward('', '404');
 }
 
 elgg_set_page_owner_guid($container->getGUID());
